@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">SpeedTest</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="network_edge">Network : EDGE</string>
+    <string name="network_3g">Network : 3G</string>
+    <string name="network_detecting">Network : Detecting </string>
+
+    <string name="update_speed" formatted="false">Speed current: %s kbit/sec</string>
+    <string name="update_downloaded" formatted="false">Progress: %s procent</string>
+    <string name="update_connectionspeed" formatted="false">Connection time: %s ms</string>
+
+    <string name="update_downloaded_complete" formatted="false">Speed: %s kbit/sec</string>
+</resources>
