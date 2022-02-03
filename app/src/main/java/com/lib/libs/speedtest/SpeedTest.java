@@ -1,5 +1,6 @@
 package com.lib.libs.speedtest;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
@@ -8,6 +9,7 @@ import android.view.MenuItem;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.Date;
 
@@ -41,6 +43,8 @@ public class SpeedTest extends AppCompatActivity {
     private HistoryItem historyItem;
 
     private Button mBtnStart;
+    private Button history;
+
     private TextView mTxtSpeed;
     private TextView mTxtConnectionSpeed;
     private TextView mTxtProgress;
@@ -73,7 +77,7 @@ public class SpeedTest extends AppCompatActivity {
         bindListeners();
     }
 
-    private void downloadTest(){
+    private void downloadTest() {
         SpeedTestSocket speedTestSocket = new SpeedTestSocket();
         speedTestSocket.setSocketTimeout(SOCKET_TIMEOUT);
         speedTestSocket.addSpeedTestListener(new ISpeedTestListener() {
@@ -85,10 +89,10 @@ public class SpeedTest extends AppCompatActivity {
 //                System.out.println("[D COMPLETED] rate in octet/s : " + report.getTransferRateOctet());
 //                System.out.println("[D COMPLETED] rate in bit/s   : " + report.getTransferRateBit());
                 mTransferRateOctet.setText(String.format("[D COMPLETED] rate in octet/s   : " + report.getTransferRateOctet()));
-                mTransferRateBit.setText(String.format("[D COMPLETED] rate in bit/s   : " + report.getTransferRateBit()));
+                mTransferRateBit.setText(String.format("[D COMPLETED] rate in Mbit/s   : " + mbits(report.getTransferRateBit())));
                 uploadTest();
 
-                historyItem.dmbps = report.getTransferRateBit().doubleValue();
+                historyItem.dmbps = mbits(report.getTransferRateBit());
 
             }
 
@@ -100,13 +104,11 @@ public class SpeedTest extends AppCompatActivity {
 
             @Override
             public void onProgress(float percent, SpeedTestReport report) {
-                // called to notify download/upload progress
-//                System.out.println("[D PROGRESS] progress : " + percent + "%");
-//                System.out.println("[D PROGRESS] rate in octet/s : " + report.getTransferRateOctet());
-//                System.out.println("[D PROGRESS] rate in bit/s   : " + report.getTransferRateBit());
-                mProgress.setText("[D PROGRESS] progress : " + percent + "%");
-                mTransferRateOctet.setText(String.format("[D PROGRESS] rate in octet/s   : " + report.getTransferRateOctet()));
-                mTransferRateBit.setText(String.format("[D PROGRESS] rate in bit/s   : " + report.getTransferRateBit()));
+                runOnUiThread(() -> {
+                    mProgress.setText("[D PROGRESS] progress : " + percent + "%");
+                    mTransferRateOctet.setText(String.format("[D PROGRESS] rate in octet/s   : " + report.getTransferRateOctet()));
+                    mTransferRateBit.setText(String.format("[D PROGRESS] rate in Mbit/s   : " + mbits(report.getTransferRateBit())));
+                });
             }
         });
         AsyncTask.execute(() -> {
@@ -115,7 +117,7 @@ public class SpeedTest extends AppCompatActivity {
 
     }
 
-    private void uploadTest(){
+    private void uploadTest() {
 
         SpeedTestSocket speedTestSocket = new SpeedTestSocket();
         //set timeout for download
@@ -128,9 +130,9 @@ public class SpeedTest extends AppCompatActivity {
 //                System.out.println("[U COMPLETED] rate in octet/s : " + report.getTransferRateOctet());
 //                System.out.println("[U COMPLETED] rate in bit/s   : " + report.getTransferRateBit());
                 mTransferRateOctetUp.setText(String.format("[U COMPLETED] rate in octet/s   : " + report.getTransferRateOctet()));
-                mTransferRateBitUp.setText(String.format("[U COMPLETED] rate in bit/s   : " + report.getTransferRateBit()));
+                mTransferRateBitUp.setText(String.format("[U COMPLETED] rate in Mbit/s   : " + mbits(report.getTransferRateBit())));
 
-                historyItem.umbps = report.getTransferRateBit().doubleValue();
+                historyItem.umbps = mbits(report.getTransferRateBit());
                 historyItem.save();
             }
 
@@ -141,13 +143,12 @@ public class SpeedTest extends AppCompatActivity {
 
             @Override
             public void onProgress(float percent, SpeedTestReport report) {
-                // called to notify download/upload progress
-//                System.out.println("[U PROGRESS] progress : " + percent + "%");
-//                System.out.println("[U PROGRESS] rate in octet/s : " + report.getTransferRateOctet());
-//                System.out.println("[U PROGRESS] rate in bit/s   : " + report.getTransferRateBit());
-                mProgress.setText("[U PROGRESS] progress : " + percent + "%");
-                mTransferRateOctetUp.setText(String.format("[U PROGRESS] rate in octet/s   : " + report.getTransferRateOctet()));
-                mTransferRateBitUp.setText(String.format("[U PROGRESS] rate in bit/s   : " + report.getTransferRateBit()));
+                runOnUiThread(() -> {
+                    mProgress.setText("[U PROGRESS] progress : " + percent + "%");
+                    mTransferRateOctetUp.setText(String.format("[U PROGRESS] rate in octet/s   : " + report.getTransferRateOctet()));
+                    mTransferRateBitUp.setText(String.format("[U PROGRESS] rate in Mbit/s   : " + mbits(report.getTransferRateBit())));
+                });
+
             }
         });
         AsyncTask.execute(() -> {
@@ -185,13 +186,12 @@ public class SpeedTest extends AppCompatActivity {
     }
 
 
-
-
     /**
      * Setup event handlers and bind variables to values from xml
      */
     private void bindListeners() {
         mBtnStart = (Button) findViewById(R.id.btnStart);
+        history = findViewById(R.id.history);
         mTxtSpeed = (TextView) findViewById(R.id.speed);
         mTxtConnectionSpeed = (TextView) findViewById(R.id.connectionspeeed);
         mTxtProgress = (TextView) findViewById(R.id.progress);
@@ -212,9 +212,9 @@ public class SpeedTest extends AppCompatActivity {
                 mBtnStart.setEnabled(false);
                 mTxtNetwork.setText(R.string.network_detecting);
                 mTransferRateBit.setText("Test l");
-               // new Thread(mWorker).start();
+                // new Thread(mWorker).start();
                 String str = ping("www.google.com");
-                System.out.println("HUI^    --------------- "+str);
+                System.out.println("HUI^    --------------- " + str);
                 mPing.setText(str);
                 historyItem = new HistoryItem();
                 historyItem.type = "wi-Fi";
@@ -222,9 +222,12 @@ public class SpeedTest extends AppCompatActivity {
                 downloadTest();
             }
         });
+
+        history.setOnClickListener(v -> {
+            Intent myIntent = new Intent(this, HistoryActivity.class);
+            startActivity(myIntent);
+        });
     }
-
-
 
 
     /**
@@ -259,7 +262,12 @@ public class SpeedTest extends AppCompatActivity {
         public double downspeed = 0;
     }
 
+    private double mbits(BigDecimal bit) {
+        double resolt = bit.doubleValue() * 1024 * 1024;
+        return resolt;
+    }
 
+    ;
 
 
     @Override

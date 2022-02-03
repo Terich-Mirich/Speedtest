@@ -113,5 +113,17 @@
         android:textColor="@color/defaultTextColor"
         android:textSize="16dip"/>
 
-    <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/btnStart" android:text="Start Test" android:layout_marginTop="10dip"></Button>
+    <Button
+        android:id="@+id/btnStart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dip"
+        android:text="Start Test"></Button>
+
+    <Button
+        android:id="@+id/history"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dip"
+        android:text="History"></Button>
 </LinearLayout>
