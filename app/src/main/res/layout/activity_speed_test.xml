@@ -113,6 +113,15 @@
         android:textColor="@color/defaultTextColor"
         android:textSize="16dip"/>
 
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/connectivity"
+        android:text="Connectivity:"
+        android:layout_marginTop="10dip"
+        android:textColor="@color/defaultTextColor"
+        android:textSize="16dip"/>
+
     <Button
         android:id="@+id/btnStart"
         android:layout_width="wrap_content"

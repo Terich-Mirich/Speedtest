@@ -9,10 +9,12 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.lib.libs.speedtest.R;
+import com.lib.libs.speedtest.Utils;
 import com.lib.libs.speedtest.models.HistoryItem;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Locale;
 
 public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHolder> {
 
@@ -38,9 +40,8 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
         HistoryItem state = states.get(position);
         holder.typeView.setText(state.getType());
         holder.dateView.setText(formatter.format(state.getDate()));
-        holder.dLoadView.setText(String.format("%.1f", state.getDmbps()));
-        holder.uLoadView.setText(String.format("%.1f", state.getUmbps()));
-
+        holder.dLoadView.setText(String.format(Locale.getDefault(),"%.1f", state.getDmbps()));
+        holder.uLoadView.setText(String.format(Locale.getDefault(),"%.1f", state.getUmbps()));
     }
 
     @Override

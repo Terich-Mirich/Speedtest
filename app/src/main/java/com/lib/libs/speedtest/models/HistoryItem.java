@@ -22,16 +22,16 @@ public class HistoryItem extends Model {
     public Date date;
 
     @Column(name = "DMbps")
-    public Double dmbps;
+    public Float dmbps;
 
     @Column(name = "UMbps")
-    public Double umbps;
+    public Float umbps;
 
     public HistoryItem() {
         super();
     }
 
-    public HistoryItem(String type, Date date, Double dmbps, Double umbps) {
+    public HistoryItem(String type, Date date, Float dmbps, Float umbps) {
         super();
         this.type = type;
         this.date = date;
@@ -47,11 +47,11 @@ public class HistoryItem extends Model {
         return date;
     }
 
-    public Double getDmbps() {
+    public Float getDmbps() {
         return dmbps;
     }
 
-    public Double getUmbps() {
+    public Float getUmbps() {
         return umbps;
     }
 

@@ -1,5 +1,7 @@
 package com.lib.libs.speedtest;
 
+import static com.lib.libs.speedtest.Utils.mbits;
+
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -10,6 +12,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.Date;
 
@@ -55,6 +58,7 @@ public class SpeedTest extends AppCompatActivity {
     private TextView mTransferRateOctetUp;
     private TextView mTransferRateBitUp;
     private TextView mPing;
+    private TextView mConnectivity;
 
 
     private final int MSG_UPDATE_STATUS = 0;
@@ -67,6 +71,8 @@ public class SpeedTest extends AppCompatActivity {
     private DecimalFormat mDecimalFormater;
 
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         mDecimalFormater = new DecimalFormat("##.##");
@@ -75,6 +81,12 @@ public class SpeedTest extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_speed_test);
         bindListeners();
+        if (Connectivity.isConnectedWifi(this)){
+            mConnectivity.setText("WIFI");
+        }else if (Connectivity.isConnectedMobile(this)){
+            mConnectivity.setText("mmm");
+        }
+
     }
 
     private void downloadTest() {
@@ -202,6 +214,7 @@ public class SpeedTest extends AppCompatActivity {
         mTransferRateOctetUp = (TextView) findViewById(R.id.TransferRateOctetUp);
         mTransferRateBitUp = (TextView) findViewById(R.id.TransferRateBitUp);
         mPing = (TextView) findViewById(R.id.ping);
+        mConnectivity = findViewById(R.id.connectivity);
 
 
         mBtnStart.setOnClickListener(new OnClickListener() {
@@ -262,10 +275,7 @@ public class SpeedTest extends AppCompatActivity {
         public double downspeed = 0;
     }
 
-    private double mbits(BigDecimal bit) {
-        double resolt = bit.doubleValue() * 1024 * 1024;
-        return resolt;
-    }
+
 
     ;
 
