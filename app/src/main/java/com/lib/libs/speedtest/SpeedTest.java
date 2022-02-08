@@ -88,6 +88,16 @@ public class SpeedTest extends AppCompatActivity {
         }
 
     }
+    public String typeNetwork(){
+        if (Connectivity.isConnectedWifi(this)){
+            mConnectivity.setText("WIFI");
+            return "Wi-Fi";
+        }else if (Connectivity.isConnectedMobile(this)){
+            mConnectivity.setText("Mobile");
+            return "Mobile";
+        }
+        return null;
+    }
 
     private void downloadTest() {
         SpeedTestSocket speedTestSocket = new SpeedTestSocket();
@@ -226,11 +236,11 @@ public class SpeedTest extends AppCompatActivity {
                 mTxtNetwork.setText(R.string.network_detecting);
                 mTransferRateBit.setText("Test l");
                 // new Thread(mWorker).start();
-                String str = ping("www.google.com");
-                System.out.println("HUI^    --------------- " + str);
-                mPing.setText(str);
+               // String str = ping("www.google.com");
+               // System.out.println("HUI^    --------------- " + str);
+               // mPing.setText(str);
                 historyItem = new HistoryItem();
-                historyItem.type = "wi-Fi";
+                historyItem.type = typeNetwork();
                 historyItem.date = new Date();
                 downloadTest();
             }

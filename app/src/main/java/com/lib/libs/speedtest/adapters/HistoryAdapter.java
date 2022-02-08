@@ -9,7 +9,6 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.lib.libs.speedtest.R;
-import com.lib.libs.speedtest.Utils;
 import com.lib.libs.speedtest.models.HistoryItem;
 
 import java.text.SimpleDateFormat;
@@ -22,10 +21,10 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
 
 
     private final LayoutInflater inflater;
-    private final List<HistoryItem> states;
+    private final List<HistoryItem> historyItems;
 
-    public HistoryAdapter(Context context, List<HistoryItem> states) {
-        this.states = states;
+    public HistoryAdapter(Context context, List<HistoryItem> historyItems) {
+        this.historyItems = historyItems;
         this.inflater = LayoutInflater.from(context);
     }
     @Override
@@ -37,7 +36,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(HistoryAdapter.ViewHolder holder, int position) {
-        HistoryItem state = states.get(position);
+        HistoryItem state = historyItems.get(position);
         holder.typeView.setText(state.getType());
         holder.dateView.setText(formatter.format(state.getDate()));
         holder.dLoadView.setText(String.format(Locale.getDefault(),"%.1f", state.getDmbps()));
@@ -46,7 +45,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
 
     @Override
     public int getItemCount() {
-        return states.size();
+        return historyItems.size();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
