@@ -61,4 +61,11 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
             uLoadView = view.findViewById(R.id.uLoad);
         }
     }
+
+    public void clear() {
+        int size = historyItems.size();
+        historyItems.clear();
+        notifyItemRangeRemoved(0, size);
+    }
+
 }

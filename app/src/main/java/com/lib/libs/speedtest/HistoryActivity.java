@@ -18,6 +18,7 @@ public class HistoryActivity extends AppCompatActivity {
 
     private List<HistoryItem> historyItems;
     private Button mDelete;
+    private HistoryAdapter historyAdapter;
 
 
     @Override
@@ -28,7 +29,7 @@ public class HistoryActivity extends AppCompatActivity {
         RecyclerView recyclerView = findViewById(R.id.list);
         // создаем адаптер
         historyItems = HistoryItem.getAll();
-        HistoryAdapter historyAdapter = new HistoryAdapter(this, historyItems);
+        historyAdapter = new HistoryAdapter(this, historyItems);
         // устанавливаем для списка адаптер
         if (historyItems.isEmpty()) {
             mDelete.setEnabled(false);
@@ -44,7 +45,8 @@ public class HistoryActivity extends AppCompatActivity {
                 .setMessage("Вы точно хотите удалить?")
                 .setPositiveButton("ОК, иди на хуй", (dialog, id) -> {
                     new Delete().from(HistoryItem.class).execute();
-                    recreate();
+                    historyAdapter.clear();
+                    mDelete.setEnabled(false);
                 })
                 .setNegativeButton("Отменить", (dialog, id) -> {
                     dialog.cancel();
