@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.ClipData;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.ImageView;
 
 import com.activeandroid.query.Delete;
 import com.lib.libs.speedtest.adapters.HistoryAdapter;
@@ -17,7 +18,7 @@ import java.util.List;
 public class HistoryActivity extends AppCompatActivity {
 
     private List<HistoryItem> historyItems;
-    private Button mDelete;
+    private ImageView mDelete;
     private HistoryAdapter historyAdapter;
 
 

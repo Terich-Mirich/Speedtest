@@ -18,6 +18,7 @@ import java.util.Locale;
 public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHolder> {
 
     private SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");
+    private SimpleDateFormat formatterTime = new SimpleDateFormat("hh:mm");
 
 
     private final LayoutInflater inflater;
@@ -39,6 +40,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
         HistoryItem state = historyItems.get(position);
         holder.typeView.setText(state.getType());
         holder.dateView.setText(formatter.format(state.getDate()));
+        holder.timeView.setText(formatterTime.format(state.getDate()));
         holder.dLoadView.setText(String.format(Locale.getDefault(),"%.1f", state.getDmbps()));
         holder.uLoadView.setText(String.format(Locale.getDefault(),"%.1f", state.getUmbps()));
     }
@@ -51,12 +53,15 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
     public static class ViewHolder extends RecyclerView.ViewHolder {
         final TextView typeView;
         final TextView dateView;
+        final TextView timeView;
         final TextView dLoadView;
         final TextView uLoadView;
+
         ViewHolder(View view){
             super(view);
             typeView = view.findViewById(R.id.type);
-            dateView = view.findViewById(R.id.date);
+            dateView = view.findViewById(R.id.dateNumber);
+            timeView = view.findViewById(R.id.time);
             dLoadView = view.findViewById(R.id.dLoad);
             uLoadView = view.findViewById(R.id.uLoad);
         }

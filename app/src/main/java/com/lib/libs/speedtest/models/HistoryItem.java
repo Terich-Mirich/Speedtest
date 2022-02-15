@@ -47,6 +47,7 @@ public class HistoryItem extends Model {
         return date;
     }
 
+
     public Float getDmbps() {
         return dmbps;
     }
