@@ -18,6 +18,7 @@ import java.util.Date;
 
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -25,12 +26,14 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.github.anastr.speedviewlib.PointerSpeedometer;
 import com.lib.libs.speedtest.models.HistoryItem;
 
 import fr.bmartel.speedtest.SpeedTestReport;
 import fr.bmartel.speedtest.SpeedTestSocket;
 import fr.bmartel.speedtest.inter.ISpeedTestListener;
 import fr.bmartel.speedtest.model.SpeedTestError;
+import pl.bclogic.pulsator4droid.library.PulsatorLayout;
 
 public class SpeedTest extends AppCompatActivity {
 
@@ -43,9 +46,16 @@ public class SpeedTest extends AppCompatActivity {
     private static final double BYTE_TO_KILOBIT = 0.0078125;
     private static final double KILOBIT_TO_MEGABIT = 0.0009765625;
 
+    private PulsatorLayout mPulsator;
     private HistoryItem historyItem;
 
-    private Button mBtnStart;
+    private ViewGroup mStartButtonFrame;
+    private ViewGroup mProgressFrame;
+    private ViewGroup mCompletionFrame;
+
+    private PointerSpeedometer mPointerSpeedometer;
+
+    private View mBtnStart;
     private Button history;
 
     private TextView mTxtSpeed;
@@ -61,6 +71,8 @@ public class SpeedTest extends AppCompatActivity {
     private TextView mConnectivity;
 
 
+
+
     private final int MSG_UPDATE_STATUS = 0;
     private final int MSG_UPDATE_CONNECTION_TIME = 1;
     private final int MSG_COMPLETE_STATUS = 2;
@@ -69,6 +81,7 @@ public class SpeedTest extends AppCompatActivity {
 
 
     private DecimalFormat mDecimalFormater;
+
 
 
 
@@ -86,6 +99,7 @@ public class SpeedTest extends AppCompatActivity {
         }else if (Connectivity.isConnectedMobile(this)){
             mConnectivity.setText("mmm");
         }
+        setFrame(1);
 
     }
     public String typeNetwork(){
@@ -130,6 +144,8 @@ public class SpeedTest extends AppCompatActivity {
                     mProgress.setText("[D PROGRESS] progress : " + percent + "%");
                     mTransferRateOctet.setText(String.format("[D PROGRESS] rate in octet/s   : " + report.getTransferRateOctet()));
                     mTransferRateBit.setText(String.format("[D PROGRESS] rate in Mbit/s   : " + mbits(report.getTransferRateBit())));
+
+                    mPointerSpeedometer.speedTo(mbits((report.getTransferRateBit())));
                 });
             }
         });
@@ -156,6 +172,9 @@ public class SpeedTest extends AppCompatActivity {
 
                 historyItem.umbps = mbits(report.getTransferRateBit());
                 historyItem.save();
+                runOnUiThread(() -> {
+                    setFrame(3);
+                });
             }
 
             @Override
@@ -169,6 +188,8 @@ public class SpeedTest extends AppCompatActivity {
                     mProgress.setText("[U PROGRESS] progress : " + percent + "%");
                     mTransferRateOctetUp.setText(String.format("[U PROGRESS] rate in octet/s   : " + report.getTransferRateOctet()));
                     mTransferRateBitUp.setText(String.format("[U PROGRESS] rate in Mbit/s   : " + mbits(report.getTransferRateBit())));
+
+                    mPointerSpeedometer.speedTo(mbits((report.getTransferRateBit())));
                 });
 
             }
@@ -212,7 +233,12 @@ public class SpeedTest extends AppCompatActivity {
      * Setup event handlers and bind variables to values from xml
      */
     private void bindListeners() {
-        mBtnStart = (Button) findViewById(R.id.btnStart);
+        mPointerSpeedometer = findViewById(R.id.speedView);
+        mPulsator =  findViewById(R.id.pulsator);
+        mStartButtonFrame = findViewById(R.id.startButtonFrame);
+        mProgressFrame = findViewById(R.id.progressFrame);
+        mCompletionFrame = findViewById(R.id.completionFrame);
+        mBtnStart =  findViewById(R.id.btnStart);
         history = findViewById(R.id.history);
         mTxtSpeed = (TextView) findViewById(R.id.speed);
         mTxtConnectionSpeed = (TextView) findViewById(R.id.connectionspeeed);
@@ -226,19 +252,21 @@ public class SpeedTest extends AppCompatActivity {
         mPing = (TextView) findViewById(R.id.ping);
         mConnectivity = findViewById(R.id.connectivity);
 
+        mPulsator.start();
 
         mBtnStart.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(final View view) {
+                setFrame(2);
                 setProgressBarVisibility(true);
                 mTxtSpeed.setText("Test started");
                 mBtnStart.setEnabled(false);
                 mTxtNetwork.setText(R.string.network_detecting);
                 mTransferRateBit.setText("Test l");
-                // new Thread(mWorker).start();
-               // String str = ping("www.google.com");
-               // System.out.println("HUI^    --------------- " + str);
-               // mPing.setText(str);
+               //  new Thread(mWorker).start();
+                String str = ping("www.google.com");
+                System.out.println("HUI^    --------------- " + str);
+                mPing.setText(str);
                 historyItem = new HistoryItem();
                 historyItem.type = typeNetwork();
                 historyItem.date = new Date();
@@ -310,5 +338,21 @@ public class SpeedTest extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void setFrame(int index){
+        if (index == 1){
+            mStartButtonFrame.setVisibility(View.VISIBLE);
+            mProgressFrame.setVisibility(View.GONE);
+            mCompletionFrame.setVisibility(View.GONE);
+        }else if (index == 2){
+            mStartButtonFrame.setVisibility(View.GONE);
+            mProgressFrame.setVisibility(View.VISIBLE);
+            mCompletionFrame.setVisibility(View.GONE);
+        }else if (index == 3){
+            mStartButtonFrame.setVisibility(View.GONE);
+            mProgressFrame.setVisibility(View.GONE);
+            mCompletionFrame.setVisibility(View.VISIBLE);
+        };
     }
 }

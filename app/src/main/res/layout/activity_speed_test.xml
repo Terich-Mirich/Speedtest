@@ -1,138 +1,208 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- 
-	This file is part of SpeedTest.
 
-    SpeedTest is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    SpeedTest is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with SpeedTest.  If not, see <http://www.gnu.org/licenses/>.
- 
- -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    >
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/blue_grey_900"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:id="@+id/startButtonFrame"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <pl.bclogic.pulsator4droid.library.PulsatorLayout
+            android:id="@+id/pulsator"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentTop="true"
+            app:pulse_count="4"
+            app:pulse_duration="7000"
+            app:pulse_repeat="0"
+            app:pulse_color="@color/amber_800"
+            app:pulse_startFromScratch="true"
+            app:pulse_interpolator="Decelerate">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+
+                >
+
+                <ImageView
+                    android:id="@+id/btnStart"
+                    android:layout_width="128dp"
+                    android:layout_height="128dp"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/start_button_bg"
+                    android:layout_gravity="center"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="GO"
+                    android:textSize="50sp"
+                    android:textColor="@color/amber_800"
+                    android:layout_gravity="center"
+                    />
+
+            </FrameLayout>
 
 
-    <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/connectionspeeed"
-        android:text="Connection speed:"
-        android:layout_marginTop="10dip"
-        android:textColor="@color/defaultTextColor"
-        android:textSize="16dip"/>
 
-    <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/speed"
-        android:text="Speed"
-        android:layout_marginTop="10dip"
-        android:textColor="@color/defaultTextColor"
-        android:textSize="16dip"/>
 
-    <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/progress"
-        android:text="Progress"
-        android:layout_marginTop="10dip"
-        android:textColor="@color/defaultTextColor"
-        android:textSize="16dip"/>
 
-    <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/networktype"
-        android:text="Network Type"
-        android:layout_marginTop="10dip"
-        android:textColor="@color/defaultTextColor"
-        android:textSize="16dip"/>
+        </pl.bclogic.pulsator4droid.library.PulsatorLayout>
 
-    <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/TransferRateBit"
-        android:text="TransferRateBit"
-        android:layout_marginTop="10dip"
-        android:textColor="@color/defaultTextColor"
-        android:textSize="16dip"/>
 
-    <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/TransferRateOctet"
-        android:text="TransferRateOctet"
-        android:layout_marginTop="10dip"
-        android:textColor="@color/defaultTextColor"
-        android:textSize="16dip"/>
+    </FrameLayout>
 
-    <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/Progress"
-        android:text="Progress"
-        android:layout_marginTop="10dip"
-        android:textColor="@color/defaultTextColor"
-        android:textSize="16dip"/>
+    <FrameLayout
+        android:id="@+id/progressFrame"
+        android:visibility="visible"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/TransferRateOctetUp"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dip"
-        android:text="TransferRateOctetUp"
-        android:textColor="@color/defaultTextColor"
-        android:textSize="16dip" />
+        <com.github.anastr.speedviewlib.PointerSpeedometer
+            android:id="@+id/speedView"
+            android:layout_gravity="center"
 
-    <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/TransferRateBitUp"
-        android:text="TransferRateBitUp"
-        android:layout_marginTop="10dip"
-        android:textColor="@color/defaultTextColor"
-        android:textSize="16dip"/>
+            app:sv_withPointer="false"
+            app:sv_speedTextColor="@color/amber_800"
+            app:sv_unitTextColor="@color/amber_800"
+            app:sv_indicatorColor="@color/amber_800"
+            app:sv_markColor="@color/amber_800"
+            app:sv_textColor="@color/amber_800"
+            app:sv_centerCircleColor="@color/amber_800"
+            app:sv_indicatorLightColor="@color/amber_800"
+            app:sv_backgroundCircleColor="#00000000"
+            app:sv_speedometerColor="@color/amber_800"
+            app:sv_indicator="NeedleIndicator"
+            app:sv_unit="Mbts"
 
-    <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/ping"
-        android:text="Ping:"
-        android:layout_marginTop="10dip"
-        android:textColor="@color/defaultTextColor"
-        android:textSize="16dip"/>
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
-    <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/connectivity"
-        android:text="Connectivity:"
-        android:layout_marginTop="10dip"
-        android:textColor="@color/defaultTextColor"
-        android:textSize="16dip"/>
+    </FrameLayout>
 
-    <Button
-        android:id="@+id/btnStart"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dip"
-        android:text="Start Test"></Button>
+    <FrameLayout
+        android:id="@+id/completionFrame"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <Button
-        android:id="@+id/history"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dip"
-        android:text="History"></Button>
-</LinearLayout>
+
+        <TextView
+            android:id="@+id/connectionspeeed"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dip"
+            android:text="Connection speed:"
+            android:textColor="@color/defaultTextColor"
+            android:textSize="16dip" />
+
+        <TextView
+            android:id="@+id/speed"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dip"
+            android:text="Speed"
+            android:textColor="@color/defaultTextColor"
+            android:textSize="16dip" />
+
+        <TextView
+            android:id="@+id/progress"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dip"
+            android:text="Progress"
+            android:textColor="@color/defaultTextColor"
+            android:textSize="16dip" />
+
+        <TextView
+            android:id="@+id/networktype"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dip"
+            android:text="Network Type"
+            android:textColor="@color/defaultTextColor"
+            android:textSize="16dip" />
+
+        <TextView
+            android:id="@+id/TransferRateBit"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dip"
+            android:text="TransferRateBit"
+            android:textColor="@color/defaultTextColor"
+            android:textSize="16dip" />
+
+        <TextView
+            android:id="@+id/TransferRateOctet"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dip"
+            android:text="TransferRateOctet"
+            android:textColor="@color/defaultTextColor"
+            android:textSize="16dip" />
+
+        <TextView
+            android:id="@+id/Progress"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dip"
+            android:text="Progress"
+            android:textColor="@color/defaultTextColor"
+            android:textSize="16dip" />
+
+        <TextView
+            android:id="@+id/TransferRateOctetUp"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dip"
+            android:text="TransferRateOctetUp"
+            android:textColor="@color/defaultTextColor"
+            android:textSize="16dip" />
+
+        <TextView
+            android:id="@+id/TransferRateBitUp"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dip"
+            android:text="TransferRateBitUp"
+            android:textColor="@color/defaultTextColor"
+            android:textSize="16dip" />
+
+        <TextView
+            android:id="@+id/ping"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dip"
+            android:text="Ping:"
+            android:textColor="@color/defaultTextColor"
+            android:textSize="16dip" />
+
+        <TextView
+            android:id="@+id/connectivity"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dip"
+            android:text="Connectivity:"
+            android:textColor="@color/defaultTextColor"
+            android:textSize="16dip" />
+
+
+
+        <Button
+            android:id="@+id/history"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dip"
+            android:text="History"></Button>
+
+    </FrameLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
