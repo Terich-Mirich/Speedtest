@@ -29,4 +29,5 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.1.1'
     implementation 'pl.bclogic:pulsator4droid:1.0.3'
     implementation 'com.github.anastr:speedviewlib:1.6.0'
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
 }

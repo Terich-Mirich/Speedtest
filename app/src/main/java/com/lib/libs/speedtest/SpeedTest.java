@@ -3,6 +3,7 @@ package com.lib.libs.speedtest;
 import static com.lib.libs.speedtest.Utils.mbits;
 
 import android.content.Intent;
+import android.graphics.drawable.GradientDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
@@ -14,7 +15,9 @@ import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import android.util.Log;
 import android.view.View;
@@ -27,6 +30,13 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.github.anastr.speedviewlib.PointerSpeedometer;
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.lib.libs.speedtest.models.HistoryItem;
 
 import fr.bmartel.speedtest.SpeedTestReport;
@@ -70,6 +80,9 @@ public class SpeedTest extends AppCompatActivity {
     private TextView mPing;
     private TextView mConnectivity;
 
+    private LineChart chart;
+    private List<Float> listData;
+
 
 
 
@@ -100,6 +113,7 @@ public class SpeedTest extends AppCompatActivity {
             mConnectivity.setText("mmm");
         }
         setFrame(1);
+        initChart();
 
     }
     public String typeNetwork(){
@@ -116,7 +130,9 @@ public class SpeedTest extends AppCompatActivity {
     private void downloadTest() {
         SpeedTestSocket speedTestSocket = new SpeedTestSocket();
         speedTestSocket.setSocketTimeout(SOCKET_TIMEOUT);
-        speedTestSocket.addSpeedTestListener(new ISpeedTestListener() {
+        speedTestSocket.addSpeedTestListener(new ISpeedTestListener()
+        {
+            private int prevPercent = 0;
 
 
             @Override
@@ -145,7 +161,34 @@ public class SpeedTest extends AppCompatActivity {
                     mTransferRateOctet.setText(String.format("[D PROGRESS] rate in octet/s   : " + report.getTransferRateOctet()));
                     mTransferRateBit.setText(String.format("[D PROGRESS] rate in Mbit/s   : " + mbits(report.getTransferRateBit())));
 
-                    mPointerSpeedometer.speedTo(mbits((report.getTransferRateBit())));
+                    float dataSpeed = mbits((report.getTransferRateBit()));
+                    mPointerSpeedometer.speedTo(dataSpeed);
+
+                    int per = (int) percent;
+                    if (per == 0) {
+                        prevPercent = 0;
+                    }
+                    if (per != prevPercent) {
+                        if (listData.size() >= 150) {
+                            listData.remove(0);
+                        }
+                        if (dataSpeed < 0) {
+                            listData.add(0f);
+                        } else if (dataSpeed > 120) {
+                            listData.add(120f);
+                        } else {
+                            listData.add(dataSpeed);
+                        }
+
+                        ArrayList<Entry> entries = new ArrayList<>();
+                        for (int i = 0; i < listData.size(); i++) {
+                            entries.add(new Entry((float) i, (float) listData.get(i)));
+                        }
+                        setChartDataList(entries);
+                    }
+
+                    prevPercent = per;
+
                 });
             }
         });
@@ -161,6 +204,8 @@ public class SpeedTest extends AppCompatActivity {
         //set timeout for download
         speedTestSocket.setSocketTimeout(SOCKET_TIMEOUT);
         speedTestSocket.addSpeedTestListener(new ISpeedTestListener() {
+
+            private int prevPercent = 0;
 
             @Override
             public void onCompletion(SpeedTestReport report) {
@@ -189,7 +234,35 @@ public class SpeedTest extends AppCompatActivity {
                     mTransferRateOctetUp.setText(String.format("[U PROGRESS] rate in octet/s   : " + report.getTransferRateOctet()));
                     mTransferRateBitUp.setText(String.format("[U PROGRESS] rate in Mbit/s   : " + mbits(report.getTransferRateBit())));
 
-                    mPointerSpeedometer.speedTo(mbits((report.getTransferRateBit())));
+                    float dataSpeed = mbits((report.getTransferRateBit()));
+                    mPointerSpeedometer.speedTo(dataSpeed);
+
+                    int per = (int) percent;
+                    if (per == 0) {
+                        prevPercent = 0;
+                    }
+                    if (per != prevPercent) {
+                        if (listData.size() >= 150) {
+                            listData.remove(0);
+                        }
+                        if (dataSpeed < 0) {
+                            listData.add(0f);
+                        } else if (dataSpeed > 120) {
+                            listData.add(120f);
+                        } else {
+                            listData.add(dataSpeed);
+                        }
+
+                        ArrayList<Entry> entries = new ArrayList<>();
+                        for (int i = 0; i < listData.size(); i++) {
+                            entries.add(new Entry((float) i, (float) listData.get(i)));
+                        }
+                        setChartDataListUp(entries);
+                    }
+
+                    prevPercent = per;
+
+
                 });
 
             }
@@ -270,6 +343,7 @@ public class SpeedTest extends AppCompatActivity {
                 historyItem = new HistoryItem();
                 historyItem.type = typeNetwork();
                 historyItem.date = new Date();
+                listData = new ArrayList<>();
                 downloadTest();
             }
         });
@@ -355,4 +429,82 @@ public class SpeedTest extends AppCompatActivity {
             mCompletionFrame.setVisibility(View.VISIBLE);
         };
     }
+
+    private void initChart(){
+
+
+
+        this.chart = (LineChart) findViewById(R.id.chart1);
+        this.chart.getDescription().setEnabled(false);
+        this.chart.setTouchEnabled(false);
+        this.chart.setDragEnabled(false);
+        this.chart.setScaleEnabled(false);
+        XAxis xAxis = this.chart.getXAxis();
+        xAxis.setAxisMaximum(150.0f);
+        xAxis.setEnabled(false);
+        YAxis axisLeft = this.chart.getAxisLeft();
+        axisLeft.setDrawGridLines(false);
+        axisLeft.setAxisLineColor(0);
+        axisLeft.setTextSize(10.0f);
+        axisLeft.setAxisMaximum(120.0f);
+        axisLeft.setAxisMinimum(0.0f);
+        this.chart.getAxisRight().setEnabled(false);
+        this.chart.getLegend().setEnabled(false);
+        LineDataSet lineDataSet = new LineDataSet(new ArrayList<>(), "download");
+        lineDataSet.setDrawIcons(false);
+        lineDataSet.setDrawCircles(false);
+        lineDataSet.setDrawValues(false);
+        lineDataSet.setLineWidth(2.0f);
+        lineDataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
+        lineDataSet.setDrawFilled(true);
+        ArrayList<ILineDataSet> arrayList = new ArrayList<>();
+        arrayList.add(lineDataSet);
+        this.chart.setData(new LineData(arrayList));
+
+        LineDataSet lineDataSetUp = new LineDataSet(new ArrayList<>(), "upload");
+        lineDataSetUp.setDrawIcons(false);
+        lineDataSetUp.setDrawCircles(false);
+        lineDataSetUp.setDrawValues(false);
+        lineDataSetUp.setLineWidth(2.0f);
+        lineDataSetUp.setMode(LineDataSet.Mode.CUBIC_BEZIER);
+        lineDataSetUp.setDrawFilled(true);
+        arrayList.add(lineDataSetUp);
+        this.chart.setData(new LineData(arrayList));
+
+        this.chart.setDrawGridBackground(true);
+        this.chart.setGridBackgroundColor(getResources().getColor(android.R.color.transparent));
+        this.chart.getAxisLeft().setTextColor(getResources().getColor(R.color.amber_800));
+
+        LineDataSet lineDataSet2 = (LineDataSet) this.chart.getData().getDataSetByLabel("download", true);
+        lineDataSet2.setColor(getResources().getColor(R.color.light_blue_900));
+        GradientDrawable dataSetGradient = new GradientDrawable();
+        dataSetGradient.setGradientType(GradientDrawable.LINEAR_GRADIENT);
+        dataSetGradient.setOrientation(GradientDrawable.Orientation.TOP_BOTTOM);
+        dataSetGradient.setColors(new int[]{getResources().getColor(R.color.light_blue_900), 0});
+        lineDataSet2.setFillDrawable(dataSetGradient);
+
+        LineDataSet lineDataSet3 = (LineDataSet) this.chart.getData().getDataSetByLabel("upload", true);
+        lineDataSet3.setColor(getResources().getColor(R.color.green_800));
+        GradientDrawable dataSetGradientUp = new GradientDrawable();
+        dataSetGradientUp.setGradientType(GradientDrawable.LINEAR_GRADIENT);
+        dataSetGradientUp.setOrientation(GradientDrawable.Orientation.TOP_BOTTOM);
+        dataSetGradientUp.setColors(new int[]{getResources().getColor(R.color.green_800), 0});
+        lineDataSet3.setFillDrawable(dataSetGradientUp);
+
+    }
+
+    public void setChartDataList(List<Entry> list) {
+        ((LineDataSet) this.chart.getData().getDataSetByLabel("download", true)).setValues(list);
+        this.chart.getData().notifyDataChanged();
+        this.chart.notifyDataSetChanged();
+        this.chart.invalidate();
+    }
+    public void setChartDataListUp(List<Entry> list) {
+        ((LineDataSet) this.chart.getData().getDataSetByLabel("upload", true)).setValues(list);
+        this.chart.getData().notifyDataChanged();
+        this.chart.notifyDataSetChanged();
+        this.chart.invalidate();
+    }
+
+
 }

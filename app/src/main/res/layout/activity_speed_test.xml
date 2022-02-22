@@ -66,25 +66,149 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.github.anastr.speedviewlib.PointerSpeedometer
-            android:id="@+id/speedView"
-            android:layout_gravity="center"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/stringInfoDwUp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-            app:sv_withPointer="false"
-            app:sv_speedTextColor="@color/amber_800"
-            app:sv_unitTextColor="@color/amber_800"
-            app:sv_indicatorColor="@color/amber_800"
-            app:sv_markColor="@color/amber_800"
-            app:sv_textColor="@color/amber_800"
-            app:sv_centerCircleColor="@color/amber_800"
-            app:sv_indicatorLightColor="@color/amber_800"
-            app:sv_backgroundCircleColor="#00000000"
-            app:sv_speedometerColor="@color/amber_800"
-            app:sv_indicator="NeedleIndicator"
-            app:sv_unit="Mbts"
+            <LinearLayout
+                android:id="@+id/linerInfo"
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/instruments">
 
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+
+
+                <LinearLayout
+                    android:id="@+id/linerDataDown"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/labelDown">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_baseline_arrow_circle_down_24"
+                            app:tint="@color/light_blue_900"/>
+
+                        <TextView
+                            android:id="@+id/labelDown"
+                            android:layout_width="120dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginVertical="3dp"
+                            android:text="Download Mbit/s"
+                            android:textColor="@color/amber_800"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toLeftOf="@id/labelUp"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toTopOf="@+id/linerDataDown"/>
+
+                    </LinearLayout>
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginVertical="3dp"
+                        android:layout_marginLeft="16dp"
+                        android:text="Upload Mbit/s"
+                        android:textColor="@color/white"/>
+
+
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_baseline_arrow_circle_up_24"
+                    app:tint="@color/green_800"/>
+
+                <TextView
+                    android:id="@+id/labelUp"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="3dp"
+                    android:layout_marginLeft="16dp"
+                    android:text="Upload Mbit/s"
+                    android:textColor="@color/amber_800"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintLeft_toRightOf="@id/labelDown"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
+
+
+            </LinearLayout>
+
+
+
+            <LinearLayout
+                android:id="@+id/instruments"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintTop_toBottomOf="@+id/linerInfo">
+
+
+                <com.github.anastr.speedviewlib.PointerSpeedometer
+                    android:id="@+id/speedView"
+                    android:layout_gravity="center"
+
+                    app:sv_withPointer="false"
+                    app:sv_speedTextColor="@color/amber_800"
+                    app:sv_unitTextColor="@color/amber_800"
+                    app:sv_indicatorColor="@color/amber_800"
+                    app:sv_markColor="@color/amber_800"
+                    app:sv_textColor="@color/amber_800"
+                    app:sv_centerCircleColor="@color/amber_800"
+                    app:sv_indicatorLightColor="@color/amber_800"
+                    app:sv_backgroundCircleColor="#00000000"
+                    app:sv_speedometerColor="@color/amber_800"
+                    app:sv_indicator="NeedleIndicator"
+                    app:sv_unit="Mbts"
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <RelativeLayout
+                    android:id="@+id/chartViev"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp">
+
+                    <com.github.mikephil.charting.charts.LineChart
+                        android:id="@+id/chart1"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        />
+
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+
+
+
+
 
     </FrameLayout>
 
