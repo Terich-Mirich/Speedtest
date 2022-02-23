@@ -79,6 +79,8 @@ public class SpeedTest extends AppCompatActivity {
     private TextView mTransferRateBitUp;
     private TextView mPing;
     private TextView mConnectivity;
+    private TextView mMeaningDown;
+
 
     private LineChart chart;
     private List<Float> listData;
@@ -137,12 +139,13 @@ public class SpeedTest extends AppCompatActivity {
 
             @Override
             public void onCompletion(SpeedTestReport report) {
-                // called when download/upload is complete
-//                System.out.println("[D COMPLETED] rate in octet/s : " + report.getTransferRateOctet());
-//                System.out.println("[D COMPLETED] rate in bit/s   : " + report.getTransferRateBit());
                 mTransferRateOctet.setText(String.format("[D COMPLETED] rate in octet/s   : " + report.getTransferRateOctet()));
                 mTransferRateBit.setText(String.format("[D COMPLETED] rate in Mbit/s   : " + mbits(report.getTransferRateBit())));
+                mMeaningDown.setText(String.valueOf(mbits(report.getTransferRateBit())));
                 uploadTest();
+                float dataSpeed = mbits((report.getTransferRateBit()));
+
+
 
                 historyItem.dmbps = mbits(report.getTransferRateBit());
 
@@ -214,6 +217,8 @@ public class SpeedTest extends AppCompatActivity {
 //                System.out.println("[U COMPLETED] rate in bit/s   : " + report.getTransferRateBit());
                 mTransferRateOctetUp.setText(String.format("[U COMPLETED] rate in octet/s   : " + report.getTransferRateOctet()));
                 mTransferRateBitUp.setText(String.format("[U COMPLETED] rate in Mbit/s   : " + mbits(report.getTransferRateBit())));
+                float dataSpeed = mbits((report.getTransferRateBit()));
+
 
                 historyItem.umbps = mbits(report.getTransferRateBit());
                 historyItem.save();
@@ -324,6 +329,7 @@ public class SpeedTest extends AppCompatActivity {
         mTransferRateBitUp = (TextView) findViewById(R.id.TransferRateBitUp);
         mPing = (TextView) findViewById(R.id.ping);
         mConnectivity = findViewById(R.id.connectivity);
+        mMeaningDown = findViewById(R.id.meaningDown);
 
         mPulsator.start();
 
