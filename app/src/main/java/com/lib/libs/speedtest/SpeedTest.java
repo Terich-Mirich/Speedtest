@@ -12,8 +12,6 @@ import android.view.MenuItem;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -23,8 +21,8 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.view.View.OnClickListener;
-import android.widget.Button;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -62,11 +60,18 @@ public class SpeedTest extends AppCompatActivity {
     private ViewGroup mStartButtonFrame;
     private ViewGroup mProgressFrame;
     private ViewGroup mCompletionFrame;
+    private ViewGroup menuFrame;
 
     private PointerSpeedometer mPointerSpeedometer;
 
+    private View mBackButton;
     private View mBtnStart;
-    private Button history;
+    private View history;
+    private View mMenuButton;
+    private View mCloseMenu;
+    private View mMenuFrameBackground;
+    private View mBoxDataLine;
+    private View mLinearPingType;
 
     private TextView mTxtSpeed;
     private TextView mTxtConnectionSpeed;
@@ -80,6 +85,7 @@ public class SpeedTest extends AppCompatActivity {
     private TextView mPing;
     private TextView mConnectivity;
     private TextView mMeaningDown;
+    private TextView mMeaningUp;
 
 
     private LineChart chart;
@@ -108,7 +114,79 @@ public class SpeedTest extends AppCompatActivity {
         requestWindowFeature(Window.FEATURE_PROGRESS);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_speed_test);
-        bindListeners();
+
+        mPointerSpeedometer = findViewById(R.id.speedView);
+        mPulsator =  findViewById(R.id.pulsator);
+        mStartButtonFrame = findViewById(R.id.startButtonFrame);
+        mProgressFrame = findViewById(R.id.progressFrame);
+        mCompletionFrame = findViewById(R.id.completionFrame);
+        mBtnStart =  findViewById(R.id.btnStart);
+        history = findViewById(R.id.history);
+        mTxtSpeed = (TextView) findViewById(R.id.speed);
+        mTxtConnectionSpeed = (TextView) findViewById(R.id.connectionspeeed);
+        mTxtProgress = (TextView) findViewById(R.id.progress);
+        mTxtNetwork = (TextView) findViewById(R.id.networktype);
+        mTransferRateBit = (TextView) findViewById(R.id.TransferRateOctet);
+        mTransferRateOctet = (TextView) findViewById(R.id.TransferRateBit);
+        mProgress = (TextView) findViewById(R.id.Progress);
+        mTransferRateOctetUp = (TextView) findViewById(R.id.TransferRateOctetUp);
+        mTransferRateBitUp = (TextView) findViewById(R.id.TransferRateBitUp);
+        mPing = (TextView) findViewById(R.id.pingLinearText);
+        mConnectivity = findViewById(R.id.connectivity);
+        mMeaningDown = findViewById(R.id.meaningDown);
+        mMeaningUp = findViewById(R.id.meaningUp);
+        menuFrame = findViewById(R.id.menuFrame);
+        mMenuButton = findViewById(R.id.menuButton);
+        mCloseMenu = findViewById(R.id.closeMenu);
+        mMenuFrameBackground = findViewById(R.id.menuFrameBackground);
+        mBackButton = findViewById(R.id.backButton);
+        mBoxDataLine =findViewById(R.id.boxDataLine);
+        mLinearPingType = findViewById(R.id.linearPingType);
+
+        mPulsator.start();
+
+        mBtnStart.setOnClickListener(view -> {
+            setFrame(2);
+            setProgressBarVisibility(true);
+            mTxtSpeed.setText("Test started");
+            mBtnStart.setEnabled(false);
+            mTxtNetwork.setText(R.string.network_detecting);
+            mTransferRateBit.setText("Test l");
+            //  new Thread(mWorker).start();
+            String str = ping("www.google.com");
+            System.out.println("HUI^    --------------- " + str);
+            mPing.setText(str);
+            historyItem = new HistoryItem();
+            historyItem.type = typeNetwork();
+            historyItem.date = new Date();
+            listData = new ArrayList<>();
+            downloadTest();
+        });
+
+        history.setOnClickListener(v -> {
+            Intent myIntent = new Intent(this, HistoryActivity.class);
+            startActivity(myIntent);
+        });
+
+        mMenuButton.setOnClickListener(v -> {
+            Animation animFadeIn = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fade_in);
+            Animation animTranslateIn = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.translate_in);
+            mMenuFrameBackground.startAnimation(animFadeIn);
+            mMenuFrameBackground.setVisibility(View.VISIBLE);
+            menuFrame.startAnimation(animTranslateIn);
+            menuFrame.setVisibility(View.VISIBLE);
+        });
+
+        mCloseMenu.setOnClickListener(v ->{
+            Animation animFadeOut = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fade_out);
+            Animation animTranslateOut = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.translate_out);
+            mMenuFrameBackground.startAnimation(animFadeOut);
+            mMenuFrameBackground.setVisibility(View.GONE);
+            menuFrame.startAnimation(animTranslateOut);
+            menuFrame.setVisibility(View.GONE);
+        });
+
+
         if (Connectivity.isConnectedWifi(this)){
             mConnectivity.setText("WIFI");
         }else if (Connectivity.isConnectedMobile(this)){
@@ -139,15 +217,16 @@ public class SpeedTest extends AppCompatActivity {
 
             @Override
             public void onCompletion(SpeedTestReport report) {
-                mTransferRateOctet.setText(String.format("[D COMPLETED] rate in octet/s   : " + report.getTransferRateOctet()));
-                mTransferRateBit.setText(String.format("[D COMPLETED] rate in Mbit/s   : " + mbits(report.getTransferRateBit())));
-                mMeaningDown.setText(String.valueOf(mbits(report.getTransferRateBit())));
-                uploadTest();
-                float dataSpeed = mbits((report.getTransferRateBit()));
+                runOnUiThread(() -> {
+                    mTransferRateOctet.setText(String.format("[D COMPLETED] rate in octet/s   : " + report.getTransferRateOctet()));
+                    mTransferRateBit.setText(String.format("[D COMPLETED] rate in Mbit/s   : " + mbits(report.getTransferRateBit())));
+                    mMeaningDown.setText(String.valueOf(mbits(report.getTransferRateBit())));
+                    uploadTest();
+                    float dataSpeed = mbits((report.getTransferRateBit()));
 
 
-
-                historyItem.dmbps = mbits(report.getTransferRateBit());
+                    historyItem.dmbps = mbits(report.getTransferRateBit());
+                });
 
             }
 
@@ -212,18 +291,18 @@ public class SpeedTest extends AppCompatActivity {
 
             @Override
             public void onCompletion(SpeedTestReport report) {
-                // called when download/upload is complete
-//                System.out.println("[U COMPLETED] rate in octet/s : " + report.getTransferRateOctet());
-//                System.out.println("[U COMPLETED] rate in bit/s   : " + report.getTransferRateBit());
-                mTransferRateOctetUp.setText(String.format("[U COMPLETED] rate in octet/s   : " + report.getTransferRateOctet()));
-                mTransferRateBitUp.setText(String.format("[U COMPLETED] rate in Mbit/s   : " + mbits(report.getTransferRateBit())));
-                float dataSpeed = mbits((report.getTransferRateBit()));
-
-
-                historyItem.umbps = mbits(report.getTransferRateBit());
-                historyItem.save();
                 runOnUiThread(() -> {
-                    setFrame(3);
+                    mTransferRateOctetUp.setText(String.format("[U COMPLETED] rate in octet/s   : " + report.getTransferRateOctet()));
+                    mTransferRateBitUp.setText(String.format("[U COMPLETED] rate in Mbit/s   : " + mbits(report.getTransferRateBit())));
+                    mMeaningUp.setText(String.valueOf(mbits(report.getTransferRateBit())));
+                    float dataSpeed = mbits((report.getTransferRateBit()));
+
+
+                    historyItem.umbps = mbits(report.getTransferRateBit());
+                    historyItem.save();
+                    runOnUiThread(() -> {
+                        setFrame(3);
+                    });
                 });
             }
 
@@ -311,53 +390,7 @@ public class SpeedTest extends AppCompatActivity {
      * Setup event handlers and bind variables to values from xml
      */
     private void bindListeners() {
-        mPointerSpeedometer = findViewById(R.id.speedView);
-        mPulsator =  findViewById(R.id.pulsator);
-        mStartButtonFrame = findViewById(R.id.startButtonFrame);
-        mProgressFrame = findViewById(R.id.progressFrame);
-        mCompletionFrame = findViewById(R.id.completionFrame);
-        mBtnStart =  findViewById(R.id.btnStart);
-        history = findViewById(R.id.history);
-        mTxtSpeed = (TextView) findViewById(R.id.speed);
-        mTxtConnectionSpeed = (TextView) findViewById(R.id.connectionspeeed);
-        mTxtProgress = (TextView) findViewById(R.id.progress);
-        mTxtNetwork = (TextView) findViewById(R.id.networktype);
-        mTransferRateBit = (TextView) findViewById(R.id.TransferRateOctet);
-        mTransferRateOctet = (TextView) findViewById(R.id.TransferRateBit);
-        mProgress = (TextView) findViewById(R.id.Progress);
-        mTransferRateOctetUp = (TextView) findViewById(R.id.TransferRateOctetUp);
-        mTransferRateBitUp = (TextView) findViewById(R.id.TransferRateBitUp);
-        mPing = (TextView) findViewById(R.id.ping);
-        mConnectivity = findViewById(R.id.connectivity);
-        mMeaningDown = findViewById(R.id.meaningDown);
 
-        mPulsator.start();
-
-        mBtnStart.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(final View view) {
-                setFrame(2);
-                setProgressBarVisibility(true);
-                mTxtSpeed.setText("Test started");
-                mBtnStart.setEnabled(false);
-                mTxtNetwork.setText(R.string.network_detecting);
-                mTransferRateBit.setText("Test l");
-               //  new Thread(mWorker).start();
-                String str = ping("www.google.com");
-                System.out.println("HUI^    --------------- " + str);
-                mPing.setText(str);
-                historyItem = new HistoryItem();
-                historyItem.type = typeNetwork();
-                historyItem.date = new Date();
-                listData = new ArrayList<>();
-                downloadTest();
-            }
-        });
-
-        history.setOnClickListener(v -> {
-            Intent myIntent = new Intent(this, HistoryActivity.class);
-            startActivity(myIntent);
-        });
     }
 
 
@@ -422,6 +455,9 @@ public class SpeedTest extends AppCompatActivity {
 
     private void setFrame(int index){
         if (index == 1){
+            mBoxDataLine.setVisibility(View.GONE);
+            mLinearPingType.setVisibility(View.GONE);
+            mBackButton.setVisibility(View.GONE);
             mStartButtonFrame.setVisibility(View.VISIBLE);
             mProgressFrame.setVisibility(View.GONE);
             mCompletionFrame.setVisibility(View.GONE);

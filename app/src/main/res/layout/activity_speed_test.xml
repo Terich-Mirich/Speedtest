@@ -20,6 +20,7 @@
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:src="@drawable/ic_baseline_keyboard_arrow_left_24"
+            app:tint="@color/amber_800"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"/>
 
@@ -28,13 +29,14 @@
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:src="@drawable/ic_baseline_menu_24"
+            app:tint="@color/amber_800"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintRight_toRightOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <LinearLayout
-        android:id="@+id/boxDataDown"
+        android:id="@+id/boxDataLine"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/constrainButtons"
@@ -138,7 +140,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintTop_toBottomOf="@+id/boxDataDown"
+        app:layout_constraintTop_toBottomOf="@+id/boxDataLine"
         app:layout_constraintLeft_toLeftOf="parent"
         android:weightSum="2"
         app:layout_constraintRight_toRightOf="parent">
@@ -224,68 +226,61 @@
         android:id="@+id/progressFrame"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:visibility="visible"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearPingType">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/stringInfoDwUp"
+        <LinearLayout
+            android:id="@+id/instruments"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent">
 
 
-            <LinearLayout
-                android:id="@+id/instruments"
-                android:layout_width="match_parent"
+            <com.github.anastr.speedviewlib.PointerSpeedometer
+                android:id="@+id/speedView"
+                android:layout_width="wrap_content"
+
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layout_constraintTop_toTopOf="match_parent">
+                android:layout_gravity="center"
+                app:sv_backgroundCircleColor="#00000000"
+                app:sv_centerCircleColor="@color/amber_800"
+                app:sv_indicator="NeedleIndicator"
+                app:sv_indicatorColor="@color/amber_800"
+                app:sv_indicatorLightColor="@color/amber_800"
+                app:sv_markColor="@color/amber_800"
+                app:sv_speedTextColor="@color/amber_800"
+                app:sv_speedometerColor="@color/amber_800"
+                app:sv_textColor="@color/amber_800"
+                app:sv_unit="Mbts"
 
+                app:sv_unitTextColor="@color/amber_800"
+                app:sv_withPointer="false" />
 
-                <com.github.anastr.speedviewlib.PointerSpeedometer
-                    android:id="@+id/speedView"
-                    android:layout_width="wrap_content"
+            <RelativeLayout
+                android:id="@+id/chartViev"
+                android:layout_width="match_parent"
+                android:layout_height="200dp">
 
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    app:sv_backgroundCircleColor="#00000000"
-                    app:sv_centerCircleColor="@color/amber_800"
-                    app:sv_indicator="NeedleIndicator"
-                    app:sv_indicatorColor="@color/amber_800"
-                    app:sv_indicatorLightColor="@color/amber_800"
-                    app:sv_markColor="@color/amber_800"
-                    app:sv_speedTextColor="@color/amber_800"
-                    app:sv_speedometerColor="@color/amber_800"
-                    app:sv_textColor="@color/amber_800"
-                    app:sv_unit="Mbts"
-
-                    app:sv_unitTextColor="@color/amber_800"
-                    app:sv_withPointer="false" />
-
-                <RelativeLayout
-                    android:id="@+id/chartViev"
+                <com.github.mikephil.charting.charts.LineChart
+                    android:id="@+id/chart1"
                     android:layout_width="match_parent"
-                    android:layout_height="200dp">
-
-                    <com.github.mikephil.charting.charts.LineChart
-                        android:id="@+id/chart1"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
+                    android:layout_height="match_parent" />
 
 
-                </RelativeLayout>
+            </RelativeLayout>
 
-            </LinearLayout>
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
+        </LinearLayout>
     </FrameLayout>
 
     <FrameLayout
         android:id="@+id/completionFrame"
-        android:visibility="gone"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/constrainButtons">
 
 
@@ -390,12 +385,241 @@
 
 
 
-        <Button
-            android:id="@+id/history"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dip"
-            android:text="History"></Button>
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/menuFrameBackground"
+        android:layout_width="match_parent"
+        android:visibility="gone"
+        android:layout_height="match_parent"
+        android:background="#74000000">
+
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/menuFrame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/blue_grey_900"
+            android:layout_marginLeft="35dp"
+            android:orientation="vertical">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="6dp"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/closeMenu"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:src="@drawable/ic_baseline_close_24"
+                    app:tint="@color/white"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <View
+                android:id="@+id/firstLine"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/blue_grey_600"/>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/history"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp">
+
+                <ImageView
+                    android:id="@+id/imageHistory"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_baseline_history_24"
+                    app:tint="@color/blue_grey_600"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"/>
+
+                <TextView
+                    android:id="@+id/textHistory"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="History"
+                    android:textColor="@color/white"
+                    android:textSize="18dp"
+                    android:layout_marginLeft="10dp"
+                    app:layout_constraintLeft_toRightOf="@+id/imageHistory"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_baseline_keyboard_arrow_right_24"
+                    app:tint="@color/white"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <View
+                android:id="@+id/secondLine"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/blue_grey_600"/>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp">
+
+                <ImageView
+                    android:id="@+id/imageInfo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_baseline_info_24"
+                    app:tint="@color/blue_grey_600"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"/>
+
+                <TextView
+                    android:id="@+id/textInfo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="Info"
+                    android:textColor="@color/white"
+                    android:textSize="18dp"
+                    app:layout_constraintLeft_toRightOf="@+id/imageInfo"
+                    android:layout_marginLeft="10dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_baseline_keyboard_arrow_right_24"
+                    app:tint="@color/white"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <View
+                android:id="@+id/thirdLine"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/blue_grey_600"/>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp">
+
+                <ImageView
+                    android:id="@+id/imageSettings"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_baseline_settings_24"
+                    app:tint="@color/blue_grey_600"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="Settings"
+                    android:textColor="@color/white"
+                    android:layout_marginLeft="10dp"
+                    android:textSize="18dp"
+                    app:layout_constraintLeft_toRightOf="@+id/imageSettings"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_baseline_keyboard_arrow_right_24"
+                    app:tint="@color/white"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <View
+                android:id="@+id/fourthLine"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/blue_grey_600"/>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp">
+
+                <ImageView
+                    android:id="@+id/imageSupport"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_baseline_message_24"
+                    app:tint="@color/blue_grey_600"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="Support"
+                    android:textColor="@color/white"
+                    android:textSize="18dp"
+                    android:layout_marginLeft="10dp"
+                    app:layout_constraintLeft_toRightOf="@+id/imageSupport"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_baseline_keyboard_arrow_right_24"
+                    app:tint="@color/white"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <View
+                android:id="@+id/fifthLine"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/blue_grey_600"/>
+
+
+        </LinearLayout>
+
+
 
     </FrameLayout>
 
