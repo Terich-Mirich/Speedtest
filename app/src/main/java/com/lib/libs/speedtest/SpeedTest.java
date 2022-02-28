@@ -57,6 +57,8 @@ public class SpeedTest extends AppCompatActivity {
     private PulsatorLayout mPulsator;
     private HistoryItem historyItem;
 
+    private boolean menuStatus;
+
     private ViewGroup mStartButtonFrame;
     private ViewGroup mProgressFrame;
     private ViewGroup mCompletionFrame;
@@ -72,18 +74,13 @@ public class SpeedTest extends AppCompatActivity {
     private View mMenuFrameBackground;
     private View mBoxDataLine;
     private View mLinearPingType;
+    private View infoButton;
 
-    private TextView mTxtSpeed;
-    private TextView mTxtConnectionSpeed;
-    private TextView mTxtProgress;
-    private TextView mTxtNetwork;
-    private TextView mTransferRateBit;
-    private TextView mTransferRateOctet;
-    private TextView mProgress;
-    private TextView mTransferRateOctetUp;
-    private TextView mTransferRateBitUp;
+
+
+
+
     private TextView mPing;
-    private TextView mConnectivity;
     private TextView mMeaningDown;
     private TextView mMeaningUp;
 
@@ -115,6 +112,7 @@ public class SpeedTest extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_speed_test);
 
+        infoButton = findViewById(R.id.infoButton);
         mPointerSpeedometer = findViewById(R.id.speedView);
         mPulsator =  findViewById(R.id.pulsator);
         mStartButtonFrame = findViewById(R.id.startButtonFrame);
@@ -122,17 +120,7 @@ public class SpeedTest extends AppCompatActivity {
         mCompletionFrame = findViewById(R.id.completionFrame);
         mBtnStart =  findViewById(R.id.btnStart);
         history = findViewById(R.id.history);
-        mTxtSpeed = (TextView) findViewById(R.id.speed);
-        mTxtConnectionSpeed = (TextView) findViewById(R.id.connectionspeeed);
-        mTxtProgress = (TextView) findViewById(R.id.progress);
-        mTxtNetwork = (TextView) findViewById(R.id.networktype);
-        mTransferRateBit = (TextView) findViewById(R.id.TransferRateOctet);
-        mTransferRateOctet = (TextView) findViewById(R.id.TransferRateBit);
-        mProgress = (TextView) findViewById(R.id.Progress);
-        mTransferRateOctetUp = (TextView) findViewById(R.id.TransferRateOctetUp);
-        mTransferRateBitUp = (TextView) findViewById(R.id.TransferRateBitUp);
         mPing = (TextView) findViewById(R.id.pingLinearText);
-        mConnectivity = findViewById(R.id.connectivity);
         mMeaningDown = findViewById(R.id.meaningDown);
         mMeaningUp = findViewById(R.id.meaningUp);
         menuFrame = findViewById(R.id.menuFrame);
@@ -148,10 +136,7 @@ public class SpeedTest extends AppCompatActivity {
         mBtnStart.setOnClickListener(view -> {
             setFrame(2);
             setProgressBarVisibility(true);
-            mTxtSpeed.setText("Test started");
             mBtnStart.setEnabled(false);
-            mTxtNetwork.setText(R.string.network_detecting);
-            mTransferRateBit.setText("Test l");
             //  new Thread(mWorker).start();
             String str = ping("www.google.com");
             System.out.println("HUI^    --------------- " + str);
@@ -168,6 +153,12 @@ public class SpeedTest extends AppCompatActivity {
             startActivity(myIntent);
         });
 
+        infoButton.setOnClickListener(v -> {
+            Intent myIntent = new Intent(this, InfoActivity.class);
+            startActivity(myIntent);
+        });
+
+
         mMenuButton.setOnClickListener(v -> {
             Animation animFadeIn = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fade_in);
             Animation animTranslateIn = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.translate_in);
@@ -175,33 +166,51 @@ public class SpeedTest extends AppCompatActivity {
             mMenuFrameBackground.setVisibility(View.VISIBLE);
             menuFrame.startAnimation(animTranslateIn);
             menuFrame.setVisibility(View.VISIBLE);
+            menuStatus = true;
         });
 
         mCloseMenu.setOnClickListener(v ->{
-            Animation animFadeOut = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fade_out);
-            Animation animTranslateOut = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.translate_out);
-            mMenuFrameBackground.startAnimation(animFadeOut);
-            mMenuFrameBackground.setVisibility(View.GONE);
-            menuFrame.startAnimation(animTranslateOut);
-            menuFrame.setVisibility(View.GONE);
+            closeMenu();
         });
 
 
         if (Connectivity.isConnectedWifi(this)){
-            mConnectivity.setText("WIFI");
+        //    mConnectivity.setText("WIFI");
         }else if (Connectivity.isConnectedMobile(this)){
-            mConnectivity.setText("mmm");
+          //  mConnectivity.setText("mmm");
         }
         setFrame(1);
         initChart();
 
     }
+
+    private void closeMenu(){
+        Animation animFadeOut = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fade_out);
+        Animation animTranslateOut = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.translate_out);
+        mMenuFrameBackground.startAnimation(animFadeOut);
+        mMenuFrameBackground.setVisibility(View.GONE);
+        menuFrame.startAnimation(animTranslateOut);
+        menuFrame.setVisibility(View.GONE);
+        menuStatus = false;
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (menuStatus){
+            closeMenu();
+        } else {
+            super.onBackPressed();
+        }
+
+
+    }
+
     public String typeNetwork(){
         if (Connectivity.isConnectedWifi(this)){
-            mConnectivity.setText("WIFI");
+//            mConnectivity.setText("WIFI");
             return "Wi-Fi";
         }else if (Connectivity.isConnectedMobile(this)){
-            mConnectivity.setText("Mobile");
+//            mConnectivity.setText("Mobile");
             return "Mobile";
         }
         return null;
@@ -218,8 +227,6 @@ public class SpeedTest extends AppCompatActivity {
             @Override
             public void onCompletion(SpeedTestReport report) {
                 runOnUiThread(() -> {
-                    mTransferRateOctet.setText(String.format("[D COMPLETED] rate in octet/s   : " + report.getTransferRateOctet()));
-                    mTransferRateBit.setText(String.format("[D COMPLETED] rate in Mbit/s   : " + mbits(report.getTransferRateBit())));
                     mMeaningDown.setText(String.valueOf(mbits(report.getTransferRateBit())));
                     uploadTest();
                     float dataSpeed = mbits((report.getTransferRateBit()));
@@ -239,9 +246,8 @@ public class SpeedTest extends AppCompatActivity {
             @Override
             public void onProgress(float percent, SpeedTestReport report) {
                 runOnUiThread(() -> {
-                    mProgress.setText("[D PROGRESS] progress : " + percent + "%");
-                    mTransferRateOctet.setText(String.format("[D PROGRESS] rate in octet/s   : " + report.getTransferRateOctet()));
-                    mTransferRateBit.setText(String.format("[D PROGRESS] rate in Mbit/s   : " + mbits(report.getTransferRateBit())));
+//                    mProgress.setText("[D PROGRESS] progress : " + percent + "%");
+
 
                     float dataSpeed = mbits((report.getTransferRateBit()));
                     mPointerSpeedometer.speedTo(dataSpeed);
@@ -292,8 +298,6 @@ public class SpeedTest extends AppCompatActivity {
             @Override
             public void onCompletion(SpeedTestReport report) {
                 runOnUiThread(() -> {
-                    mTransferRateOctetUp.setText(String.format("[U COMPLETED] rate in octet/s   : " + report.getTransferRateOctet()));
-                    mTransferRateBitUp.setText(String.format("[U COMPLETED] rate in Mbit/s   : " + mbits(report.getTransferRateBit())));
                     mMeaningUp.setText(String.valueOf(mbits(report.getTransferRateBit())));
                     float dataSpeed = mbits((report.getTransferRateBit()));
 
@@ -314,9 +318,7 @@ public class SpeedTest extends AppCompatActivity {
             @Override
             public void onProgress(float percent, SpeedTestReport report) {
                 runOnUiThread(() -> {
-                    mProgress.setText("[U PROGRESS] progress : " + percent + "%");
-                    mTransferRateOctetUp.setText(String.format("[U PROGRESS] rate in octet/s   : " + report.getTransferRateOctet()));
-                    mTransferRateBitUp.setText(String.format("[U PROGRESS] rate in Mbit/s   : " + mbits(report.getTransferRateBit())));
+//                    mProgress.setText("[U PROGRESS] progress : " + percent + "%");
 
                     float dataSpeed = mbits((report.getTransferRateBit()));
                     mPointerSpeedometer.speedTo(dataSpeed);
@@ -462,10 +464,14 @@ public class SpeedTest extends AppCompatActivity {
             mProgressFrame.setVisibility(View.GONE);
             mCompletionFrame.setVisibility(View.GONE);
         }else if (index == 2){
+            mBoxDataLine.setVisibility(View.VISIBLE);
+            mLinearPingType.setVisibility(View.VISIBLE);
             mStartButtonFrame.setVisibility(View.GONE);
             mProgressFrame.setVisibility(View.VISIBLE);
             mCompletionFrame.setVisibility(View.GONE);
         }else if (index == 3){
+            mBoxDataLine.setVisibility(View.VISIBLE);
+            mLinearPingType.setVisibility(View.VISIBLE);
             mStartButtonFrame.setVisibility(View.GONE);
             mProgressFrame.setVisibility(View.GONE);
             mCompletionFrame.setVisibility(View.VISIBLE);

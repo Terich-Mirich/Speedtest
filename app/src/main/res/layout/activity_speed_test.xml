@@ -279,109 +279,12 @@
         android:id="@+id/completionFrame"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:visibility="visible"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/constrainButtons">
 
 
-        <TextView
-            android:id="@+id/connectionspeeed"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dip"
-            android:text="Connection speed:"
-            android:textColor="@color/defaultTextColor"
-            android:textSize="16dip" />
 
-        <TextView
-            android:id="@+id/speed"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dip"
-            android:text="Speed"
-            android:textColor="@color/defaultTextColor"
-            android:textSize="16dip" />
-
-        <TextView
-            android:id="@+id/progress"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dip"
-            android:text="Progress"
-            android:textColor="@color/defaultTextColor"
-            android:textSize="16dip" />
-
-        <TextView
-            android:id="@+id/networktype"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dip"
-            android:text="Network Type"
-            android:textColor="@color/defaultTextColor"
-            android:textSize="16dip" />
-
-        <TextView
-            android:id="@+id/TransferRateBit"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dip"
-            android:text="TransferRateBit"
-            android:textColor="@color/defaultTextColor"
-            android:textSize="16dip" />
-
-        <TextView
-            android:id="@+id/TransferRateOctet"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dip"
-            android:text="TransferRateOctet"
-            android:textColor="@color/defaultTextColor"
-            android:textSize="16dip" />
-
-        <TextView
-            android:id="@+id/Progress"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dip"
-            android:text="Progress"
-            android:textColor="@color/defaultTextColor"
-            android:textSize="16dip" />
-
-        <TextView
-            android:id="@+id/TransferRateOctetUp"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dip"
-            android:text="TransferRateOctetUp"
-            android:textColor="@color/defaultTextColor"
-            android:textSize="16dip" />
-
-        <TextView
-            android:id="@+id/TransferRateBitUp"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dip"
-            android:text="TransferRateBitUp"
-            android:textColor="@color/defaultTextColor"
-            android:textSize="16dip" />
-
-        <TextView
-            android:id="@+id/ping"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dip"
-            android:text="Ping:"
-            android:textColor="@color/defaultTextColor"
-            android:textSize="16dip" />
-
-        <TextView
-            android:id="@+id/connectivity"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dip"
-            android:text="Connectivity:"
-            android:textColor="@color/defaultTextColor"
-            android:textSize="16dip" />
 
 
 
@@ -482,6 +385,7 @@
                 android:background="@color/blue_grey_600"/>
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/infoButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="10dp">
