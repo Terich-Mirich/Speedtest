@@ -21,8 +21,6 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -35,6 +33,7 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
+import com.lib.libs.speedtest.controllers.MenuController;
 import com.lib.libs.speedtest.models.HistoryItem;
 
 import fr.bmartel.speedtest.SpeedTestReport;
@@ -57,7 +56,7 @@ public class SpeedTest extends AppCompatActivity {
     private PulsatorLayout mPulsator;
     private HistoryItem historyItem;
 
-    private boolean menuStatus;
+
 
     private ViewGroup mStartButtonFrame;
     private ViewGroup mProgressFrame;
@@ -68,13 +67,9 @@ public class SpeedTest extends AppCompatActivity {
 
     private View mBackButton;
     private View mBtnStart;
-    private View history;
     private View mMenuButton;
-    private View mCloseMenu;
-    private View mMenuFrameBackground;
     private View mBoxDataLine;
     private View mLinearPingType;
-    private View infoButton;
 
 
 
@@ -87,6 +82,8 @@ public class SpeedTest extends AppCompatActivity {
 
     private LineChart chart;
     private List<Float> listData;
+
+    private MenuController menuController;
 
 
 
@@ -112,26 +109,26 @@ public class SpeedTest extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_speed_test);
 
-        infoButton = findViewById(R.id.infoButton);
+
         mPointerSpeedometer = findViewById(R.id.speedView);
         mPulsator =  findViewById(R.id.pulsator);
         mStartButtonFrame = findViewById(R.id.startButtonFrame);
         mProgressFrame = findViewById(R.id.progressFrame);
         mCompletionFrame = findViewById(R.id.completionFrame);
         mBtnStart =  findViewById(R.id.btnStart);
-        history = findViewById(R.id.history);
         mPing = (TextView) findViewById(R.id.pingLinearText);
         mMeaningDown = findViewById(R.id.meaningDown);
         mMeaningUp = findViewById(R.id.meaningUp);
         menuFrame = findViewById(R.id.menuFrame);
         mMenuButton = findViewById(R.id.menuButton);
-        mCloseMenu = findViewById(R.id.closeMenu);
-        mMenuFrameBackground = findViewById(R.id.menuFrameBackground);
+
         mBackButton = findViewById(R.id.backButton);
         mBoxDataLine =findViewById(R.id.boxDataLine);
         mLinearPingType = findViewById(R.id.linearPingType);
 
         mPulsator.start();
+
+        menuController = new MenuController(this, menuFrame);
 
         mBtnStart.setOnClickListener(view -> {
             setFrame(2);
@@ -148,30 +145,16 @@ public class SpeedTest extends AppCompatActivity {
             downloadTest();
         });
 
-        history.setOnClickListener(v -> {
-            Intent myIntent = new Intent(this, HistoryActivity.class);
-            startActivity(myIntent);
-        });
 
-        infoButton.setOnClickListener(v -> {
-            Intent myIntent = new Intent(this, InfoActivity.class);
-            startActivity(myIntent);
-        });
+
+
 
 
         mMenuButton.setOnClickListener(v -> {
-            Animation animFadeIn = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fade_in);
-            Animation animTranslateIn = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.translate_in);
-            mMenuFrameBackground.startAnimation(animFadeIn);
-            mMenuFrameBackground.setVisibility(View.VISIBLE);
-            menuFrame.startAnimation(animTranslateIn);
-            menuFrame.setVisibility(View.VISIBLE);
-            menuStatus = true;
+            menuController.openMenu();
         });
 
-        mCloseMenu.setOnClickListener(v ->{
-            closeMenu();
-        });
+
 
 
         if (Connectivity.isConnectedWifi(this)){
@@ -184,20 +167,12 @@ public class SpeedTest extends AppCompatActivity {
 
     }
 
-    private void closeMenu(){
-        Animation animFadeOut = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fade_out);
-        Animation animTranslateOut = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.translate_out);
-        mMenuFrameBackground.startAnimation(animFadeOut);
-        mMenuFrameBackground.setVisibility(View.GONE);
-        menuFrame.startAnimation(animTranslateOut);
-        menuFrame.setVisibility(View.GONE);
-        menuStatus = false;
-    }
+
 
     @Override
     public void onBackPressed() {
-        if (menuStatus){
-            closeMenu();
+        if (menuController.getMenuStatus()){
+            menuController.closeMenu();
         } else {
             super.onBackPressed();
         }

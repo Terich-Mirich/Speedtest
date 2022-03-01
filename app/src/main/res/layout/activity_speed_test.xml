@@ -304,7 +304,7 @@
         android:id="@+id/menuFrame"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -332,193 +332,45 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <View
-                android:id="@+id/firstLine"
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/blue_grey_600"/>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/history"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="10dp">
-
-                <ImageView
-                    android:id="@+id/imageHistory"
-                    android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <include
+                    android:id="@+id/menuMenuList"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_baseline_history_24"
-                    app:tint="@color/blue_grey_600"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintLeft_toLeftOf="parent"/>
+                    layout="@layout/menu_layout_menu_list" />
 
-                <TextView
-                    android:id="@+id/textHistory"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:text="History"
-                    android:textColor="@color/white"
-                    android:textSize="18dp"
-                    android:layout_marginLeft="10dp"
-                    app:layout_constraintLeft_toRightOf="@+id/imageHistory"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"/>
-
-                <ImageView
-                    android:layout_width="wrap_content"
+                <include
+                    android:id="@+id/menuHistoryGroup"
+                    android:visibility="gone"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_baseline_keyboard_arrow_right_24"
-                    app:tint="@color/white"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"/>
+                    layout="@layout/menu_layout_history" />
 
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <View
-                android:id="@+id/secondLine"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/blue_grey_600"/>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/infoButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="10dp">
-
-                <ImageView
-                    android:id="@+id/imageInfo"
-                    android:layout_width="wrap_content"
+                <include
+                    android:id="@+id/menuInfoGroup"
+                    android:visibility="gone"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_baseline_info_24"
-                    app:tint="@color/blue_grey_600"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintLeft_toLeftOf="parent"/>
+                    layout="@layout/menu_layout_info" />
 
-                <TextView
-                    android:id="@+id/textInfo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:text="Info"
-                    android:textColor="@color/white"
-                    android:textSize="18dp"
-                    app:layout_constraintLeft_toRightOf="@+id/imageInfo"
-                    android:layout_marginLeft="10dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"/>
 
-                <ImageView
-                    android:layout_width="wrap_content"
+                <include
+                    android:id="@+id/menuSettingsGroup"
+                    android:visibility="gone"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_baseline_keyboard_arrow_right_24"
-                    app:tint="@color/white"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"/>
+                    layout="@layout/menu_layout_settings" />
 
-
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <View
-                android:id="@+id/thirdLine"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/blue_grey_600"/>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="10dp">
-
-                <ImageView
-                    android:id="@+id/imageSettings"
-                    android:layout_width="wrap_content"
+                <include
+                    android:id="@+id/menuSupportGroup"
+                    android:visibility="gone"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_baseline_settings_24"
-                    app:tint="@color/blue_grey_600"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintLeft_toLeftOf="parent"/>
+                    layout="@layout/menu_layout_support" />
+            </FrameLayout>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:text="Settings"
-                    android:textColor="@color/white"
-                    android:layout_marginLeft="10dp"
-                    android:textSize="18dp"
-                    app:layout_constraintLeft_toRightOf="@+id/imageSettings"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"/>
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_baseline_keyboard_arrow_right_24"
-                    app:tint="@color/white"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"/>
-
-
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <View
-                android:id="@+id/fourthLine"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/blue_grey_600"/>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="10dp">
-
-                <ImageView
-                    android:id="@+id/imageSupport"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_baseline_message_24"
-                    app:tint="@color/blue_grey_600"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintLeft_toLeftOf="parent"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:text="Support"
-                    android:textColor="@color/white"
-                    android:textSize="18dp"
-                    android:layout_marginLeft="10dp"
-                    app:layout_constraintLeft_toRightOf="@+id/imageSupport"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"/>
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_baseline_keyboard_arrow_right_24"
-                    app:tint="@color/white"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"/>
-
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <View
-                android:id="@+id/fifthLine"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/blue_grey_600"/>
 
 
         </LinearLayout>
