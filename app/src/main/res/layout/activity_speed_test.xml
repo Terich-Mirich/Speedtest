@@ -322,6 +322,15 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <ImageView
+                    android:id="@+id/backMenuButton"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:src="@drawable/ic_baseline_keyboard_arrow_left_24"
+                    app:tint="@color/white"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"/>
+
+                <ImageView
                     android:id="@+id/closeMenu"
                     android:layout_width="32dp"
                     android:layout_height="32dp"
@@ -334,25 +343,25 @@
 
             <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="match_parent">
                 <include
                     android:id="@+id/menuMenuList"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     layout="@layout/menu_layout_menu_list" />
 
                 <include
                     android:id="@+id/menuHistoryGroup"
                     android:visibility="gone"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     layout="@layout/menu_layout_history" />
 
                 <include
                     android:id="@+id/menuInfoGroup"
                     android:visibility="gone"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     layout="@layout/menu_layout_info" />
 
 
@@ -360,15 +369,22 @@
                     android:id="@+id/menuSettingsGroup"
                     android:visibility="gone"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     layout="@layout/menu_layout_settings" />
 
                 <include
                     android:id="@+id/menuSupportGroup"
                     android:visibility="gone"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     layout="@layout/menu_layout_support" />
+
+                <include
+                    android:id="@+id/menuInfoAppinfoGroup"
+                    android:visibility="gone"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    layout="@layout/menu_layout_info_appinfo" />
             </FrameLayout>
 
 
