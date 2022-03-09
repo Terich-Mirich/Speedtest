@@ -49,11 +49,11 @@ public class MenuController {
         mMenuFrameBackground = ((ViewGroup)root.getParent()).findViewById(R.id.menuFrameBackground);
         mCloseMenu = root.findViewById(R.id.closeMenu);
         mCloseMenu.setOnClickListener(v ->{
-            closeMenu();
+            closeMenu(true);
         });
         mBackMenuButton = root.findViewById(R.id.backMenuButton);
         mBackMenuButton.setOnClickListener(v -> {
-            closeMenu();
+            closeMenu(false);
         });
         mBackMenuButton.setVisibility(View.GONE);
 
@@ -94,8 +94,9 @@ public class MenuController {
         menuStatus = true;
     }
 
-    public void closeMenu(){
-        if (currentGroup != null){
+    public void closeMenu(boolean close){
+
+        if (currentGroup != null && !close){
             switch (currentGroup){
                 case HISTORY:
 
@@ -103,6 +104,8 @@ public class MenuController {
                 case INFO:
                     if (!menuInfoController.isChildClose()){
                         menuInfoController.hide();
+                    }else {
+                        return;
                     }
                     break;
                 case SETTINGS:
@@ -117,6 +120,26 @@ public class MenuController {
             mBackMenuButton.startAnimation(animFadeOut);
             mBackMenuButton.setVisibility(View.GONE);
             return;
+        }else if (close){
+            if (currentGroup != null){
+                switch (currentGroup){
+                    case HISTORY:
+
+                        break;
+                    case INFO:
+                        menuInfoController.isChildClose();
+                        menuInfoController.hide();
+                        break;
+                    case SETTINGS:
+                        break;
+                    case SUPPORT:
+                        break;
+                }
+                currentGroup = null;
+                Animation animFadeOut = AnimationUtils.loadAnimation(activity.getApplicationContext(), R.anim.fade_out_menu);
+                mBackMenuButton.startAnimation(animFadeOut);
+                mBackMenuButton.setVisibility(View.GONE);
+            }
         }
         Animation animFadeOut = AnimationUtils.loadAnimation(activity.getApplicationContext(), R.anim.fade_out);
         Animation animTranslateOut = AnimationUtils.loadAnimation(activity.getApplicationContext(),R.anim.translate_out);

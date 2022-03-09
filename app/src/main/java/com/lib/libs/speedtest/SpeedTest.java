@@ -151,6 +151,7 @@ public class SpeedTest extends AppCompatActivity {
 
 
         mMenuButton.setOnClickListener(v -> {
+//            menuController = new MenuController(this, menuFrame);
             menuController.openMenu();
         });
 
@@ -172,7 +173,7 @@ public class SpeedTest extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         if (menuController.getMenuStatus()){
-            menuController.closeMenu();
+            menuController.closeMenu(true);
         } else {
             super.onBackPressed();
         }

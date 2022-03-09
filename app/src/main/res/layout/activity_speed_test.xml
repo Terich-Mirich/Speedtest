@@ -385,6 +385,20 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     layout="@layout/menu_layout_info_appinfo" />
+
+                <include
+                    android:id="@+id/menuInfoPrivacyPolicyGroup"
+                    android:visibility="gone"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    layout="@layout/menu_layout_info_privacypolicy" />
+
+                <include
+                    android:id="@+id/menuInfoTermsOfUseGroup"
+                    android:visibility="gone"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    layout="@layout/menu_layout_info_terms_os_use" />
             </FrameLayout>
 
 

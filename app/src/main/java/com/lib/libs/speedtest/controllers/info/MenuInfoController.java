@@ -18,6 +18,8 @@ public class MenuInfoController {
     private View mTermsOfUse;
 
     private ViewGroup appinfoLayout;
+    private ViewGroup privacyPolicy;
+    private ViewGroup termsOfUse;
 
     InfoGroup currentGroup;
 
@@ -33,10 +35,12 @@ public class MenuInfoController {
         mApplicationInfo.setOnClickListener(v -> {
             showSupportGroup(InfoGroup.APPLICATION_INFO);
         });
+        privacyPolicy = ((ViewGroup)root.getParent()).findViewById(R.id.menuInfoPrivacyPolicyGroup);
         mPrivacyPolicy = root.findViewById(R.id.privacyPolicy);
         mPrivacyPolicy.setOnClickListener(v -> {
             showSupportGroup(InfoGroup.PRIVACY_POLICY);
         });
+        termsOfUse = ((ViewGroup)root.getParent()).findViewById(R.id.menuInfoTermsOfUseGroup);
         mTermsOfUse = root.findViewById(R.id.termsOfUse);
         mTermsOfUse.setOnClickListener(v -> {
             showSupportGroup(InfoGroup.TERMS_OF_USE);
@@ -57,8 +61,14 @@ public class MenuInfoController {
                 appinfoLayout.setVisibility(View.VISIBLE);
                 break;
             case PRIVACY_POLICY:
+                Animation animTranslatePPIn = AnimationUtils.loadAnimation(activity.getApplicationContext(),R.anim.translate_in);
+                privacyPolicy.startAnimation(animTranslatePPIn);
+                privacyPolicy.setVisibility(View.VISIBLE);
                 break;
             case TERMS_OF_USE:
+                Animation animTranslateTOUIn = AnimationUtils.loadAnimation(activity.getApplicationContext(),R.anim.translate_in);
+                termsOfUse.startAnimation(animTranslateTOUIn);
+                termsOfUse.setVisibility(View.VISIBLE);
                 break;
         }
 
@@ -68,13 +78,19 @@ public class MenuInfoController {
         if (currentGroup != null){
             switch (currentGroup){
                 case APPLICATION_INFO:
-                    Animation animTranslateIn = AnimationUtils.loadAnimation(activity.getApplicationContext(),R.anim.translate_out);
-                    appinfoLayout.startAnimation(animTranslateIn);
+                    Animation animTranslateAppOut = AnimationUtils.loadAnimation(activity.getApplicationContext(),R.anim.translate_out);
+                    appinfoLayout.startAnimation(animTranslateAppOut);
                     appinfoLayout.setVisibility(View.GONE);
                     break;
                 case PRIVACY_POLICY:
+                    Animation animTranslatePPOut = AnimationUtils.loadAnimation(activity.getApplicationContext(),R.anim.translate_out);
+                    privacyPolicy.startAnimation(animTranslatePPOut);
+                    privacyPolicy.setVisibility(View.GONE);
                     break;
                 case TERMS_OF_USE:
+                    Animation animTranslateTOUOut = AnimationUtils.loadAnimation(activity.getApplicationContext(),R.anim.translate_out);
+                    termsOfUse.startAnimation(animTranslateTOUOut);
+                    termsOfUse.setVisibility(View.GONE);
                     break;
             }
             currentGroup = null;
