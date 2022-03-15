@@ -1,18 +1,18 @@
 package com.lib.libs.speedtest.controllers;
 
 import android.app.Activity;
-import android.os.Handler;
-import android.os.Looper;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.TextView;
 
 import com.lib.libs.speedtest.R;
-import com.lib.libs.speedtest.controllers.history.MenuHisrotyController;
+import com.lib.libs.speedtest.controllers.history.MenuHistoryController;
 import com.lib.libs.speedtest.controllers.info.MenuInfoController;
 import com.lib.libs.speedtest.controllers.settings.MenuSettingsController;
 import com.lib.libs.speedtest.controllers.support.MenuSupportController;
+import com.lib.libs.speedtest.models.HistoryItem;
 
 public class MenuController {
 
@@ -30,10 +30,12 @@ public class MenuController {
     private View settingsButton;
     private View supportButton;
 
-    private MenuHisrotyController menuHisrotyController;
+    private MenuHistoryController menuHistoryController;
     private MenuInfoController menuInfoController;
     private MenuSettingsController menuSettingsController;
     private MenuSupportController menuSupportController;
+
+    private TextView mMenuTitle;
 
     private MenuGroup currentGroup;
 
@@ -56,12 +58,14 @@ public class MenuController {
             closeMenu(false);
         });
         mBackMenuButton.setVisibility(View.GONE);
+        mMenuTitle = root.findViewById(R.id.menuTitle);
 
         initMainMenu();
-        menuHisrotyController = new MenuHisrotyController(activity, root.findViewById(R.id.menuHistoryGroup));
-        menuInfoController = new MenuInfoController(activity, root.findViewById(R.id.menuInfoGroup));
+        menuHistoryController = new MenuHistoryController(activity, this, root.findViewById(R.id.menuHistoryGroup));
+        menuInfoController = new MenuInfoController(activity, this, root.findViewById(R.id.menuInfoGroup));
         menuSettingsController = new MenuSettingsController(activity, root.findViewById(R.id.menuSettingsGroup));
         menuSupportController = new MenuSupportController(activity, root.findViewById(R.id.menuSupportGroup));
+
 
     }
 
@@ -92,6 +96,7 @@ public class MenuController {
         root.startAnimation(animTranslateIn);
         root.setVisibility(View.VISIBLE);
         menuStatus = true;
+        menuHistoryController.init();
     }
 
     public void closeMenu(boolean close){
@@ -99,7 +104,11 @@ public class MenuController {
         if (currentGroup != null && !close){
             switch (currentGroup){
                 case HISTORY:
-
+                    if (!menuHistoryController.isChildClose()){
+                        menuHistoryController.hide();
+                    }else {
+                        return;
+                    }
                     break;
                 case INFO:
                     if (!menuInfoController.isChildClose()){
@@ -116,6 +125,7 @@ public class MenuController {
                     break;
             }
             currentGroup = null;
+            setTitleNameMenu("");
             Animation animFadeOut = AnimationUtils.loadAnimation(activity.getApplicationContext(), R.anim.fade_out_menu);
             mBackMenuButton.startAnimation(animFadeOut);
             mBackMenuButton.setVisibility(View.GONE);
@@ -124,7 +134,8 @@ public class MenuController {
             if (currentGroup != null){
                 switch (currentGroup){
                     case HISTORY:
-
+                        menuHistoryController.isChildClose();
+                        menuHistoryController.hide();
                         break;
                     case INFO:
                         menuInfoController.isChildClose();
@@ -136,6 +147,7 @@ public class MenuController {
                         break;
                 }
                 currentGroup = null;
+                setTitleNameMenu("");
                 Animation animFadeOut = AnimationUtils.loadAnimation(activity.getApplicationContext(), R.anim.fade_out_menu);
                 mBackMenuButton.startAnimation(animFadeOut);
                 mBackMenuButton.setVisibility(View.GONE);
@@ -150,6 +162,10 @@ public class MenuController {
         menuStatus = false;
     }
 
+    public void setTitleNameMenu (String name){
+        mMenuTitle.setText(name);
+    }
+
     private void showMenuGroup(MenuGroup group){
         if (currentGroup != null) return;
         currentGroup = group;
@@ -158,7 +174,7 @@ public class MenuController {
         mBackMenuButton.setVisibility(View.VISIBLE);
         switch (group){
             case HISTORY:
-
+                menuHistoryController.show();
                 break;
             case INFO:
                 menuInfoController.show();

@@ -7,10 +7,12 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
 import com.lib.libs.speedtest.R;
+import com.lib.libs.speedtest.controllers.MenuController;
 
 public class MenuInfoController {
 
     private Activity activity;
+    private MenuController mainMenu;
     private ViewGroup root;
 
     private View mApplicationInfo;
@@ -23,8 +25,9 @@ public class MenuInfoController {
 
     InfoGroup currentGroup;
 
-    public MenuInfoController(Activity activity, ViewGroup root) {
+    public MenuInfoController(Activity activity, MenuController mainMenu, ViewGroup root) {
         this.activity = activity;
+        this.mainMenu = mainMenu;
         this.root = root;
         init();
     }
@@ -51,6 +54,7 @@ public class MenuInfoController {
 
 
     private void showSupportGroup(InfoGroup group){
+        if (currentGroup != null) return;
         currentGroup = group;
 
         switch (group){
@@ -59,16 +63,19 @@ public class MenuInfoController {
                 Animation animTranslateIn = AnimationUtils.loadAnimation(activity.getApplicationContext(),R.anim.translate_in);
                 appinfoLayout.startAnimation(animTranslateIn);
                 appinfoLayout.setVisibility(View.VISIBLE);
+                mainMenu.setTitleNameMenu(activity.getString(R.string.menu_info_appinfo_title));
                 break;
             case PRIVACY_POLICY:
                 Animation animTranslatePPIn = AnimationUtils.loadAnimation(activity.getApplicationContext(),R.anim.translate_in);
                 privacyPolicy.startAnimation(animTranslatePPIn);
                 privacyPolicy.setVisibility(View.VISIBLE);
+                mainMenu.setTitleNameMenu(activity.getString(R.string.menu_info_privacypolicy_title));
                 break;
             case TERMS_OF_USE:
                 Animation animTranslateTOUIn = AnimationUtils.loadAnimation(activity.getApplicationContext(),R.anim.translate_in);
                 termsOfUse.startAnimation(animTranslateTOUIn);
                 termsOfUse.setVisibility(View.VISIBLE);
+                mainMenu.setTitleNameMenu(activity.getString(R.string.menu_info_terms_of_use_title));
                 break;
         }
 
@@ -94,6 +101,7 @@ public class MenuInfoController {
                     break;
             }
             currentGroup = null;
+            mainMenu.setTitleNameMenu(activity.getString(R.string.menu_info_title));
             return true;
         }else{
             return false;
@@ -110,6 +118,7 @@ public class MenuInfoController {
         Animation animTranslateIn = AnimationUtils.loadAnimation(activity.getApplicationContext(),R.anim.translate_in);
         root.startAnimation(animTranslateIn);
         root.setVisibility(View.VISIBLE);
+        mainMenu.setTitleNameMenu(activity.getString(R.string.menu_info_title));
     }
 
     public void hide(){

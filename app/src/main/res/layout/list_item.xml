@@ -1,82 +1,105 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:orientation="vertical"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <TextView
-        android:id="@+id/type"
-        android:layout_marginVertical="3dp"
-        android:layout_width="50dp"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:text="Type"
-
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@id/date"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent" />
-
-
-    <LinearLayout
-        android:id="@+id/date"
-        android:layout_width="86dp"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toRightOf="@id/type"
-        app:layout_constraintRight_toLeftOf="@id/dLoad"
-        app:layout_constraintTop_toTopOf="parent"
-        >
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
         <TextView
-            android:id="@+id/dateNumber"
-            android:layout_width="wrap_content"
+            android:id="@+id/type"
+            android:layout_marginVertical="3dp"
+            android:layout_width="50dp"
             android:layout_height="wrap_content"
-            android:text="14.12.2022"
-            android:textSize="13sp"
-            app:layout_constraintBottom_toTopOf="@id/time"
-             />
+            android:layout_marginLeft="16dp"
+            android:text="Type"
+            android:textColor="@color/white"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/date"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+
+        <LinearLayout
+            android:id="@+id/date"
+            android:layout_width="86dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/type"
+            app:layout_constraintRight_toLeftOf="@id/dLoad"
+            app:layout_constraintTop_toTopOf="parent"
+            >
+
+            <TextView
+                android:id="@+id/dateNumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="14.12.2022"
+                android:textSize="13sp"
+                android:textColor="@color/white"
+                app:layout_constraintBottom_toTopOf="@id/time"
+                />
+
+            <TextView
+                android:id="@+id/time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="11sp"
+                android:text="15:40"
+                android:textColor="@color/white"
+
+                />
+
+        </LinearLayout>
+
+
 
         <TextView
-            android:id="@+id/time"
-            android:layout_width="wrap_content"
+            android:id="@+id/dLoad"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textSize="11sp"
-            android:text="15:40"
+            android:layout_marginLeft="16dp"
+            android:text="Down Load"
+            android:textColor="@color/white"
+            app:layout_constraintRight_toLeftOf="@id/uLoad"
+            app:layout_constraintLeft_toRightOf="@id/date"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
 
+        <TextView
+            android:id="@+id/uLoad"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:text="Up Load"
+            android:textColor="@color/white"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/dLoad"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
 
-            />
-
-    </LinearLayout>
-
-
-
-    <TextView
-        android:id="@+id/dLoad"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:text="Down Load"
-
-        app:layout_constraintRight_toLeftOf="@id/uLoad"
-        app:layout_constraintLeft_toRightOf="@id/date"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent" />
-
-    <TextView
-        android:id="@+id/uLoad"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:text="Up Load"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintLeft_toRightOf="@id/dLoad"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 
+    <View
+        android:id="@+id/secondLine"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/blue_grey_600"
+        android:layout_marginVertical="5dp"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+</LinearLayout>
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+

@@ -14,4 +14,11 @@
     <string name="update_connectionspeed" formatted="false">Connection time: %s ms</string>
 
     <string name="update_downloaded_complete" formatted="false">Speed: %s kbit/sec</string>
+
+    <string name="menu_history_title">History</string>
+    <string name="menu_info_title">Info</string>
+    <string name="menu_info_appinfo_title">App Info</string>
+    <string name="menu_info_privacypolicy_title">Privacy Policy</string>
+    <string name="menu_info_terms_of_use_title">Terms of Use</string>
+
 </resources>
