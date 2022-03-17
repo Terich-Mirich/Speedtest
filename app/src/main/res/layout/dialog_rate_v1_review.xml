@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingVertical="30dp"
+    android:paddingHorizontal="16dp"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent">
+
+<!--    <androidx.appcompat.widget.AppCompatImageView-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:src="@drawable/ic_rate_dialog_v1_2_3"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent" />-->
+    <TextView
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:textAlignment="center"
+        android:layout_marginHorizontal="24dp"
+        android:textColor="@color/amber_800"
+        android:layout_width="240dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="26dp"
+        android:text="@string/rate_app_text_3" />
+    <TextView
+        android:textSize="14sp"
+        android:textColor="#6D7885"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="8dp"
+        android:text="@string/rate_app_text_4" />
+
+    <EditText
+        android:id="@+id/dialog_rate_v1_review_text"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:layout_marginBottom="22dp"
+        android:background="@drawable/edit_text_bg"
+        android:gravity="top|start"
+        android:hint="@string/rate_app_text_7"
+        android:imeOptions="actionDone"
+        android:importantForAutofill="no"
+        android:inputType="textMultiLine"
+        android:paddingStart="14dp"
+        android:paddingEnd="14dp"
+        android:scrollHorizontally="false"
+        android:textColor="@color/amber_800"
+        android:textColorHint="@color/blue_grey_700"
+        android:textCursorDrawable="@null"/>
+
+    <Button
+        android:id="@+id/dialog_rate_v1_send_button"
+        android:background="@drawable/btn_primary_blue"
+        android:textColor="#fff"
+        android:paddingHorizontal="12dp"
+        android:layout_marginBottom="16dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/rate_app_text_8" />
+
+
+</LinearLayout>

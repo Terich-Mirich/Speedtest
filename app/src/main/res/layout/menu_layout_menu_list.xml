@@ -4,6 +4,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:background="@color/blue_grey_900"
+    android:clickable="true"
+    android:focusable="true"
     android:layout_height="match_parent">
 
     <View

@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/dialog_rounded_bg"
+    android:minWidth="296dp"
+    android:layout_width="296dp"
+    android:layout_height="wrap_content">
+
+
+    <LinearLayout
+        android:id="@+id/v1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingVertical="30dp"
+        android:paddingHorizontal="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:alpha="0.6"
+                android:layout_gravity="center_horizontal"
+                android:src="@drawable/ic_rate_dialog_v2_1"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/iv1"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginTop="60dp"
+                android:layout_gravity="center_horizontal"
+                android:src="@drawable/rate_dialog_v3_2_1"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/tv_msg"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:textAlignment="center"
+            android:layout_marginHorizontal="24dp"
+            android:layout_marginBottom="34dp"
+            android:textColor="@color/amber_800"
+            android:layout_width="180dp"
+            android:layout_marginTop="16dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/rate_app_text_1" />
+
+
+        <Button
+            android:id="@+id/dialog_rate_v1_btn_yes"
+            android:background="@drawable/btn_primary_blue"
+            android:textColor="#fff"
+            android:layout_marginBottom="16dp"
+            android:layout_width="180dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/yes" />
+
+        <Button
+            android:id="@+id/dialog_rate_v1_btn_no"
+            android:layout_width="180dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/btn_primary_blue_bordered"
+            android:textColor="@color/amber_800"
+            android:text="@string/no" />
+
+    </LinearLayout>
+
+    <include
+        layout="@layout/dialog_rate_v1_1"
+        android:id="@+id/v1_1"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+    <include
+        layout="@layout/dialog_rate_v1_review"
+        android:id="@+id/v1_review"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+    <FrameLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+        <ImageView
+            android:id="@+id/dialog_rate_v1_btn_back"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:padding="12dp"
+            android:visibility="gone"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_margin="5dp"
+            android:src="@drawable/ic_baseline_keyboard_arrow_left_24"
+            android:layout_gravity="start"
+            app:tint="@color/amber_800"
+             />
+        <ImageView
+            android:id="@+id/dialog_rate_v1_btn_close"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:padding="12dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_margin="5dp"
+            android:src="@drawable/ic_baseline_close_24"
+            android:layout_gravity="end"
+            app:tint="@color/amber_800" />
+    </FrameLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

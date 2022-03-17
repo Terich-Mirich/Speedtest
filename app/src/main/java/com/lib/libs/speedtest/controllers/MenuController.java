@@ -63,8 +63,8 @@ public class MenuController {
         initMainMenu();
         menuHistoryController = new MenuHistoryController(activity, this, root.findViewById(R.id.menuHistoryGroup));
         menuInfoController = new MenuInfoController(activity, this, root.findViewById(R.id.menuInfoGroup));
-        menuSettingsController = new MenuSettingsController(activity, root.findViewById(R.id.menuSettingsGroup));
-        menuSupportController = new MenuSupportController(activity, root.findViewById(R.id.menuSupportGroup));
+        menuSettingsController = new MenuSettingsController(activity,this, root.findViewById(R.id.menuSettingsGroup));
+        menuSupportController = new MenuSupportController(activity, this, root.findViewById(R.id.menuSupportGroup));
 
 
     }
@@ -118,8 +118,10 @@ public class MenuController {
                     }
                     break;
                 case SETTINGS:
+                    menuSettingsController.hide();
                     break;
                 case SUPPORT:
+                    menuSupportController.hide();
                     break;
                 default:
                     break;
@@ -142,8 +144,10 @@ public class MenuController {
                         menuInfoController.hide();
                         break;
                     case SETTINGS:
+                        menuSettingsController.hide();
                         break;
                     case SUPPORT:
+                        menuSupportController.hide();
                         break;
                 }
                 currentGroup = null;
@@ -180,8 +184,10 @@ public class MenuController {
                 menuInfoController.show();
                 break;
             case SETTINGS:
+                menuSettingsController.show();
                 break;
             case SUPPORT:
+                menuSupportController.show();
                 break;
             default:
                 break;

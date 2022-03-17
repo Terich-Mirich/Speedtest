@@ -15,10 +15,42 @@
 
     <string name="update_downloaded_complete" formatted="false">Speed: %s kbit/sec</string>
 
+<!--    menu layout history-->
     <string name="menu_history_title">History</string>
+
+<!--    menu layout info-->
     <string name="menu_info_title">Info</string>
     <string name="menu_info_appinfo_title">App Info</string>
     <string name="menu_info_privacypolicy_title">Privacy Policy</string>
     <string name="menu_info_terms_of_use_title">Terms of Use</string>
+
+<!--    menu layout settings-->
+    <string name="menu_settings_title">Settings</string>
+    <string name="menu_layout_settings_advertisement_label">Advertisement</string>
+    <string name="menu_layout_settings_remove_ads_button">Remove ADS</string>
+
+<!--    menu layout support-->
+    <string name="menu_support_title">Support</string>
+    <string name="menu_layout_support_feedback_label">Feedback</string>
+    <string name="menu_layout_support_review_label">App Review</string>
+
+
+<!--    ui-->
+    <string name="rate_app_text_1">Did you like the app?</string>
+    <string name="rate_app_text_2">Please rate us 5 stars if you like the app.</string>
+    <string name="rate_app_text_3">Please help us improve the app!</string>
+    <string name="rate_app_text_4">Describe what you didn\'t like</string>
+    <string name="rate_app_text_5">Rate app</string>
+    <string name="rate_app_text_6">Rate on google play</string>
+    <string name="rate_app_text_8">Send message</string>
+    <string name="rate_app_text_9">Rate this app!</string>
+    <string name="rate_app_text_7">Enter text</string>
+    <string name="rate_dialog_cancel">Remind me later</string>
+    <string name="rate_dialog_no">No, thanks</string>
+    <string name="rate_dialog_ok">Rate it now</string>
+    <string name="rate_dialog_message">If you enjoy using this app, would you mind taking a moment to rate it? It won\'t take more than a minute Thanks for your support!</string>
+    <string name="developer_mail">mail@mail.ru</string>
+    <string name="yes">Yes</string>
+    <string name="no">no</string>
 
 </resources>
