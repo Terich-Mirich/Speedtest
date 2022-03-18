@@ -44,14 +44,9 @@ import pl.bclogic.pulsator4droid.library.PulsatorLayout;
 
 public class SpeedTest extends AppCompatActivity {
 
-    private static final int SOCKET_TIMEOUT = 5000;
+    private static final int SOCKET_TIMEOUT = 10000;
     //Private fields
     private static final String TAG = SpeedTest.class.getSimpleName();
-    private static final int EXPECTED_SIZE_IN_BYTES = 1048576;//1MB 1024*1024
-
-    private static final double EDGE_THRESHOLD = 176.0;
-    private static final double BYTE_TO_KILOBIT = 0.0078125;
-    private static final double KILOBIT_TO_MEGABIT = 0.0009765625;
 
     private PulsatorLayout mPulsator;
     private HistoryItem historyItem;
@@ -85,17 +80,7 @@ public class SpeedTest extends AppCompatActivity {
 
     private MenuController menuController;
 
-
-
-
-    private final int MSG_UPDATE_STATUS = 0;
-    private final int MSG_UPDATE_CONNECTION_TIME = 1;
-    private final int MSG_COMPLETE_STATUS = 2;
-
-    private final static int UPDATE_THRESHOLD = 300;
-
-
-    private DecimalFormat mDecimalFormater;
+    private int duradionTime = 10000;
 
 
 
@@ -103,7 +88,6 @@ public class SpeedTest extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        mDecimalFormater = new DecimalFormat("##.##");
         //Request the progress bar to be shown in the title
         requestWindowFeature(Window.FEATURE_PROGRESS);
         super.onCreate(savedInstanceState);
@@ -135,9 +119,9 @@ public class SpeedTest extends AppCompatActivity {
             setProgressBarVisibility(true);
             mBtnStart.setEnabled(false);
             //  new Thread(mWorker).start();
-            String str = ping("www.google.com");
-            System.out.println("HUI^    --------------- " + str);
-            mPing.setText(str);
+//            String str = ping("www.google.com");
+//            System.out.println("HUI^    --------------- " + str);
+        //    mPing.setText(str);
             historyItem = new HistoryItem();
             historyItem.type = typeNetwork();
             historyItem.date = new Date();
@@ -193,144 +177,146 @@ public class SpeedTest extends AppCompatActivity {
     }
 
     private void downloadTest() {
-        SpeedTestSocket speedTestSocket = new SpeedTestSocket();
-        speedTestSocket.setSocketTimeout(SOCKET_TIMEOUT);
-        speedTestSocket.addSpeedTestListener(new ISpeedTestListener()
-        {
-            private int prevPercent = 0;
+        AsyncTask.execute(() -> {
+            SpeedTestSocket speedTestSocket = new SpeedTestSocket(1000);
+            speedTestSocket.setSocketTimeout(SOCKET_TIMEOUT);
+            speedTestSocket.addSpeedTestListener(new ISpeedTestListener() {
+                private int prevPercent = 0;
 
 
-            @Override
-            public void onCompletion(SpeedTestReport report) {
-                runOnUiThread(() -> {
-                    mMeaningDown.setText(String.valueOf(mbits(report.getTransferRateBit())));
-                    uploadTest();
-                    float dataSpeed = mbits((report.getTransferRateBit()));
+                @Override
+                public void onCompletion(SpeedTestReport report) {
+                    speedTestSocket.closeSocket();
+                    runOnUiThread(() -> {
+                        mMeaningDown.setText(String.valueOf(mbits(report.getTransferRateBit())));
+                        listData.clear();
+                        uploadTest();
+                        float dataSpeed = mbits((report.getTransferRateBit()));
 
 
-                    historyItem.dmbps = mbits(report.getTransferRateBit());
-                });
+                        historyItem.dmbps = mbits(report.getTransferRateBit());
+                    });
 
-            }
+                }
 
-            @Override
-            public void onError(SpeedTestError speedTestError, String errorMessage) {
-                // called when a download/upload error occur
-                System.out.println("HUI");
-            }
+                @Override
+                public void onError(SpeedTestError speedTestError, String errorMessage) {
+                    // called when a download/upload error occur
+                    System.out.println("HUI");
+                }
 
-            @Override
-            public void onProgress(float percent, SpeedTestReport report) {
-                runOnUiThread(() -> {
+                @Override
+                public void onProgress(float percent, SpeedTestReport report) {
+                    runOnUiThread(() -> {
 //                    mProgress.setText("[D PROGRESS] progress : " + percent + "%");
 
 
-                    float dataSpeed = mbits((report.getTransferRateBit()));
-                    mPointerSpeedometer.speedTo(dataSpeed);
+                        float dataSpeed = mbits((report.getTransferRateBit()));
+                        mPointerSpeedometer.speedTo(dataSpeed);
 
-                    int per = (int) percent;
-                    if (per == 0) {
-                        prevPercent = 0;
-                    }
-                    if (per != prevPercent) {
-                        if (listData.size() >= 150) {
-                            listData.remove(0);
+                        int per = (int) percent;
+                        if (per == 0) {
+                            prevPercent = 0;
                         }
-                        if (dataSpeed < 0) {
-                            listData.add(0f);
-                        } else if (dataSpeed > 120) {
-                            listData.add(120f);
-                        } else {
-                            listData.add(dataSpeed);
+                        if (per != prevPercent) {
+                            if (listData.size() >= 150) {
+                                listData.remove(0);
+                            }
+                            if (dataSpeed < 0) {
+                                listData.add(0f);
+                            } else if (dataSpeed > 120) {
+                                listData.add(120f);
+                            } else {
+                                listData.add(dataSpeed);
+                            }
+
+                            ArrayList<Entry> entries = new ArrayList<>();
+                            for (int i = 0; i < listData.size(); i++) {
+                                entries.add(new Entry((float) i, (float) listData.get(i)));
+                            }
+                            setChartDataList(entries);
                         }
 
-                        ArrayList<Entry> entries = new ArrayList<>();
-                        for (int i = 0; i < listData.size(); i++) {
-                            entries.add(new Entry((float) i, (float) listData.get(i)));
-                        }
-                        setChartDataList(entries);
-                    }
+                        prevPercent = per;
 
-                    prevPercent = per;
+                    });
+                }
+            });
 
-                });
-            }
-        });
-        AsyncTask.execute(() -> {
-            speedTestSocket.startDownload("http://ipv4.ikoula.testdebit.info/10M.iso");
+            speedTestSocket.startFixedDownload("http://ipv4.ikoula.testdebit.info/10M.iso", duradionTime);
         });
 
     }
 
     private void uploadTest() {
+        AsyncTask.execute(() -> {
+            SpeedTestSocket speedTestSocket = new SpeedTestSocket(1000);
+            //set timeout for download
+            speedTestSocket.setSocketTimeout(SOCKET_TIMEOUT);
+            speedTestSocket.addSpeedTestListener(new ISpeedTestListener() {
 
-        SpeedTestSocket speedTestSocket = new SpeedTestSocket();
-        //set timeout for download
-        speedTestSocket.setSocketTimeout(SOCKET_TIMEOUT);
-        speedTestSocket.addSpeedTestListener(new ISpeedTestListener() {
+                private int prevPercent = 0;
 
-            private int prevPercent = 0;
-
-            @Override
-            public void onCompletion(SpeedTestReport report) {
-                runOnUiThread(() -> {
-                    mMeaningUp.setText(String.valueOf(mbits(report.getTransferRateBit())));
-                    float dataSpeed = mbits((report.getTransferRateBit()));
-
-
-                    historyItem.umbps = mbits(report.getTransferRateBit());
-                    historyItem.save();
+                @Override
+                public void onCompletion(SpeedTestReport report) {
                     runOnUiThread(() -> {
-                        setFrame(3);
+                        mMeaningUp.setText(String.valueOf(mbits(report.getTransferRateBit())));
+                        float dataSpeed = mbits((report.getTransferRateBit()));
+
+
+                        historyItem.umbps = mbits(report.getTransferRateBit());
+                        historyItem.save();
+//                    setFrame(3);
                     });
-                });
-            }
+                }
 
-            @Override
-            public void onError(SpeedTestError speedTestError, String errorMessage) {
-                // called when a download/upload error occur
-            }
+                @Override
+                public void onError(SpeedTestError speedTestError, String errorMessage) {
+                    // called when a download/upload error occur
+                    System.out.println("1");
+                }
 
-            @Override
-            public void onProgress(float percent, SpeedTestReport report) {
-                runOnUiThread(() -> {
+                @Override
+                public void onProgress(float percent, SpeedTestReport report) {
+                    System.out.println(report.getProgressPercent() + " --- " + report.getRequestNum());
+                    runOnUiThread(() -> {
 //                    mProgress.setText("[U PROGRESS] progress : " + percent + "%");
 
-                    float dataSpeed = mbits((report.getTransferRateBit()));
-                    mPointerSpeedometer.speedTo(dataSpeed);
+                        float dataSpeed = mbits((report.getTransferRateBit()));
+                        mPointerSpeedometer.speedTo(dataSpeed);
 
-                    int per = (int) percent;
-                    if (per == 0) {
-                        prevPercent = 0;
-                    }
-                    if (per != prevPercent) {
-                        if (listData.size() >= 150) {
-                            listData.remove(0);
+                        int per = (int) percent;
+                        if (per == 0) {
+                            prevPercent = 0;
                         }
-                        if (dataSpeed < 0) {
-                            listData.add(0f);
-                        } else if (dataSpeed > 120) {
-                            listData.add(120f);
-                        } else {
-                            listData.add(dataSpeed);
+                        if (per != prevPercent) {
+                            if (listData.size() >= 150) {
+                                listData.remove(0);
+                            }
+                            if (dataSpeed < 0) {
+                                listData.add(0f);
+                            } else if (dataSpeed > 120) {
+                                listData.add(120f);
+                            } else {
+                                listData.add(dataSpeed);
+                            }
+
+                            ArrayList<Entry> entries = new ArrayList<>();
+                            for (int i = 0; i < listData.size(); i++) {
+                                entries.add(new Entry((float) i, (float) listData.get(i)));
+                            }
+                            setChartDataListUp(entries);
                         }
 
-                        ArrayList<Entry> entries = new ArrayList<>();
-                        for (int i = 0; i < listData.size(); i++) {
-                            entries.add(new Entry((float) i, (float) listData.get(i)));
-                        }
-                        setChartDataListUp(entries);
-                    }
-
-                    prevPercent = per;
+                        prevPercent = per;
 
 
-                });
+                    });
 
-            }
-        });
-        AsyncTask.execute(() -> {
-            speedTestSocket.startUpload("http://ipv4.ikoula.testdebit.info/", 10000000);
+                }
+            });
+
+            speedTestSocket.startFixedUpload("http://ipv4.ikoula.testdebit.info/", 10000000, duradionTime);
         });
 
     }
@@ -364,49 +350,6 @@ public class SpeedTest extends AppCompatActivity {
     }
 
 
-    /**
-     * Setup event handlers and bind variables to values from xml
-     */
-    private void bindListeners() {
-
-    }
-
-
-    /**
-     * 1 byte = 0.0078125 kilobits
-     * 1 kilobits = 0.0009765625 megabit
-     *
-     * @param downloadTime in miliseconds
-     * @param bytesIn      number of bytes downloaded
-     * @return SpeedInfo containing current speed
-     */
-    private SpeedInfo calculate(final long downloadTime, final long bytesIn) {
-        SpeedInfo info = new SpeedInfo();
-        //from mil to sec
-        long bytespersecond = (bytesIn / downloadTime) * 1000;
-        double kilobits = bytespersecond * BYTE_TO_KILOBIT;
-        double megabits = kilobits * KILOBIT_TO_MEGABIT;
-        info.downspeed = bytespersecond;
-        info.kilobits = kilobits;
-        info.megabits = megabits;
-
-        return info;
-    }
-
-    /**
-     * Transfer Object
-     *
-     * @author devil
-     */
-    private static class SpeedInfo {
-        public double kilobits = 0;
-        public double megabits = 0;
-        public double downspeed = 0;
-    }
-
-
-
-    ;
 
 
     @Override
@@ -418,16 +361,10 @@ public class SpeedTest extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -455,9 +392,6 @@ public class SpeedTest extends AppCompatActivity {
     }
 
     private void initChart(){
-
-
-
         this.chart = (LineChart) findViewById(R.id.chart1);
         this.chart.getDescription().setEnabled(false);
         this.chart.setTouchEnabled(false);
@@ -483,7 +417,7 @@ public class SpeedTest extends AppCompatActivity {
         lineDataSet.setDrawFilled(true);
         ArrayList<ILineDataSet> arrayList = new ArrayList<>();
         arrayList.add(lineDataSet);
-        this.chart.setData(new LineData(arrayList));
+//        this.chart.setData(new LineData(arrayList));
 
         LineDataSet lineDataSetUp = new LineDataSet(new ArrayList<>(), "upload");
         lineDataSetUp.setDrawIcons(false);
@@ -492,6 +426,7 @@ public class SpeedTest extends AppCompatActivity {
         lineDataSetUp.setLineWidth(2.0f);
         lineDataSetUp.setMode(LineDataSet.Mode.CUBIC_BEZIER);
         lineDataSetUp.setDrawFilled(true);
+//        ArrayList<ILineDataSet> arrayList2 = new ArrayList<>();
         arrayList.add(lineDataSetUp);
         this.chart.setData(new LineData(arrayList));
 
