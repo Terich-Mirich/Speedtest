@@ -178,7 +178,7 @@ public class SpeedTest extends AppCompatActivity {
 
     private void downloadTest() {
         AsyncTask.execute(() -> {
-            SpeedTestSocket speedTestSocket = new SpeedTestSocket(1000);
+            SpeedTestSocket speedTestSocket = new SpeedTestSocket();
             speedTestSocket.setSocketTimeout(SOCKET_TIMEOUT);
             speedTestSocket.addSpeedTestListener(new ISpeedTestListener() {
                 private int prevPercent = 0;
@@ -250,9 +250,10 @@ public class SpeedTest extends AppCompatActivity {
 
     private void uploadTest() {
         AsyncTask.execute(() -> {
-            SpeedTestSocket speedTestSocket = new SpeedTestSocket(1000);
+            SpeedTestSocket speedTestSocket = new SpeedTestSocket();
             //set timeout for download
             speedTestSocket.setSocketTimeout(SOCKET_TIMEOUT);
+//            speedTestSocket.setUploadSetupTime(30000);
             speedTestSocket.addSpeedTestListener(new ISpeedTestListener() {
 
                 private int prevPercent = 0;
@@ -279,16 +280,23 @@ public class SpeedTest extends AppCompatActivity {
                 @Override
                 public void onProgress(float percent, SpeedTestReport report) {
                     System.out.println(report.getProgressPercent() + " --- " + report.getRequestNum());
+//                    if (percent <= 100){
+//                        return;
+//                    }
                     runOnUiThread(() -> {
 //                    mProgress.setText("[U PROGRESS] progress : " + percent + "%");
 
                         float dataSpeed = mbits((report.getTransferRateBit()));
                         mPointerSpeedometer.speedTo(dataSpeed);
 
+
                         int per = (int) percent;
                         if (per == 0) {
                             prevPercent = 0;
                         }
+
+
+
                         if (per != prevPercent) {
                             if (listData.size() >= 150) {
                                 listData.remove(0);
@@ -307,8 +315,12 @@ public class SpeedTest extends AppCompatActivity {
                             }
                             setChartDataListUp(entries);
                         }
-
                         prevPercent = per;
+
+//                        if (per >= 100){
+//                            speedTestSocket.forceStopTask();
+//
+//                        }
 
 
                     });
