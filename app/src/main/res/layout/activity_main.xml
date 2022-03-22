@@ -168,6 +168,27 @@
 
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/linearHostType"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@+id/linearPingType"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent">
+
+        <TextView
+            android:id="@+id/hostLinearText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Host-Huest"
+            android:textColor="@color/amber_800"
+
+            android:gravity="center"/>
+
+
+    </LinearLayout>
+
     <FrameLayout
         android:id="@+id/startButtonFrame"
         android:visibility="gone"
@@ -218,6 +239,26 @@
 
 
         </pl.bclogic.pulsator4droid.library.PulsatorLayout>
+
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/setupFrame"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintTop_toBottomOf="@id/constrainButtons">
+
+        <TextView
+            android:id="@+id/setupText"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Host-Huest"
+            android:textColor="@color/amber_800"
+            android:gravity="center"/>
+
+
 
 
     </FrameLayout>
