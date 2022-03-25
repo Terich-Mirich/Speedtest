@@ -81,6 +81,9 @@ public class MainActivity extends AppCompatActivity {
 
     private MenuController menuController;
 
+    private Thread progressThread;
+    private volatile boolean stopThread;
+
     GetSpeedTestHostsHandler getSpeedTestHostsHandler = null;
     HashSet<String> tempBlackList;
     private final DecimalFormat dec = new DecimalFormat("#.##");
@@ -133,6 +136,7 @@ public class MainActivity extends AppCompatActivity {
 
         mBtnStart.setOnClickListener(view -> {
             setFrame(FrameGroup.PROGRESS);
+            stopThread = false;
             setProgressBarVisibility(true);
             mBtnStart.setEnabled(false);
             historyItem = new HistoryItem();
@@ -145,6 +149,14 @@ public class MainActivity extends AppCompatActivity {
         mMenuButton.setOnClickListener(v -> {
 //            menuController = new MenuController(this, menuFrame);
             menuController.openMenu();
+        });
+
+        mBackButton.setOnClickListener(v -> {
+            //TODO
+            setFrame(FrameGroup.START);
+            mBtnStart.setEnabled(true);
+            progressThread.interrupt();
+            stopThread = true;
         });
 
         setFrame(FrameGroup.START);
@@ -203,6 +215,7 @@ public class MainActivity extends AppCompatActivity {
             case SETUP:
                 mBoxDataLine.setVisibility(View.VISIBLE);
                 mLinearPingType.setVisibility(View.VISIBLE);
+                mBackButton.setVisibility(View.GONE);
                 mStartButtonFrame.setVisibility(View.GONE);
                 mProgressFrame.setVisibility(View.GONE);
                 mCompletionFrame.setVisibility(View.GONE);
@@ -212,6 +225,7 @@ public class MainActivity extends AppCompatActivity {
             case PROGRESS:
                 mBoxDataLine.setVisibility(View.VISIBLE);
                 mLinearPingType.setVisibility(View.VISIBLE);
+                mBackButton.setVisibility(View.VISIBLE);
                 mStartButtonFrame.setVisibility(View.GONE);
                 mProgressFrame.setVisibility(View.VISIBLE);
                 mCompletionFrame.setVisibility(View.GONE);
@@ -221,6 +235,7 @@ public class MainActivity extends AppCompatActivity {
             case COMPLETION:
                 mBoxDataLine.setVisibility(View.VISIBLE);
                 mLinearPingType.setVisibility(View.VISIBLE);
+                mBackButton.setVisibility(View.VISIBLE);
                 mStartButtonFrame.setVisibility(View.GONE);
                 mProgressFrame.setVisibility(View.GONE);
                 mCompletionFrame.setVisibility(View.VISIBLE);
@@ -318,7 +333,7 @@ public class MainActivity extends AppCompatActivity {
             getSpeedTestHostsHandler.start();
         }
 
-        new Thread(() -> {
+        progressThread = new Thread(() -> {
             runOnUiThread(() -> {
                 mSetupText.setText("Selecting best server based on ping...");
             });
@@ -414,9 +429,13 @@ public class MainActivity extends AppCompatActivity {
             final HttpUploadTest uploadTest = new HttpUploadTest(testAddr);
 
             boolean downLoadCompletionDone = false;
+            boolean pingCompletionDone = false;
             boolean upLoadCompletionDone = false;
             //Tests
             while (true) {
+                if (stopThread){
+                    return;
+                };
                 if (!pingTestStarted) {
                     pingTest.start();
                     pingTestStarted = true;
@@ -436,12 +455,13 @@ public class MainActivity extends AppCompatActivity {
                     //Failure
                     if (pingTest.getAvgRtt() == 0) {
                         System.out.println("Ping error...");
-                    } else {
+                    } else if (!pingCompletionDone){
                         //Success
                         runOnUiThread(() -> {
                             mPing.setText(dec.format(pingTest.getAvgRtt()) + " ms");
                             setFrame(FrameGroup.PROGRESS);
                         });
+                        pingCompletionDone = true;
                     }
                 } else {
                     pingRateList.add(pingTest.getInstantRtt());
@@ -591,6 +611,8 @@ public class MainActivity extends AppCompatActivity {
             });
 
 
-        }).start();
+        });
+        progressThread.start();
     }
+
 }
