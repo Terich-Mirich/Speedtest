@@ -27,6 +27,7 @@ public class HttpDownloadTest extends Thread {
     boolean finished = false;
     double instantDownloadRate = 0;
     int timeout = 8;
+    public volatile boolean stopThread;
 
     HttpsURLConnection httpsConn = null;
 
@@ -111,6 +112,11 @@ public class HttpDownloadTest extends Thread {
                         endTime = System.currentTimeMillis();
                         downloadElapsedTime = (endTime - startTime) / 1000.0;
                         setInstantDownloadRate(downloadedByte, downloadElapsedTime);
+                        if (stopThread){
+                            inputStream.close();
+                            httpsConn.disconnect();
+                            return;
+                        }
                         if (downloadElapsedTime >= timeout) {
                             break outer;
                         }

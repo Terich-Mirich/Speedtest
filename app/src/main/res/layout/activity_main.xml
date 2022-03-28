@@ -13,6 +13,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
+        android:paddingHorizontal="6dp"
+        android:paddingVertical="8dp"
         >
 
         <ImageView
@@ -20,18 +22,21 @@
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:src="@drawable/ic_baseline_keyboard_arrow_left_24"
-            app:tint="@color/amber_800"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"/>
+            android:layout_marginStart="8dp"
+            app:tint="@color/blue_grey_400"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
 
         <ImageView
             android:id="@+id/menuButton"
             android:layout_width="32dp"
             android:layout_height="32dp"
-            android:src="@drawable/ic_baseline_menu_24"
-            app:tint="@color/amber_800"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintRight_toRightOf="parent"/>
+            android:paddingHorizontal="6dp"
+            android:src="@drawable/ic_menu_icon"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:tint="@color/blue_grey_400" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -43,7 +48,7 @@
         android:weightSum="2">
         <LinearLayout
             android:id="@+id/linerDataDown"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:gravity="center"
@@ -58,20 +63,30 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_baseline_arrow_circle_down_24"
-                    app:tint="@color/light_blue_900" />
+                    android:layout_marginVertical="5dp"
+                    app:tint="@color/cyan_400" />
 
                 <TextView
                     android:id="@+id/labelDown"
-                    android:layout_width="120dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginVertical="3dp"
-                    android:text="Download Mbit/s"
-                    android:textColor="@color/amber_800"
+                    android:text="DOWNLOAD"
+                    android:textColor="@color/blue_grey_100"
+                    android:layout_marginLeft="3dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintBottom_toTopOf="@+id/linerDataDown"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toLeftOf="@id/labelUp"
                     app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="3dp"
+                    android:layout_marginLeft="5dp"
+                    android:text="Mbit/s"
+                    android:textColor="@color/blue_grey_500"/>
 
             </LinearLayout>
 
@@ -81,15 +96,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="3dp"
-                android:layout_marginLeft="16dp"
-                android:text="123"
+                android:textSize="28sp"
+                android:text="--"
                 android:textColor="@color/white" />
 
 
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
@@ -104,20 +119,29 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_baseline_arrow_circle_up_24"
-                    app:tint="@color/green_800" />
+                    android:layout_marginVertical="5dp"
+                    app:tint="@color/pink_A400" />
 
                 <TextView
                     android:id="@+id/labelUp"
-                    android:layout_width="100dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginVertical="3dp"
-                    android:layout_marginLeft="16dp"
-                    android:text="Upload Mbit/s"
-                    android:textColor="@color/amber_800"
+                    android:layout_marginLeft="3dp"
+                    android:text="UPLOAD"
+                    android:textColor="@color/blue_grey_100"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintLeft_toRightOf="@id/labelDown"
                     app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="3dp"
+                    android:layout_marginLeft="5dp"
+                    android:text="Mbit/s"
+                    android:textColor="@color/blue_grey_500"/>
 
             </LinearLayout>
 
@@ -126,8 +150,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="3dp"
-                android:layout_marginLeft="16dp"
-                android:text="Upload Mbit/s"
+                android:textSize="28sp"
+                android:text="--"
                 android:textColor="@color/white" />
 
 
@@ -147,22 +171,21 @@
 
         <TextView
             android:id="@+id/pingLinearText"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginVertical="10dp"
-            android:layout_marginRight="1dp"
             android:text="Ping:"
-            android:textColor="@color/amber_800"
+            android:textColor="@color/blue_grey_500"
             android:gravity="center"
             android:layout_weight="1"/>
 
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginVertical="10dp"
             android:text="Wi-Fi"
-            android:textColor="@color/amber_800"
+            android:textColor="@color/blue_grey_500"
             android:layout_weight="1"
             android:gravity="center"/>
 
@@ -182,7 +205,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Host-Huest"
-            android:textColor="@color/amber_800"
+            android:textColor="@color/blue_grey_500"
 
             android:gravity="center"/>
 
@@ -204,7 +227,7 @@
             app:pulse_count="4"
             app:pulse_duration="7000"
             app:pulse_repeat="0"
-            app:pulse_color="@color/amber_800"
+            app:pulse_color="@color/blue_grey_400"
             app:pulse_startFromScratch="true"
             app:pulse_interpolator="Decelerate">
 
@@ -216,8 +239,8 @@
 
                 <ImageView
                     android:id="@+id/btnStart"
-                    android:layout_width="128dp"
-                    android:layout_height="128dp"
+                    android:layout_width="164dp"
+                    android:layout_height="164dp"
                     android:layout_centerInParent="true"
                     android:src="@drawable/start_button_bg"
                     android:layout_gravity="center"
@@ -228,7 +251,7 @@
                     android:layout_height="wrap_content"
                     android:text="GO"
                     android:textSize="50sp"
-                    android:textColor="@color/amber_800"
+                    android:textColor="@color/blue_grey_500"
                     android:layout_gravity="center"
                     />
 
@@ -255,7 +278,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:text="Host-Huest"
-            android:textColor="@color/amber_800"
+            android:textColor="@color/blue_grey_400"
             android:gravity="center"/>
 
 
@@ -267,9 +290,9 @@
         android:id="@+id/progressFrame"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearPingType">
+        app:layout_constraintTop_toBottomOf="@+id/linearHostType">
 
         <LinearLayout
             android:id="@+id/instruments"
@@ -286,18 +309,19 @@
 
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_marginTop="15dp"
                 app:sv_backgroundCircleColor="#00000000"
-                app:sv_centerCircleColor="@color/amber_800"
+                app:sv_centerCircleColor="@color/blue_grey_400"
                 app:sv_indicator="NeedleIndicator"
-                app:sv_indicatorColor="@color/amber_800"
-                app:sv_indicatorLightColor="@color/amber_800"
-                app:sv_markColor="@color/amber_800"
-                app:sv_speedTextColor="@color/amber_800"
-                app:sv_speedometerColor="@color/amber_800"
-                app:sv_textColor="@color/amber_800"
+                app:sv_indicatorColor="@color/blue_grey_400"
+                app:sv_indicatorLightColor="@color/blue_grey_400"
+                app:sv_markColor="@color/blue_grey_400"
+                app:sv_speedTextColor="@color/blue_grey_400"
+                app:sv_speedometerColor="@color/blue_grey_400"
+                app:sv_textColor="@color/blue_grey_400"
                 app:sv_unit="Mbts"
 
-                app:sv_unitTextColor="@color/amber_800"
+                app:sv_unitTextColor="@color/blue_grey_400"
                 app:sv_withPointer="false" />
 
             <RelativeLayout

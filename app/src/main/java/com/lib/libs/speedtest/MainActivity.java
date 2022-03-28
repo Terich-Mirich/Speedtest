@@ -41,10 +41,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import fr.bmartel.speedtest.SpeedTestReport;
-import fr.bmartel.speedtest.SpeedTestSocket;
-import fr.bmartel.speedtest.inter.ISpeedTestListener;
-import fr.bmartel.speedtest.model.SpeedTestError;
 import pl.bclogic.pulsator4droid.library.PulsatorLayout;
 
 public class MainActivity extends AppCompatActivity {
@@ -86,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
 
     GetSpeedTestHostsHandler getSpeedTestHostsHandler = null;
     HashSet<String> tempBlackList;
-    private final DecimalFormat dec = new DecimalFormat("#.##");
+    private final DecimalFormat dec = new DecimalFormat("#.#");
 
 
 
@@ -160,7 +156,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
         setFrame(FrameGroup.START);
-        initChart();
     }
 
     @Override
@@ -259,14 +254,9 @@ public class MainActivity extends AppCompatActivity {
         this.chart.setDragEnabled(false);
         this.chart.setScaleEnabled(false);
         XAxis xAxis = this.chart.getXAxis();
-        xAxis.setAxisMaximum(150.0f);
         xAxis.setEnabled(false);
         YAxis axisLeft = this.chart.getAxisLeft();
         axisLeft.setDrawGridLines(false);
-        axisLeft.setAxisLineColor(0);
-        axisLeft.setTextSize(10.0f);
-        axisLeft.setAxisMaximum(120.0f);
-        axisLeft.setAxisMinimum(0.0f);
         this.chart.getAxisRight().setEnabled(false);
         this.chart.getLegend().setEnabled(false);
         LineDataSet lineDataSet = new LineDataSet(new ArrayList<>(), "download");
@@ -293,22 +283,22 @@ public class MainActivity extends AppCompatActivity {
 
         this.chart.setDrawGridBackground(true);
         this.chart.setGridBackgroundColor(getResources().getColor(android.R.color.transparent));
-        this.chart.getAxisLeft().setTextColor(getResources().getColor(R.color.amber_800));
+        this.chart.getAxisLeft().setTextColor(getResources().getColor(R.color.blue_grey_400));
 
         LineDataSet lineDataSet2 = (LineDataSet) this.chart.getData().getDataSetByLabel("download", true);
-        lineDataSet2.setColor(getResources().getColor(R.color.light_blue_900));
+        lineDataSet2.setColor(getResources().getColor(R.color.cyan_400));
         GradientDrawable dataSetGradient = new GradientDrawable();
         dataSetGradient.setGradientType(GradientDrawable.LINEAR_GRADIENT);
         dataSetGradient.setOrientation(GradientDrawable.Orientation.TOP_BOTTOM);
-        dataSetGradient.setColors(new int[]{getResources().getColor(R.color.light_blue_900), 0});
+        dataSetGradient.setColors(new int[]{getResources().getColor(R.color.cyan_400), 0});
         lineDataSet2.setFillDrawable(dataSetGradient);
 
         LineDataSet lineDataSet3 = (LineDataSet) this.chart.getData().getDataSetByLabel("upload", true);
-        lineDataSet3.setColor(getResources().getColor(R.color.green_800));
+        lineDataSet3.setColor(getResources().getColor(R.color.pink_A400));
         GradientDrawable dataSetGradientUp = new GradientDrawable();
         dataSetGradientUp.setGradientType(GradientDrawable.LINEAR_GRADIENT);
         dataSetGradientUp.setOrientation(GradientDrawable.Orientation.TOP_BOTTOM);
-        dataSetGradientUp.setColors(new int[]{getResources().getColor(R.color.green_800), 0});
+        dataSetGradientUp.setColors(new int[]{getResources().getColor(R.color.pink_A400), 0});
         lineDataSet3.setFillDrawable(dataSetGradientUp);
     }
 
@@ -408,8 +398,9 @@ public class MainActivity extends AppCompatActivity {
             //Reset value, graphics
             runOnUiThread(() -> {
                 mPing.setText("0 ms");
-                mMeaningDown.setText("0 Mbps");
-                mMeaningUp.setText("0 Mbps");
+                mMeaningDown.setText("--");
+                mMeaningUp.setText("--");
+                initChart();
                 //TODO
                 //chartUpload.removeAllViews();
             });
@@ -434,6 +425,8 @@ public class MainActivity extends AppCompatActivity {
             //Tests
             while (true) {
                 if (stopThread){
+                    downloadTest.stopThread = true;
+                    uploadTest.stopThread = true;
                     return;
                 };
                 if (!pingTestStarted) {
@@ -458,7 +451,7 @@ public class MainActivity extends AppCompatActivity {
                     } else if (!pingCompletionDone){
                         //Success
                         runOnUiThread(() -> {
-                            mPing.setText(dec.format(pingTest.getAvgRtt()) + " ms");
+                            mPing.setText("Ping: " + dec.format(pingTest.getAvgRtt()) + " ms");
                             setFrame(FrameGroup.PROGRESS);
                         });
                         pingCompletionDone = true;
@@ -467,7 +460,7 @@ public class MainActivity extends AppCompatActivity {
                     pingRateList.add(pingTest.getInstantRtt());
 
                     runOnUiThread(() -> {
-                        mPing.setText(dec.format(pingTest.getInstantRtt()) + " ms");
+                        mPing.setText("Ping: " + dec.format(pingTest.getInstantRtt()) + " ms");
                     });
                 }
 
@@ -481,7 +474,7 @@ public class MainActivity extends AppCompatActivity {
                             //Success
                             if (!downLoadCompletionDone) {
                                 runOnUiThread(() -> {
-                                    mMeaningDown.setText(dec.format(downloadTest.getFinalDownloadRate()) + " Mbps");
+                                    mMeaningDown.setText(dec.format(downloadTest.getFinalDownloadRate()));
                                     listData.clear();
                                     historyItem.dmbps = (float) downloadTest.getFinalDownloadRate();
                                 });
@@ -494,7 +487,7 @@ public class MainActivity extends AppCompatActivity {
                         downloadRateList.add(downloadRate);
                         runOnUiThread(() -> {
                             mPointerSpeedometer.speedTo((float) downloadRate);
-                            mMeaningDown.setText(dec.format(downloadTest.getInstantDownloadRate()) + " Mbps");
+                            mMeaningDown.setText(dec.format(downloadTest.getInstantDownloadRate()));
 
                         });
 
@@ -533,7 +526,7 @@ public class MainActivity extends AppCompatActivity {
                             //Success
                             if (!upLoadCompletionDone) {
                                 runOnUiThread(() -> {
-                                    mMeaningUp.setText(dec.format(uploadTest.getFinalUploadRate()) + " Mbps");
+                                    mMeaningUp.setText(dec.format(uploadTest.getFinalUploadRate()));
                                     historyItem.umbps = (float) uploadTest.getFinalUploadRate();
                                     historyItem.save();
                                     setFrame(FrameGroup.COMPLETION);
@@ -548,7 +541,7 @@ public class MainActivity extends AppCompatActivity {
                         uploadRateList.add(uploadRate);
                         runOnUiThread(() -> {
                             mPointerSpeedometer.speedTo((float) uploadRate);
-                            mMeaningUp.setText(dec.format(uploadTest.getInstantUploadRate()) + " Mbps");
+                            mMeaningUp.setText(dec.format(uploadTest.getInstantUploadRate()));
                         });
 
                         //Update chart
