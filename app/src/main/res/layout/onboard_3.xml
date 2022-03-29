@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:tag="onboard_3">
+    <FrameLayout
+        android:id="@+id/frameLayout3"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginBottom="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <FrameLayout
+            android:gravity="center"
+            android:paddingTop="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+<!--            <FrameLayout-->
+<!--                android:id="@+id/onboard_3_term_pink"-->
+<!--                android:layout_gravity="center|top"-->
+<!--                android:translationX="23dp"-->
+<!--                android:layout_marginTop="40dp"-->
+<!--                android:alpha="0.1"-->
+<!--                android:rotation="-19"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content">-->
+<!--                <androidx.appcompat.widget.AppCompatImageView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="170dp"-->
+<!--                    android:src="@drawable/ic_thermometer_right" />-->
+<!--            </FrameLayout>-->
+<!--            <FrameLayout-->
+<!--                android:id="@+id/onboard_3_term_blue"-->
+<!--                android:layout_gravity="center|top"-->
+<!--                android:translationX="-20dp"-->
+<!--                android:alpha="0.1"-->
+<!--                android:rotation="8"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content">-->
+<!--                <androidx.appcompat.widget.AppCompatImageView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="210dp"-->
+<!--                    android:src="@drawable/ic_thermometer_left" />-->
+<!--            </FrameLayout>-->
+
+            <FrameLayout
+
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+<!--                <androidx.appcompat.widget.AppCompatImageView-->
+<!--                    android:id="@+id/onboard_3_crown"-->
+<!--                    android:layout_width="120dp"-->
+<!--                    android:layout_height="120dp"-->
+<!--                    android:layout_gravity="center|top"-->
+<!--                    android:layout_marginTop="26dp"-->
+<!--                    android:src="@drawable/ic_premium_crown" />-->
+            </FrameLayout>
+        </FrameLayout>
+    </FrameLayout>
+    <FrameLayout
+        android:id="@+id/onboard_button_close"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginStart="29dp"
+            android:layout_marginTop="29dp"
+            android:src="@drawable/ic_baseline_close_24" />
+    </FrameLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="35dp"
+        android:layout_marginEnd="35dp"
+        android:layout_marginBottom="40dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/onboard_button_next"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/frameLayout3">
+        <TextView
+            android:id="@+id/onboard_3_t1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:shadowColor="@color/black"
+            android:shadowDx="1.5"
+            android:shadowDy="1.3"
+            android:shadowRadius="5"
+            android:text="@string/onboard_3"
+            android:textAlignment="center"
+            android:textColor="#F4F2EF"
+            android:textSize="28sp"
+            android:textStyle="bold" />
+        <View
+            android:layout_marginVertical="12dp"
+            android:layout_gravity="center_horizontal"
+            android:background="#55ffffff"
+            android:layout_width="42dp"
+            android:layout_height="1dp"/>
+        <TextView
+            android:id="@+id/onboard_3_t2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/onboard_3_1"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:shadowColor="@color/black"
+            android:shadowDx="1.5"
+            android:shadowDy="1.3"
+            android:shadowRadius="5"
+            app:lineHeight="26sp"
+            android:textSize="16sp" />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="40dp"
+        android:orientation="horizontal"
+        android:gravity="center_horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/onboard_button_next"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout3">
+        <LinearLayout
+            android:id="@+id/onboard_three_days_sub"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="12dp"
+            android:background="@drawable/onbrd_sub_unselected"
+            android:gravity="center"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/onboard_3_price_1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:text="@string/onboard_3_price_1"
+                android:textAlignment="center"
+                android:textColor="#FFFFFF"
+                android:textSize="15sp" />
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#28D195FF" />
+            <TextView
+                android:id="@+id/onboard_3_1_price_m"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:text="@string/onboard_3_price_1_1"
+                android:textAlignment="center"
+                android:textColor="#8AA4FF"
+                android:textSize="12sp" />
+        </LinearLayout>
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <Button
+                android:layout_width="80dp"
+                android:layout_height="20dp"
+                android:layout_gravity="center_horizontal"
+                android:background="@color/blue_grey_500"
+                android:padding="0dp"
+                android:text="@string/onboard_3_pop"
+                android:textColor="#111111"
+                android:textSize="9sp" />
+            <LinearLayout
+                android:id="@+id/onboard_seven_days_sub"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="12dp"
+                android:background="@drawable/onbrd_sub_selected"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:tag="selected">
+                <TextView
+                    android:id="@+id/onboard_3_price_2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    android:text="@string/onboard_3_price_2"
+                    android:textAlignment="center"
+                    android:textColor="#FFFFFF"
+                    android:textSize="15sp" />
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#28D195FF" />
+                <TextView
+                    android:id="@+id/onboard_3_1_price_y"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    android:lines="2"
+                    android:text="@string/onboard_3_price_2_1"
+                    android:textAlignment="center"
+                    android:textColor="#8AA4FF"
+                    android:textSize="12sp" />
+            </LinearLayout>
+        </FrameLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/progress_dots"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="32dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/onboard_button_next"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+        <ImageView
+            android:layout_width="8dp"
+            android:layout_height="8dp"
+            android:layout_marginEnd="5dp"
+            android:src="@drawable/onboard_ellipse_inactive" />
+        <ImageView
+            android:layout_width="8dp"
+            android:layout_height="8dp"
+            android:layout_marginEnd="5dp"
+            android:src="@drawable/onboard_ellipse_inactive" />
+        <ImageView
+            android:layout_width="8dp"
+            android:layout_height="8dp"
+            android:layout_marginEnd="5dp"
+            android:src="@drawable/onboard_ellipse_active" />
+    </LinearLayout>
+    <Button
+        android:id="@+id/onboard_button_next"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginEnd="25dp"
+        android:layout_marginBottom="36dp"
+        android:background="@color/blue_grey_500"
+        android:text="@string/onboard_3_bottom_block_title"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

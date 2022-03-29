@@ -1,12 +1,8 @@
 package com.lib.libs.speedtest;
 
-import static com.lib.libs.speedtest.Utils.mbits;
-
 import android.graphics.drawable.GradientDrawable;
 import android.location.Location;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -30,16 +26,12 @@ import com.lib.libs.speedtest.test.HttpDownloadTest;
 import com.lib.libs.speedtest.test.HttpUploadTest;
 import com.lib.libs.speedtest.test.PingTest;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 import pl.bclogic.pulsator4droid.library.PulsatorLayout;
 
@@ -79,6 +71,8 @@ public class MainActivity extends AppCompatActivity {
 
     private Thread progressThread;
     private volatile boolean stopThread;
+
+    private FrameGroup currentFrame;
 
     GetSpeedTestHostsHandler getSpeedTestHostsHandler = null;
     HashSet<String> tempBlackList;
@@ -195,6 +189,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setFrame(FrameGroup group){
+
+        if (currentFrame != null && currentFrame == group) {
+            return;
+        }
+        currentFrame = group;
+
         switch (group){
 
             case START:
@@ -377,6 +377,7 @@ public class MainActivity extends AppCompatActivity {
                     findServerIndex = index;
                 }
             }
+            System.out.println("");
             String testAddr = mapKey.get(findServerIndex).replace("http://", "https://");
             final List<String> info = mapValue.get(findServerIndex);
             final double distance = dist;
@@ -452,7 +453,6 @@ public class MainActivity extends AppCompatActivity {
                         //Success
                         runOnUiThread(() -> {
                             mPing.setText("Ping: " + dec.format(pingTest.getAvgRtt()) + " ms");
-                            setFrame(FrameGroup.PROGRESS);
                         });
                         pingCompletionDone = true;
                     }
@@ -466,6 +466,9 @@ public class MainActivity extends AppCompatActivity {
 
                 //Download Test
                 if (pingTestFinished) {
+                    runOnUiThread(() ->{
+                        setFrame(FrameGroup.PROGRESS);
+                    });
                     if (downloadTestFinished) {
                         //Failure
                         if (downloadTest.getFinalDownloadRate() == 0) {

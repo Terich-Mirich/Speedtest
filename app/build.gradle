@@ -29,4 +29,13 @@ dependencies {
     implementation 'pl.bclogic:pulsator4droid:1.0.3'
     implementation 'com.github.anastr:speedviewlib:1.6.0'
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+    implementation 'com.github.ybq:Android-SpinKit:1.4.0'
+
+    implementation 'com.google.android.gms:play-services-ads:20.6.0'
+    implementation 'com.google.android.gms:play-services-location:19.0.1'
+
+    implementation 'com.android.billingclient:billing:4.0.0'
+
+    implementation 'com.daimajia.easing:library:2.4@aar'
+    implementation 'com.daimajia.androidanimations:library:2.4@aar'
 }

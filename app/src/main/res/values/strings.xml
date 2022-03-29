@@ -53,4 +53,34 @@
     <string name="yes">Yes</string>
     <string name="no">no</string>
 
+<!--    onboard-->
+    <string name="onboard_1">Welcome to SpeedTest!</string>
+    <string name="onboard_1_1">The program will allow you to calculate the connection speed, as well as save the received data</string>
+    <string name="onboard_2">How to use?</string>
+    <string name="onboard_2_1">Before starting the program, the phone must be idle (at least 10 minutes) for the internal components to cool. if the mobile device was charged or was in the hands of the owner for a long time, the measurements will be erroneous.</string>
+    <string name="onboard_3">Try without ads</string>
+    <string name="onboard_31">Disable ads for free</string>
+    <string name="onboard_31_1">You can remove all ads from the app for one hour just by watching a short video</string>
+    <string name="onboard_3_pop">Popular</string>
+    <string name="onboard_3_price_1">3 days\nis free</string>
+    <string name="onboard_3_price_1_1">Then\n%1$s/month</string>
+    <string name="onboard_3_price_2">7 days\nis free</string>
+    <string name="onboard_3_price_2_1">Then\n%1$s/year</string>
+    <string name="onboard_3_bottom_block_title">Try full access</string>
+
+    <string name="onboard_3_bottom_block_title_3">Try free</string>
+    <string name="onboard_3_1">You can cancel your subscription anytime on Google Play. After the end of the free period, the subscription will be paid. Subscriptions will renew automatically every month / year and will be debited</string>
+    <string name="onboard_btn">Proceed</string>
+
+<!--    splash-->
+    <string name="loading">Getting information about connection</string>
+    <string name="loading_done">Done</string>
+    <string name="continue_button">Continue</string>
+
+<!--    ad-->
+    <string name="ad_attribution" translatable="false">Ad</string>
+
+
+
+
 </resources>

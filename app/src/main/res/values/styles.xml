@@ -7,4 +7,16 @@
 <!--        <item name="android:windowNoTitle">true</item>-->
     </style>
 
+    <style name="AppTheme.AdAttribution" parent="@style/AppTheme">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:layout_gravity">left</item>
+        <item name="android:background">#ffcc66</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:text">@string/ad_attribution</item>
+    </style>
+
+
+
 </resources>
