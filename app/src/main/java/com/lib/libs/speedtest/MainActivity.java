@@ -26,6 +26,9 @@ import com.lib.libs.speedtest.test.HttpDownloadTest;
 import com.lib.libs.speedtest.test.HttpUploadTest;
 import com.lib.libs.speedtest.test.PingTest;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -94,7 +97,16 @@ public class MainActivity extends AppCompatActivity {
         requestWindowFeature(Window.FEATURE_PROGRESS);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        String serverData = getIntent().getStringExtra("servers_data");
+        JSONObject object = null;
+        try {
+            object = new JSONObject(serverData);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        if (object != null){
+            System.out.println("AHUENNO");
+        }
         tempBlackList = new HashSet<>();
 
         getSpeedTestHostsHandler = new GetSpeedTestHostsHandler();

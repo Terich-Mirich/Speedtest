@@ -16,10 +16,17 @@ public class PingTest extends Thread {
     double avgRtt = 0.0;
     boolean finished = false;
     boolean started = false;
+    private Callback callback;
 
     public PingTest(String serverIpAddress, int pingTryCount) {
         this.server = serverIpAddress;
         this.count = pingTryCount;
+    }
+
+    public PingTest(String serverIpAddress, int pingTryCount, Callback callback) {
+        this.server = serverIpAddress;
+        this.count = pingTryCount;
+        this.callback = callback;
     }
 
     public double getAvgRtt() {
@@ -64,6 +71,11 @@ public class PingTest extends Thread {
         }
 
         finished = true;
+        if (callback != null) callback.onFinish(avgRtt, server);
+    }
+
+    public interface Callback{
+        void onFinish(double ms, String server);
     }
 
 }
