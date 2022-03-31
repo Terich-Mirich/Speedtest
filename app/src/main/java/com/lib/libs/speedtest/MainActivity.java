@@ -1,7 +1,10 @@
 package com.lib.libs.speedtest;
 
+import android.content.Context;
 import android.graphics.drawable.GradientDrawable;
 import android.location.Location;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -35,6 +38,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import pl.bclogic.pulsator4droid.library.PulsatorLayout;
 
@@ -52,14 +57,21 @@ public class MainActivity extends AppCompatActivity {
     private ViewGroup mProgressFrame;
     private ViewGroup mCompletionFrame;
     private ViewGroup menuFrame;
+    private ViewGroup mSpeedtestFrame;
+    private ViewGroup mWifiAnalyzerFrame;
 
     private PointerSpeedometer mPointerSpeedometer;
+    private PointerSpeedometer mWifiView;
 
     private View mBackButton;
     private View mBtnStart;
     private View mMenuButton;
     private View mBoxDataLine;
     private View mLinearPingType;
+
+    private View mToolbar;
+    private View mSpeedtestTool;
+    private View mWifiAnalyzerTool;
 
     private TextView mPing;
     private TextView mMeaningDown;
@@ -76,6 +88,9 @@ public class MainActivity extends AppCompatActivity {
     private volatile boolean stopThread;
 
     private FrameGroup currentFrame;
+    private FrameGroup currentSuperFrame;
+
+    Timer timer;
 
     GetSpeedTestHostsHandler getSpeedTestHostsHandler = null;
     HashSet<String> tempBlackList;
@@ -114,6 +129,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         mPointerSpeedometer = findViewById(R.id.speedView);
+        mWifiView = findViewById(R.id.wifiView);
         mPulsator =  findViewById(R.id.pulsator);
         mStartButtonFrame = findViewById(R.id.startButtonFrame);
         mSetupFrame = findViewById(R.id.setupFrame);
@@ -131,6 +147,12 @@ public class MainActivity extends AppCompatActivity {
         mBackButton = findViewById(R.id.backButton);
         mBoxDataLine =findViewById(R.id.boxDataLine);
         mLinearPingType = findViewById(R.id.linearPingType);
+
+        mToolbar = findViewById(R.id.toolbar);
+        mSpeedtestTool = findViewById(R.id.speedtestTool);
+        mWifiAnalyzerTool = findViewById(R.id.wifiAnalyzerTool);
+        mSpeedtestFrame = findViewById(R.id.speedtestFrame);
+        mWifiAnalyzerFrame = findViewById(R.id.wifiAnalyzerFrame);
 
         mPulsator.start();
 
@@ -153,6 +175,14 @@ public class MainActivity extends AppCompatActivity {
             menuController.openMenu();
         });
 
+        mSpeedtestTool.setOnClickListener(v -> {
+            setSuperFrame(SuperFrameGroup.SPEEDTEST);
+        });
+
+        mWifiAnalyzerTool.setOnClickListener(v -> {
+            setSuperFrame(SuperFrameGroup.WIFIANALYZER);
+        });
+
         mBackButton.setOnClickListener(v -> {
             //TODO
             setFrame(FrameGroup.START);
@@ -162,6 +192,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         setFrame(FrameGroup.START);
+        setSuperFrame(SuperFrameGroup.SPEEDTEST);
     }
 
     @Override
@@ -258,6 +289,30 @@ public class MainActivity extends AppCompatActivity {
         PROGRESS,
         COMPLETION
     }
+
+    private void setSuperFrame (SuperFrameGroup superGroup){
+
+       switch (superGroup){
+           case SPEEDTEST:
+               mSpeedtestFrame.setVisibility(View.VISIBLE);
+               mWifiAnalyzerFrame.setVisibility(View.GONE);
+               break;
+
+           case WIFIANALYZER:
+               mSpeedtestFrame.setVisibility(View.GONE);
+               mWifiAnalyzerFrame.setVisibility(View.VISIBLE);
+               break;
+       }
+
+
+    }
+
+    private enum SuperFrameGroup {
+        SPEEDTEST,
+        WIFIANALYZER
+    }
+
+
 
     private void initChart(){
         this.chart = (LineChart) findViewById(R.id.chart1);
@@ -621,6 +676,37 @@ public class MainActivity extends AppCompatActivity {
 
         });
         progressThread.start();
+    }
+
+    public void findWifiStrength() {
+        TextView tv = (TextView)findViewById(R.id.wifiText);
+
+
+        WifiManager wifiManager = (WifiManager)getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+        WifiInfo wifiInfo = wifiManager.getConnectionInfo();
+        int dbm = wifiInfo.getRssi();
+
+        tv.setText(dbm+"");
+    }
+
+    public void updateStrength() {
+
+        final long time = 7000;
+
+        timer = new Timer();
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                runOnUiThread(new Runnable()
+                {
+                    @Override
+                    public void run()
+                    {
+                        findWifiStrength();
+                    }
+                });
+            }
+        }, time, time);
     }
 
 }
