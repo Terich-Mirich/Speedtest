@@ -8,14 +8,14 @@
     android:background="@color/blue_grey_900"
     android:orientation="vertical">
 
+    <!-- constrainButtons-->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constrainButtons"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
         android:paddingHorizontal="6dp"
-        android:paddingVertical="8dp"
-        >
+        android:paddingVertical="8dp">
 
         <ImageView
             android:id="@+id/backButton"
@@ -40,6 +40,7 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <!--    toolbar-->
     <LinearLayout
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
@@ -82,205 +83,212 @@
             android:layout_weight="1"/>
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/boxDataLine"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        app:layout_constraintTop_toBottomOf="@id/constrainButtons"
-        android:weightSum="2">
-        <LinearLayout
-            android:id="@+id/linerDataDown"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center"
-            android:layout_weight="1">
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_baseline_arrow_circle_down_24"
-                    android:layout_marginVertical="5dp"
-                    app:tint="@color/cyan_400" />
-
-                <TextView
-                    android:id="@+id/labelDown"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginVertical="3dp"
-                    android:text="DOWNLOAD"
-                    android:textColor="@color/blue_grey_100"
-                    android:layout_marginLeft="3dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintBottom_toTopOf="@+id/linerDataDown"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toLeftOf="@id/labelUp"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:layout_width="50dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginVertical="3dp"
-                    android:layout_marginLeft="5dp"
-                    android:text="Mbit/s"
-                    android:textColor="@color/blue_grey_500"/>
-
-            </LinearLayout>
-
-
-            <TextView
-                android:id="@+id/meaningDown"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="3dp"
-                android:textSize="28sp"
-                android:text="--"
-                android:textColor="@color/white" />
-
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_baseline_arrow_circle_up_24"
-                    android:layout_marginVertical="5dp"
-                    app:tint="@color/pink_A400" />
-
-                <TextView
-                    android:id="@+id/labelUp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginVertical="3dp"
-                    android:layout_marginLeft="3dp"
-                    android:text="UPLOAD"
-                    android:textColor="@color/blue_grey_100"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintLeft_toRightOf="@id/labelDown"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:layout_width="50dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginVertical="3dp"
-                    android:layout_marginLeft="5dp"
-                    android:text="Mbit/s"
-                    android:textColor="@color/blue_grey_500"/>
-
-            </LinearLayout>
-
-            <TextView
-                android:id="@+id/meaningUp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="3dp"
-                android:textSize="28sp"
-                android:text="--"
-                android:textColor="@color/white" />
-
-
-        </LinearLayout>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/linearPingType"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:visibility="gone"
-        app:layout_constraintTop_toBottomOf="@+id/boxDataLine"
-        app:layout_constraintLeft_toLeftOf="parent"
-        android:weightSum="2"
-        app:layout_constraintRight_toRightOf="parent">
-
-        <TextView
-            android:id="@+id/pingLinearText"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginVertical="10dp"
-            android:text="Ping:"
-            android:textColor="@color/blue_grey_500"
-            android:gravity="center"
-            android:layout_weight="1"/>
-
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginVertical="10dp"
-            android:text="Wi-Fi"
-            android:textColor="@color/blue_grey_500"
-            android:layout_weight="1"
-            android:gravity="center"/>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/linearHostType"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:visibility="gone"
-        app:layout_constraintTop_toBottomOf="@+id/linearPingType"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent">
-
-        <TextView
-            android:id="@+id/hostLinearText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Host-Huest"
-            android:textColor="@color/blue_grey_500"
-
-            android:gravity="center"/>
-
-
-    </LinearLayout>
-
-    <FrameLayout
+    <!--  speedtestFrame  -->
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/speedtestFrame"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone">
+        android:layout_height="0dp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@id/toolbar"
+        app:layout_constraintTop_toBottomOf="@id/constrainButtons">
 
+        <!--    boxDataLine-->
+        <LinearLayout
+            android:id="@+id/boxDataLine"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            android:weightSum="2"
+            app:layout_constraintBottom_toTopOf="@+id/linearPingType">
+
+            <LinearLayout
+                android:id="@+id/linerDataDown"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginVertical="5dp"
+                        android:src="@drawable/ic_baseline_arrow_circle_down_24"
+                        app:tint="@color/cyan_400" />
+
+                    <TextView
+                        android:id="@+id/labelDown"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginVertical="3dp"
+                        android:layout_marginLeft="3dp"
+                        android:text="DOWNLOAD"
+                        android:textColor="@color/blue_grey_100"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toLeftOf="@id/labelUp"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:layout_width="50dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginVertical="3dp"
+                        android:layout_marginLeft="5dp"
+                        android:text="Mbit/s"
+                        android:textColor="@color/blue_grey_500" />
+
+                </LinearLayout>
+
+
+                <TextView
+                    android:id="@+id/meaningDown"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="3dp"
+                    android:text="--"
+                    android:textColor="@color/white"
+                    android:textSize="28sp" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginVertical="5dp"
+                        android:src="@drawable/ic_baseline_arrow_circle_up_24"
+                        app:tint="@color/pink_A400" />
+
+                    <TextView
+                        android:id="@+id/labelUp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginVertical="3dp"
+                        android:layout_marginLeft="3dp"
+                        android:text="UPLOAD"
+                        android:textColor="@color/blue_grey_100"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintLeft_toRightOf="@id/labelDown"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:layout_width="50dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginVertical="3dp"
+                        android:layout_marginLeft="5dp"
+                        android:text="Mbit/s"
+                        android:textColor="@color/blue_grey_500" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/meaningUp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="3dp"
+                    android:text="--"
+                    android:textColor="@color/white"
+                    android:textSize="28sp" />
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!--    linearPingType-->
+        <LinearLayout
+            android:id="@+id/linearPingType"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="visible"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/boxDataLine">
+
+            <TextView
+                android:id="@+id/pingLinearText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="10dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Ping:"
+                android:textColor="@color/blue_grey_500" />
+
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="10dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Wi-Fi"
+                android:textColor="@color/blue_grey_500" />
+
+        </LinearLayout>
+
+        <!--    linearHostType-->
+        <LinearLayout
+            android:id="@+id/linearHostType"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="visible"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearPingType">
+
+            <TextView
+                android:id="@+id/hostLinearText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Host-Huest"
+
+                android:textColor="@color/blue_grey_500" />
+
+
+        </LinearLayout>
+
+        <!-- startButtonFrame-->
         <FrameLayout
             android:id="@+id/startButtonFrame"
-            android:visibility="gone"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_constraintTop_toBottomOf="@id/constrainButtons">
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <pl.bclogic.pulsator4droid.library.PulsatorLayout
                 android:id="@+id/pulsator"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_alignParentTop="true"
+                app:pulse_color="@color/blue_grey_400"
                 app:pulse_count="4"
                 app:pulse_duration="7000"
+                app:pulse_interpolator="Decelerate"
                 app:pulse_repeat="0"
-                app:pulse_color="@color/blue_grey_400"
-                app:pulse_startFromScratch="true"
-                app:pulse_interpolator="Decelerate">
+                app:pulse_startFromScratch="true">
 
                 <FrameLayout
                     android:layout_width="match_parent"
@@ -293,23 +301,18 @@
                         android:layout_width="164dp"
                         android:layout_height="164dp"
                         android:layout_centerInParent="true"
-                        android:src="@drawable/start_button_bg"
                         android:layout_gravity="center"
-                        />
+                        android:src="@drawable/start_button_bg" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="GO"
-                        android:textSize="50sp"
-                        android:textColor="@color/blue_grey_500"
                         android:layout_gravity="center"
-                        />
+                        android:text="GO"
+                        android:textColor="@color/blue_grey_500"
+                        android:textSize="50sp" />
 
                 </FrameLayout>
-
-
-
 
 
             </pl.bclogic.pulsator4droid.library.PulsatorLayout>
@@ -317,42 +320,44 @@
 
         </FrameLayout>
 
+        <!-- setupFrame-->
         <FrameLayout
             android:id="@+id/setupFrame"
-            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_constraintTop_toBottomOf="@id/constrainButtons">
+            android:visibility="gone">
 
             <TextView
                 android:id="@+id/setupText"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:gravity="center"
                 android:text="Host-Huest"
-                android:textColor="@color/blue_grey_400"
-                android:gravity="center"/>
-
-
+                android:textColor="@color/blue_grey_400" />
 
 
         </FrameLayout>
 
+        <!-- progressFrame-->
         <FrameLayout
             android:id="@+id/progressFrame"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="@+id/toolbar"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/linearHostType">
 
             <LinearLayout
                 android:id="@+id/instruments"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:orientation="vertical"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent">
-
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"/>
 
                 <com.github.anastr.speedviewlib.PointerSpeedometer
                     android:id="@+id/speedView"
@@ -375,6 +380,10 @@
                     app:sv_unitTextColor="@color/blue_grey_400"
                     app:sv_withPointer="false" />
 
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"/>
                 <RelativeLayout
                     android:id="@+id/chartViev"
                     android:layout_width="match_parent"
@@ -391,18 +400,19 @@
             </LinearLayout>
         </FrameLayout>
 
+        <!-- completionFrame-->
         <FrameLayout
             android:id="@+id/completionFrame"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/constrainButtons">
+            app:layout_constraintBottom_toBottomOf="parent">
 
         </FrameLayout>
 
-    </FrameLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <!--    menuFrameBackground-->
     <FrameLayout
         android:id="@+id/menuFrameBackground"
         android:layout_width="match_parent"
@@ -413,6 +423,7 @@
 
     </FrameLayout>
 
+    <!--    menuFrame-->
     <FrameLayout
         android:id="@+id/menuFrame"
         android:layout_width="match_parent"
@@ -538,11 +549,12 @@
 
     </FrameLayout>
 
+    <!--    wifiAnalyzerFrame-->
     <FrameLayout
         android:id="@+id/wifiAnalyzerFrame"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:visibility="visible"
+        android:visibility="gone"
         android:layout_marginBottom="56dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/constrainButtons">
@@ -573,7 +585,7 @@
                 app:sv_speedometerColor="@color/blue_grey_400"
                 app:sv_textColor="@color/blue_grey_400"
                 app:sv_unit="dBm"
-
+                app:sv_trembleDegree="0.3"
                 app:sv_unitTextColor="@color/blue_grey_400"
                 app:sv_withPointer="false" />
 

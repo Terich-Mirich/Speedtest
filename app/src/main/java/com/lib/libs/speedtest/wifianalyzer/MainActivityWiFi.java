@@ -113,13 +113,12 @@ public class MainActivityWiFi extends AppCompatActivity {
     }
 
     public void findWifiStrength() {
-        TextView tv = (TextView)findViewById(R.id.wifiText);
+
 
         WifiManager wifiManager = (WifiManager)getApplicationContext().getSystemService(Context.WIFI_SERVICE);
         WifiInfo wifiInfo = wifiManager.getConnectionInfo();
         int dbm = wifiInfo.getRssi();
 
-        tv.setText(dbm+"");
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)

@@ -1,6 +1,7 @@
 package com.lib.libs.speedtest;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.location.Location;
 import android.net.wifi.WifiInfo;
@@ -11,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -70,8 +72,8 @@ public class MainActivity extends AppCompatActivity {
     private View mLinearPingType;
 
     private View mToolbar;
-    private View mSpeedtestTool;
-    private View mWifiAnalyzerTool;
+    private ImageView mSpeedtestTool;
+    private ImageView mWifiAnalyzerTool;
 
     private TextView mPing;
     private TextView mMeaningDown;
@@ -130,6 +132,7 @@ public class MainActivity extends AppCompatActivity {
 
         mPointerSpeedometer = findViewById(R.id.speedView);
         mWifiView = findViewById(R.id.wifiView);
+        mWifiView.setMinMaxSpeed(-100, 0);
         mPulsator =  findViewById(R.id.pulsator);
         mStartButtonFrame = findViewById(R.id.startButtonFrame);
         mSetupFrame = findViewById(R.id.setupFrame);
@@ -174,14 +177,20 @@ public class MainActivity extends AppCompatActivity {
 //            menuController = new MenuController(this, menuFrame);
             menuController.openMenu();
         });
-
+        mSpeedtestTool.setColorFilter(getResources().getColor(R.color.cyan_400));
         mSpeedtestTool.setOnClickListener(v -> {
             setSuperFrame(SuperFrameGroup.SPEEDTEST);
+            mWifiAnalyzerTool.setColorFilter(getResources().getColor(R.color.blue_grey_400));
+            mSpeedtestTool.setColorFilter(getResources().getColor(R.color.cyan_400));
         });
+
 
         mWifiAnalyzerTool.setOnClickListener(v -> {
             setSuperFrame(SuperFrameGroup.WIFIANALYZER);
+            mWifiAnalyzerTool.setColorFilter(getResources().getColor(R.color.pink_A400));
+            mSpeedtestTool.setColorFilter(getResources().getColor(R.color.blue_grey_400));
         });
+
 
         mBackButton.setOnClickListener(v -> {
             //TODO
@@ -193,6 +202,7 @@ public class MainActivity extends AppCompatActivity {
 
         setFrame(FrameGroup.START);
         setSuperFrame(SuperFrameGroup.SPEEDTEST);
+        updateStrength();
     }
 
     @Override
@@ -679,19 +689,30 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void findWifiStrength() {
-        TextView tv = (TextView)findViewById(R.id.wifiText);
-
-
         WifiManager wifiManager = (WifiManager)getApplicationContext().getSystemService(Context.WIFI_SERVICE);
         WifiInfo wifiInfo = wifiManager.getConnectionInfo();
         int dbm = wifiInfo.getRssi();
+        mWifiView.speedPercentTo(100 - Math.abs(dbm));
+        mWifiView.setSpeedometerColor(0xFFFFFFFF);
+        if (dbm > -60){
+            mWifiView.setSpeedometerColor(getResources().getColor(R.color.cyan_400));
+            mWifiView.setSpeedTextColor(getResources().getColor(R.color.cyan_400));
+            mWifiView.setUnitTextColor(getResources().getColor(R.color.cyan_400));
+        } else if (dbm > -80){
+            mWifiView.setSpeedometerColor(getResources().getColor(R.color.blue_grey_400));
+            mWifiView.setSpeedTextColor(getResources().getColor(R.color.blue_grey_400));
+            mWifiView.setUnitTextColor(getResources().getColor(R.color.blue_grey_400));
+        } else {
+            mWifiView.setSpeedometerColor(getResources().getColor(R.color.pink_A400));
+            mWifiView.setSpeedTextColor(getResources().getColor(R.color.pink_A400));
+            mWifiView.setUnitTextColor(getResources().getColor(R.color.pink_A400));
+        }
 
-        tv.setText(dbm+"");
     }
 
     public void updateStrength() {
 
-        final long time = 7000;
+        final long time = 1000;
 
         timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {

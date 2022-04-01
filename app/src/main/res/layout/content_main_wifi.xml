@@ -82,7 +82,7 @@
         android:paddingBottom="16dp"
         android:gravity="center_horizontal"/>
     <TextView
-        android:id="@+id/wifiText"
+        android:id="@+id/wifiText1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         tools:text="-30"
