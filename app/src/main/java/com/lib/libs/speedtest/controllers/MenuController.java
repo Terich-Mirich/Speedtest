@@ -173,8 +173,8 @@ public class MenuController {
     private void showMenuGroup(MenuGroup group){
         if (currentGroup != null) return;
         currentGroup = group;
-        Animation animFadeIn = AnimationUtils.loadAnimation(activity.getApplicationContext(), R.anim.fade_in_menu);
-        mBackMenuButton.startAnimation(animFadeIn);
+        Animation animFadeInMenu = AnimationUtils.loadAnimation(activity.getApplicationContext(), R.anim.fade_in_menu);
+        mBackMenuButton.startAnimation(animFadeInMenu);
         mBackMenuButton.setVisibility(View.VISIBLE);
         switch (group){
             case HISTORY:

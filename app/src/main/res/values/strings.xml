@@ -15,6 +15,19 @@
 
     <string name="update_downloaded_complete" formatted="false">Speed: %s kbit/sec</string>
 
+
+
+<!--    start frame-->
+    <string name="go_btn">GO</string>
+<!--    boxDataLine-->
+    <string name="label_down">DOWNLOAD</string>
+    <string name="speed_unit">Mbit/s</string>
+    <string name="label_up">UPLOAD</string>
+
+<!--    linearPingType-->
+    <string name="ping_linear_text">Ping:</string>
+    <string name="host_info">Host Location: %s [Distance: %s km]</string>
+
 <!--    menu layout history-->
     <string name="menu_history_title">History</string>
 
@@ -98,6 +111,13 @@
         \nAjay Kaushal
         \najaykaushal465@gmail.com
     </string>
+
+<!--    text title-->
+    <string name="text_title_speedtest">speedtest</string>
+    <string name="text_title_wifi">Wi-Fi analyzer</string>
+
+<!--    errors-->
+    <string name="host_error">There was a problem in getting Host Location. Try again later.</string>
 
 
 

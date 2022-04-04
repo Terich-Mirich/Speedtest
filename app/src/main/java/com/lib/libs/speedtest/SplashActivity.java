@@ -105,7 +105,7 @@ public class SplashActivity extends AppCompatActivity {
             }
             boolean showing = AdDataSource.get().showInterstitial(this,
                     new FullScreenContentCallback() {
-                        @Override public void onAdFailedToShowFullScreenContent(@NonNull AdError adError) { startMainScreen(); }
+                        @Override public void onAdFailedToShowFullScreenContent(@NonNull AdError adError) { }
                         @Override public void onAdShowedFullScreenContent() { }
                         @Override public void onAdDismissedFullScreenContent() { startMainScreen(); }
                     });

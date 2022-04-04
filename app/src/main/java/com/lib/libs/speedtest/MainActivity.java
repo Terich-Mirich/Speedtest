@@ -1,7 +1,6 @@
 package com.lib.libs.speedtest;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.location.Location;
 import android.net.wifi.WifiInfo;
@@ -12,6 +11,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -80,6 +81,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView mMeaningUp;
     private TextView mHostLinearText;
     private TextView mSetupText;
+    private TextView mTextTitle;
 
     private LineChart chart;
     private List<Float> listData;
@@ -91,6 +93,7 @@ public class MainActivity extends AppCompatActivity {
 
     private FrameGroup currentFrame;
     private FrameGroup currentSuperFrame;
+
 
     Timer timer;
 
@@ -146,6 +149,7 @@ public class MainActivity extends AppCompatActivity {
         mMenuButton = findViewById(R.id.menuButton);
         mHostLinearText = findViewById(R.id.hostLinearText);
         mSetupText = findViewById(R.id.setupText);
+        mTextTitle = findViewById(R.id.textTitle);
 
         mBackButton = findViewById(R.id.backButton);
         mBoxDataLine =findViewById(R.id.boxDataLine);
@@ -157,12 +161,12 @@ public class MainActivity extends AppCompatActivity {
         mSpeedtestFrame = findViewById(R.id.speedtestFrame);
         mWifiAnalyzerFrame = findViewById(R.id.wifiAnalyzerFrame);
 
+
         mPulsator.start();
 
         menuController = new MenuController(this, menuFrame);
 
         mBtnStart.setOnClickListener(view -> {
-            setFrame(FrameGroup.PROGRESS);
             stopThread = false;
             setProgressBarVisibility(true);
             mBtnStart.setEnabled(false);
@@ -187,7 +191,7 @@ public class MainActivity extends AppCompatActivity {
 
         mWifiAnalyzerTool.setOnClickListener(v -> {
             setSuperFrame(SuperFrameGroup.WIFIANALYZER);
-            mWifiAnalyzerTool.setColorFilter(getResources().getColor(R.color.pink_A400));
+            mWifiAnalyzerTool.setColorFilter(getResources().getColor(R.color.cyan_400));
             mSpeedtestTool.setColorFilter(getResources().getColor(R.color.blue_grey_400));
         });
 
@@ -253,7 +257,7 @@ public class MainActivity extends AppCompatActivity {
             case START:
                 mBoxDataLine.setVisibility(View.GONE);
                 mLinearPingType.setVisibility(View.GONE);
-                mBackButton.setVisibility(View.GONE);
+                mBackButton.setVisibility(View.INVISIBLE);
                 mStartButtonFrame.setVisibility(View.VISIBLE);
                 mProgressFrame.setVisibility(View.GONE);
                 mCompletionFrame.setVisibility(View.GONE);
@@ -261,31 +265,126 @@ public class MainActivity extends AppCompatActivity {
                 mSetupFrame.setVisibility(View.GONE);
                 break;
             case SETUP:
-                mBoxDataLine.setVisibility(View.VISIBLE);
-                mLinearPingType.setVisibility(View.VISIBLE);
-                mBackButton.setVisibility(View.GONE);
-                mStartButtonFrame.setVisibility(View.GONE);
-                mProgressFrame.setVisibility(View.GONE);
-                mCompletionFrame.setVisibility(View.GONE);
-                mHostLinearText.setVisibility(View.GONE);
-                mSetupFrame.setVisibility(View.VISIBLE);
+                Animation animFadeOutStartBtn = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade_out_start_frame);
+                mStartButtonFrame.startAnimation(animFadeOutStartBtn);
+                animFadeOutStartBtn.setAnimationListener(new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+                        Animation animFadeInBoxDataLine = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade_in_setup_frame);
+                        mSetupFrame.startAnimation(animFadeInBoxDataLine);
+                        mBoxDataLine.setVisibility(View.VISIBLE);
+                        mLinearPingType.setVisibility(View.VISIBLE);
+                        mBackButton.setVisibility(View.INVISIBLE);
+                        mStartButtonFrame.setVisibility(View.GONE);
+                        mProgressFrame.setVisibility(View.GONE);
+                        mCompletionFrame.setVisibility(View.GONE);
+                        mHostLinearText.setVisibility(View.GONE);
+                        mSetupFrame.setVisibility(View.VISIBLE);
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {
+
+                    }
+                });
+
+
+
                 break;
             case PROGRESS:
+                Animation animFadeInPointerSpeedometer = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade_in_pointer_speedometr);
+                mPointerSpeedometer.startAnimation(animFadeInPointerSpeedometer);
+                animFadeInPointerSpeedometer.setAnimationListener(new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {
+                        mSetupFrame.setVisibility(View.GONE);
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+                        mPointerSpeedometer.setVisibility(View.VISIBLE);
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {
+
+                    }
+                });
+                Animation animFadeInChart = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade_in_chart);
+                chart.startAnimation(animFadeInChart);
+                animFadeInChart.setStartOffset(300);
+                animFadeInChart.setAnimationListener(new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+                        chart.setVisibility(View.VISIBLE);
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {
+
+                    }
+                });
                 mBoxDataLine.setVisibility(View.VISIBLE);
+                mProgressFrame.setVisibility(View.VISIBLE);
                 mLinearPingType.setVisibility(View.VISIBLE);
                 mBackButton.setVisibility(View.VISIBLE);
                 mStartButtonFrame.setVisibility(View.GONE);
-                mProgressFrame.setVisibility(View.VISIBLE);
                 mCompletionFrame.setVisibility(View.GONE);
                 mHostLinearText.setVisibility(View.VISIBLE);
                 mSetupFrame.setVisibility(View.GONE);
                 break;
             case COMPLETION:
+                Animation animFadeOutPointerSpeedometr = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade_out_pointer_speedometr);
+                mPointerSpeedometer.startAnimation(animFadeOutPointerSpeedometr);
+                animFadeOutPointerSpeedometr.setAnimationListener(new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+                        mPointerSpeedometer.setVisibility(View.GONE);
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {
+
+                    }
+                });
+                Animation animFadeOutChart = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade_out_chart);
+                chart.startAnimation(animFadeOutChart);
+                animFadeOutChart.setStartOffset(300);
+                animFadeOutChart.setAnimationListener(new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+                        mProgressFrame.setVisibility(View.GONE);
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {
+
+                    }
+                });
                 mBoxDataLine.setVisibility(View.VISIBLE);
                 mLinearPingType.setVisibility(View.VISIBLE);
                 mBackButton.setVisibility(View.VISIBLE);
                 mStartButtonFrame.setVisibility(View.GONE);
-                mProgressFrame.setVisibility(View.GONE);
                 mCompletionFrame.setVisibility(View.VISIBLE);
                 mHostLinearText.setVisibility(View.VISIBLE);
                 mSetupFrame.setVisibility(View.GONE);
@@ -306,11 +405,13 @@ public class MainActivity extends AppCompatActivity {
            case SPEEDTEST:
                mSpeedtestFrame.setVisibility(View.VISIBLE);
                mWifiAnalyzerFrame.setVisibility(View.GONE);
+               mTextTitle.setText(getString(R.string.text_title_speedtest));
                break;
 
            case WIFIANALYZER:
                mSpeedtestFrame.setVisibility(View.GONE);
                mWifiAnalyzerFrame.setVisibility(View.VISIBLE);
+               mTextTitle.setText(getString(R.string.text_title_wifi));
                break;
        }
 
@@ -461,14 +562,14 @@ public class MainActivity extends AppCompatActivity {
 
             if (info == null) {
                 runOnUiThread(() -> {
-                        mSetupText.setText("There was a problem in getting Host Location. Try again later.");
+                        mSetupText.setText(R.string.host_error);
                 });
                 return;
             }
 
             runOnUiThread(() -> {
-                    mSetupText.setText(String.format("Host Location: %s [Distance: %s km]", info.get(2), new DecimalFormat("#.##").format(distance / 1000)));
-                    mHostLinearText.setText(String.format("Host Location: %s [Distance: %s km]", info.get(2), new DecimalFormat("#.##").format(distance / 1000)));
+                    mSetupText.setText(String.format(getString(R.string.host_info), info.get(2), new DecimalFormat("#.##").format(distance / 1000)));
+                    mHostLinearText.setText(String.format(getString(R.string.host_info), info.get(2), new DecimalFormat("#.##").format(distance / 1000)));
             });
 
 
