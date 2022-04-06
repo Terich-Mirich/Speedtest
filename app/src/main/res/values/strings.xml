@@ -28,6 +28,9 @@
     <string name="ping_linear_text">Ping:</string>
     <string name="host_info">Host Location: %s [Distance: %s km]</string>
 
+<!--    completion Frame-->
+    <string name="rate_the_app">Rate the app</string>
+
 <!--    menu layout history-->
     <string name="menu_history_title">History</string>
 

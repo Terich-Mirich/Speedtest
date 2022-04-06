@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentActivity;
 
 import com.github.anastr.speedviewlib.PointerSpeedometer;
 import com.github.mikephil.charting.charts.LineChart;
@@ -27,20 +28,26 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.lib.libs.speedtest.controllers.MenuController;
+import com.lib.libs.speedtest.controllers.RateDialogController;
+import com.lib.libs.speedtest.controllers.support.MenuSupportController;
 import com.lib.libs.speedtest.models.HistoryItem;
 import com.lib.libs.speedtest.test.HttpDownloadTest;
 import com.lib.libs.speedtest.test.HttpUploadTest;
 import com.lib.libs.speedtest.test.PingTest;
+import com.lib.libs.speedtest.utils.Utils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -82,6 +89,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView mHostLinearText;
     private TextView mSetupText;
     private TextView mTextTitle;
+    private TextView mRateTheApp;
 
     private LineChart chart;
     private List<Float> listData;
@@ -93,6 +101,9 @@ public class MainActivity extends AppCompatActivity {
 
     private FrameGroup currentFrame;
     private FrameGroup currentSuperFrame;
+
+    private HashMap<String, Double> hostsMap = new HashMap<>();
+    private String host;
 
 
     Timer timer;
@@ -125,7 +136,22 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         if (object != null){
-            System.out.println("AHUENNO");
+            try {
+                hostsMap = (HashMap<String, Double>) Utils.jsonToMap(object);
+
+                Object[] a = hostsMap.entrySet().toArray();
+                Arrays.sort(a, new Comparator() {
+                    public int compare(Object o1, Object o2) {
+                        return ((Map.Entry<String, Double>) o1).getValue()
+                                .compareTo(((Map.Entry<String, Double>) o2).getValue());
+                    }
+                });
+                host = ((Map.Entry<String, Double>) a[0]).getKey();
+                System.out.println("AHUENNO");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
         }
         tempBlackList = new HashSet<>();
 
@@ -150,6 +176,7 @@ public class MainActivity extends AppCompatActivity {
         mHostLinearText = findViewById(R.id.hostLinearText);
         mSetupText = findViewById(R.id.setupText);
         mTextTitle = findViewById(R.id.textTitle);
+        mRateTheApp = findViewById(R.id.rateTheApp);
 
         mBackButton = findViewById(R.id.backButton);
         mBoxDataLine =findViewById(R.id.boxDataLine);
@@ -202,6 +229,10 @@ public class MainActivity extends AppCompatActivity {
             mBtnStart.setEnabled(true);
             progressThread.interrupt();
             stopThread = true;
+        });
+
+        mRateTheApp.setOnClickListener(v -> {
+            RateDialogController.show(this);
         });
 
         setFrame(FrameGroup.START);
@@ -266,7 +297,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case SETUP:
                 Animation animFadeOutStartBtn = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade_out_start_frame);
-                mStartButtonFrame.startAnimation(animFadeOutStartBtn);
+
                 animFadeOutStartBtn.setAnimationListener(new Animation.AnimationListener() {
                     @Override
                     public void onAnimationStart(Animation animation) {
@@ -285,6 +316,38 @@ public class MainActivity extends AppCompatActivity {
                         mCompletionFrame.setVisibility(View.GONE);
                         mHostLinearText.setVisibility(View.GONE);
                         mSetupFrame.setVisibility(View.VISIBLE);
+
+                        Animation animFadeInPointerSpeedometer = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade_in_pointer_speedometr);
+                        mPointerSpeedometer.startAnimation(animFadeInPointerSpeedometer);
+                        animFadeInPointerSpeedometer.setAnimationListener(new Animation.AnimationListener() {
+                            @Override
+                            public void onAnimationStart(Animation animation) {
+                                mSetupFrame.setVisibility(View.GONE);
+                            }
+
+                            @Override
+                            public void onAnimationEnd(Animation animation) {
+                                mPointerSpeedometer.setVisibility(View.VISIBLE);
+                            }
+
+                            @Override
+                            public void onAnimationRepeat(Animation animation) { }
+                        });
+                        Animation animFadeInChart = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade_in_chart);
+                        chart.startAnimation(animFadeInChart);
+                        animFadeInChart.setStartOffset(300);
+                        animFadeInChart.setAnimationListener(new Animation.AnimationListener() {
+                            @Override
+                            public void onAnimationStart(Animation animation) { }
+
+                            @Override
+                            public void onAnimationEnd(Animation animation) {
+                                chart.setVisibility(View.VISIBLE);
+                            }
+
+                            @Override
+                            public void onAnimationRepeat(Animation animation) { }
+                        });
                     }
 
                     @Override
@@ -292,48 +355,11 @@ public class MainActivity extends AppCompatActivity {
 
                     }
                 });
-
+                mStartButtonFrame.startAnimation(animFadeOutStartBtn);
 
 
                 break;
             case PROGRESS:
-                Animation animFadeInPointerSpeedometer = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade_in_pointer_speedometr);
-                mPointerSpeedometer.startAnimation(animFadeInPointerSpeedometer);
-                animFadeInPointerSpeedometer.setAnimationListener(new Animation.AnimationListener() {
-                    @Override
-                    public void onAnimationStart(Animation animation) {
-                        mSetupFrame.setVisibility(View.GONE);
-                    }
-
-                    @Override
-                    public void onAnimationEnd(Animation animation) {
-                        mPointerSpeedometer.setVisibility(View.VISIBLE);
-                    }
-
-                    @Override
-                    public void onAnimationRepeat(Animation animation) {
-
-                    }
-                });
-                Animation animFadeInChart = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade_in_chart);
-                chart.startAnimation(animFadeInChart);
-                animFadeInChart.setStartOffset(300);
-                animFadeInChart.setAnimationListener(new Animation.AnimationListener() {
-                    @Override
-                    public void onAnimationStart(Animation animation) {
-
-                    }
-
-                    @Override
-                    public void onAnimationEnd(Animation animation) {
-                        chart.setVisibility(View.VISIBLE);
-                    }
-
-                    @Override
-                    public void onAnimationRepeat(Animation animation) {
-
-                    }
-                });
                 mBoxDataLine.setVisibility(View.VISIBLE);
                 mProgressFrame.setVisibility(View.VISIBLE);
                 mLinearPingType.setVisibility(View.VISIBLE);
@@ -368,12 +394,16 @@ public class MainActivity extends AppCompatActivity {
                 animFadeOutChart.setAnimationListener(new Animation.AnimationListener() {
                     @Override
                     public void onAnimationStart(Animation animation) {
-
+                        mCompletionFrame.setVisibility(View.GONE);
                     }
 
                     @Override
                     public void onAnimationEnd(Animation animation) {
                         mProgressFrame.setVisibility(View.GONE);
+                        mCompletionFrame.setVisibility(View.VISIBLE);
+                        Animation animFadeInCompletionFrame = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade_in_completion_frame);
+                        animFadeInCompletionFrame.setStartOffset(500);
+                        mCompletionFrame.startAnimation(animFadeInCompletionFrame);
                     }
 
                     @Override

@@ -104,7 +104,7 @@
         android:id="@+id/speedtestFrame"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:visibility="visible"
+        android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@id/toolbar"
         app:layout_constraintTop_toBottomOf="@id/constrainButtons">
 
@@ -358,7 +358,7 @@
             android:id="@+id/progressFrame"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:visibility="visible"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/linearHostType">
 
@@ -420,8 +420,28 @@
             android:id="@+id/completionFrame"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent">
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearHostType">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_marginTop="15dp">
+
+                <TextView
+                    android:id="@+id/rateTheApp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/back_for_button_with_corners"
+                    android:text="@string/rate_the_app"
+                    android:textColor="@color/cyan_400"
+                    android:textSize="18sp"/>
+            </LinearLayout>
+
+
+
 
         </FrameLayout>
 
@@ -435,6 +455,50 @@
         android:layout_height="match_parent"
         android:background="#74000000">
 
+
+    </FrameLayout>
+
+    <!--    wifiAnalyzerFrame-->
+    <FrameLayout
+        android:id="@+id/wifiAnalyzerFrame"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:visibility="visible"
+        android:layout_marginBottom="56dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/constrainButtons">
+
+        <LinearLayout
+            android:id="@+id/linearWifiTool"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="vertical"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent">
+
+
+            <com.github.anastr.speedviewlib.PointerSpeedometer
+                android:id="@+id/wifiView"
+                android:layout_width="wrap_content"
+
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                app:sv_backgroundCircleColor="#00000000"
+                app:sv_centerCircleColor="@color/blue_grey_400"
+                app:sv_indicator="NeedleIndicator"
+                app:sv_indicatorColor="@color/blue_grey_400"
+                app:sv_indicatorLightColor="@color/blue_grey_400"
+                app:sv_markColor="@color/blue_grey_400"
+                app:sv_speedTextColor="@color/blue_grey_400"
+                app:sv_speedometerColor="@color/blue_grey_400"
+                app:sv_textColor="@color/blue_grey_400"
+                app:sv_unit="dBm"
+                app:sv_trembleDegree="0.3"
+                app:sv_unitTextColor="@color/blue_grey_400"
+                app:sv_withPointer="false" />
+
+        </LinearLayout>
 
     </FrameLayout>
 
@@ -568,48 +632,6 @@
 
     </FrameLayout>
 
-    <!--    wifiAnalyzerFrame-->
-    <FrameLayout
-        android:id="@+id/wifiAnalyzerFrame"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:visibility="gone"
-        android:layout_marginBottom="56dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/constrainButtons">
 
-        <LinearLayout
-            android:id="@+id/linearWifiTool"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:orientation="vertical"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent">
-
-
-            <com.github.anastr.speedviewlib.PointerSpeedometer
-                android:id="@+id/wifiView"
-                android:layout_width="wrap_content"
-
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                app:sv_backgroundCircleColor="#00000000"
-                app:sv_centerCircleColor="@color/blue_grey_400"
-                app:sv_indicator="NeedleIndicator"
-                app:sv_indicatorColor="@color/blue_grey_400"
-                app:sv_indicatorLightColor="@color/blue_grey_400"
-                app:sv_markColor="@color/blue_grey_400"
-                app:sv_speedTextColor="@color/blue_grey_400"
-                app:sv_speedometerColor="@color/blue_grey_400"
-                app:sv_textColor="@color/blue_grey_400"
-                app:sv_unit="dBm"
-                app:sv_trembleDegree="0.3"
-                app:sv_unitTextColor="@color/blue_grey_400"
-                app:sv_withPointer="false" />
-
-        </LinearLayout>
-
-    </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
