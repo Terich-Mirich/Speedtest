@@ -1,6 +1,7 @@
 package com.lib.libs.speedtest;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.GradientDrawable;
 import android.location.Location;
 import android.net.wifi.WifiInfo;
@@ -42,6 +43,7 @@ import org.json.JSONObject;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
@@ -101,26 +103,21 @@ public class MainActivity extends AppCompatActivity {
 
     private FrameGroup currentFrame;
     private FrameGroup currentSuperFrame;
+    private ArrayList<Host> hosts;
+    private Host currentHost;
 
-    private HashMap<String, Double> hostsMap = new HashMap<>();
-    private String host;
+//    private HashMap<String, Double> hostsMap = new HashMap<>();
+//    private String host;
 
 
     Timer timer;
 
-    GetSpeedTestHostsHandler getSpeedTestHostsHandler = null;
+//    GetSpeedTestHostsHandler getSpeedTestHostsHandler = null;
     HashSet<String> tempBlackList;
     private final DecimalFormat dec = new DecimalFormat("#.#");
 
 
 
-    @Override
-    public void onResume() {
-        super.onResume();
-
-        getSpeedTestHostsHandler = new GetSpeedTestHostsHandler();
-        getSpeedTestHostsHandler.start();
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -128,35 +125,16 @@ public class MainActivity extends AppCompatActivity {
         requestWindowFeature(Window.FEATURE_PROGRESS);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        String serverData = getIntent().getStringExtra("servers_data");
-        JSONObject object = null;
-        try {
-            object = new JSONObject(serverData);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        if (object != null){
-            try {
-                hostsMap = (HashMap<String, Double>) Utils.jsonToMap(object);
 
-                Object[] a = hostsMap.entrySet().toArray();
-                Arrays.sort(a, new Comparator() {
-                    public int compare(Object o1, Object o2) {
-                        return ((Map.Entry<String, Double>) o1).getValue()
-                                .compareTo(((Map.Entry<String, Double>) o2).getValue());
-                    }
-                });
-                host = ((Map.Entry<String, Double>) a[0]).getKey();
-                System.out.println("AHUENNO");
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
 
-        }
+        Intent i = getIntent();
+        Bundle args = i.getBundleExtra("BUNDLE");
+        hosts = (ArrayList<Host>) args.getSerializable("ARRAYLIST");
+        System.out.println("stop");
+        currentHost = hosts.get(0);
+        Collections.sort(hosts);
+        System.out.println("");
         tempBlackList = new HashSet<>();
-
-        getSpeedTestHostsHandler = new GetSpeedTestHostsHandler();
-        getSpeedTestHostsHandler.start();
 
 
         mPointerSpeedometer = findViewById(R.id.speedView);
@@ -526,80 +504,27 @@ public class MainActivity extends AppCompatActivity {
     public void buttonClickStart(){
         setFrame(FrameGroup.SETUP);
         //Restart test icin eger baglanti koparsa
-        if (getSpeedTestHostsHandler == null) {
-            getSpeedTestHostsHandler = new GetSpeedTestHostsHandler();
-            getSpeedTestHostsHandler.start();
-        }
 
         progressThread = new Thread(() -> {
             runOnUiThread(() -> {
                 mSetupText.setText("Selecting best server based on ping...");
             });
 
-            //Get egcodes.speedtest hosts
-            int timeCount = 600; //1min
-            while (!getSpeedTestHostsHandler.isFinished()) {
-                timeCount--;
-                try {
-                    Thread.sleep(100);
-                } catch (InterruptedException e) {
-                }
-                if (timeCount <= 0) {
-                    runOnUiThread(() -> {
-                        mSetupText.setText("No Connection...");
-//                            startButton.setEnabled(true);
-//                            startButton.setTextSize(16);
-//                            startButton.setText("Restart Test");
-                    });
-                    getSpeedTestHostsHandler = null;
-                    return;
-                }
-            }
+
 
             //Find closest server
-            HashMap<Integer, String> mapKey = getSpeedTestHostsHandler.getMapKey();
-            HashMap<Integer, List<String>> mapValue = getSpeedTestHostsHandler.getMapValue();
-            double selfLat = getSpeedTestHostsHandler.getSelfLat();
-            double selfLon = getSpeedTestHostsHandler.getSelfLon();
-            double tmp = 19349458;
-            double dist = 0.0;
-            int findServerIndex = 0;
-            for (int index : mapKey.keySet()) {
-                if (tempBlackList.contains(mapValue.get(index).get(5))) {
-                    continue;
-                }
-
-                Location source = new Location("Source");
-                source.setLatitude(selfLat);
-                source.setLongitude(selfLon);
-
-                List<String> ls = mapValue.get(index);
-                Location dest = new Location("Dest");
-                dest.setLatitude(Double.parseDouble(ls.get(0)));
-                dest.setLongitude(Double.parseDouble(ls.get(1)));
-
-                double distance = source.distanceTo(dest);
-                if (tmp > distance) {
-                    tmp = distance;
-                    dist = distance;
-                    findServerIndex = index;
-                }
-            }
-            System.out.println("");
-            String testAddr = mapKey.get(findServerIndex).replace("http://", "https://");
-            final List<String> info = mapValue.get(findServerIndex);
-            final double distance = dist;
-
-            if (info == null) {
-                runOnUiThread(() -> {
-                        mSetupText.setText(R.string.host_error);
-                });
-                return;
-            }
+//            HashMap<Integer, String> mapKey = getSpeedTestHostsHandler.getMapKey();
+//            HashMap<Integer, List<String>> mapValue = getSpeedTestHostsHandler.getMapValue();
+//            double selfLat = getSpeedTestHostsHandler.getSelfLat();
+//            double selfLon = getSpeedTestHostsHandler.getSelfLon();
+//            double tmp = 19349458;
+//            double dist = 0.0;
+//            int findServerIndex = 0;
 
             runOnUiThread(() -> {
-                    mSetupText.setText(String.format(getString(R.string.host_info), info.get(2), new DecimalFormat("#.##").format(distance / 1000)));
-                    mHostLinearText.setText(String.format(getString(R.string.host_info), info.get(2), new DecimalFormat("#.##").format(distance / 1000)));
+
+                    mSetupText.setText("Host: " + currentHost.getProviderHost() + ", " + currentHost.getCityHost() +", "+ currentHost.getCountryHost());
+                    mHostLinearText.setText("Host: " + currentHost.getProviderHost() + ", " + currentHost.getCityHost() +", "+ currentHost.getCountryHost());
             });
 
 
@@ -624,9 +549,9 @@ public class MainActivity extends AppCompatActivity {
             Boolean uploadTestFinished = false;
 
             //Init Test
-            final PingTest pingTest = new PingTest(info.get(6).replace(":8080", ""), 3);
-            final HttpDownloadTest downloadTest = new HttpDownloadTest(testAddr.replace(testAddr.split("/")[testAddr.split("/").length - 1], ""));
-            final HttpUploadTest uploadTest = new HttpUploadTest(testAddr);
+            final PingTest pingTest = new PingTest(currentHost.getHost(), 3);
+            final HttpDownloadTest downloadTest = new HttpDownloadTest(currentHost.getDownLoadAddress());
+            final HttpUploadTest uploadTest = new HttpUploadTest(currentHost.getUpLoadAddress());
 
             boolean downLoadCompletionDone = false;
             boolean pingCompletionDone = false;

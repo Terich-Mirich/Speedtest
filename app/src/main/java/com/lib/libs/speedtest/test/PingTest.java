@@ -1,5 +1,7 @@
 package com.lib.libs.speedtest.test;
 
+import com.lib.libs.speedtest.Host;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.HashMap;
@@ -17,14 +19,16 @@ public class PingTest extends Thread {
     boolean finished = false;
     boolean started = false;
     private Callback callback;
+    private Host host;
 
     public PingTest(String serverIpAddress, int pingTryCount) {
         this.server = serverIpAddress;
         this.count = pingTryCount;
     }
 
-    public PingTest(String serverIpAddress, int pingTryCount, Callback callback) {
-        this.server = serverIpAddress;
+    public PingTest(Host h, int pingTryCount, Callback callback) {
+        this.server = h.getHost();
+        this.host = h;
         this.count = pingTryCount;
         this.callback = callback;
     }
@@ -71,11 +75,14 @@ public class PingTest extends Thread {
         }
 
         finished = true;
-        if (callback != null) callback.onFinish(avgRtt, server);
+        if (callback != null && avgRtt != 0) {
+            host.setPing(avgRtt);
+            callback.onFinish(host);
+        }
     }
 
     public interface Callback{
-        void onFinish(double ms, String server);
+        void onFinish(Host h);
     }
 
 }

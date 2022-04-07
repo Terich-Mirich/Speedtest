@@ -25,6 +25,8 @@ import com.lib.libs.speedtest.utils.DevSettings;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -51,13 +53,16 @@ public class SplashActivity extends AppCompatActivity {
     private View mSplashLoadingDoneLayout;
     private View mContinueBtn;
 
+
     GetSpeedTestHostsHandler getSpeedTestHostsHandler = null;
     HashSet<String> tempBlackList;
     private AtomicInteger executedTasksCount;
-    private ArrayMap<String, Double> pongs = new ArrayMap<>();
+    private ArrayList<Host> hosts = new ArrayList<>();
+//    private ArrayMap<String, Double> pongs = new ArrayMap<>();
 
-    private synchronized void put(String s, Double d){
-        pongs.put(s, d);
+    private synchronized void put(Host host){
+        // заменить на втыкание Array лист
+        hosts.add(host);
     }
 
     @Override
@@ -173,13 +178,9 @@ public class SplashActivity extends AppCompatActivity {
 
     private void startMainScreen(){
         Intent i = new Intent(this, MainActivity.class);
-
-        try {
-            JSONObject object = new JSONObject(pongs.toString());
-            i.putExtra("servers_data", object.toString());
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        Bundle args = new Bundle();
+        args.putSerializable("ARRAYLIST",(Serializable)hosts);
+        i.putExtra("BUNDLE",args);
 
         startActivity(i);
         finish();
@@ -199,15 +200,34 @@ public class SplashActivity extends AppCompatActivity {
             HashMap<Integer, List<String>> mapValue = getSpeedTestHostsHandler.getMapValue();
             int findServerIndex = 0;
             for ( int i = 0; i < mapKey.size(); i++) {
-                String testAddr = mapValue.get(i).get(6).replace(":8080", "");
+                Host host = new Host();
+                host.setId(i);
+                String pingAddr = mapValue.get(i).get(6).replace(":8080", "");
+                String upAddr = mapKey.get(i).replace("http://", "https://");
+                String dwArrd = upAddr.replace(upAddr.split("/")[upAddr.split("/").length - 1], "");
+                String longitudeCoordinates = mapValue.get(i).get(0);
+                String latitudeCoordinates = mapValue.get(i).get(1);
+                String cityHost = mapValue.get(i).get(2);
+                String countryHost = mapValue.get(i).get(3);
+                String providerHost = mapValue.get(i).get(5);
+
+                host.setHost(pingAddr);
+                host.setUpLoadAddress(upAddr);
+                host.setDownLoadAddress(dwArrd);
+                host.setLongitudeCoordinates(longitudeCoordinates);
+                host.setLatitudeCoordinates(latitudeCoordinates);
+                host.setCityHost(cityHost);
+                host.setCountryHost(countryHost);
+                host.setProviderHost(providerHost);
                 int taskId = i + 1;
-                startTask(taskId, testAddr);
+                startTask(taskId, host);
             }
+            System.out.println("");
         });
 
     }
 
-    private void startTask ( int taskId, String url){
+    private void startTask ( int taskId, Host url){
         TestTask task = new TestTask(taskId, url);
         task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
@@ -215,19 +235,19 @@ public class SplashActivity extends AppCompatActivity {
     private class TestTask extends AsyncTask<Void, Void, Void> {
 
         private final int id;
-        private final String url;
+        private Host h;
 
 
-        TestTask(int id, String url) {
+        TestTask(int id, Host h) {
             this.id = id;
-            this.url = url;
+            this.h = h;
         }
 
         @Override
         protected Void doInBackground(Void... params) {
             int taskExecutionNumber = executedTasksCount.incrementAndGet();
             log("doInBackground: entered, taskExecutionNumber = " + taskExecutionNumber);
-            PingTest ping = new PingTest(url, 2, (ms, server) -> put(server, ms));
+            PingTest ping = new PingTest(h, 2, (host) -> put(host));
             ping.start();
             log("doInBackground: is about to finish, taskExecutionNumber = " + taskExecutionNumber);
             return null;
