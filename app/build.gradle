@@ -39,4 +39,5 @@ dependencies {
     implementation 'com.daimajia.easing:library:2.4@aar'
     implementation 'com.daimajia.androidanimations:library:2.4@aar'
     implementation 'androidx.coordinatorlayout:coordinatorlayout:1.1.0'
+    implementation 'com.github.hannesa2:AndroidSlidingUpPanel:4.4.1'
 }

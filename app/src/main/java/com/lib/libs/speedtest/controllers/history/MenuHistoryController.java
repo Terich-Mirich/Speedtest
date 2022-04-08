@@ -60,14 +60,14 @@ public class MenuHistoryController {
 
     public void onDelete(){
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-        builder.setTitle("Важное сообщение!")
-                .setMessage("Вы точно хотите удалить?")
-                .setPositiveButton("ОК, иди на хуй", (dialog, id) -> {
+        builder.setTitle(activity.getString(R.string.important_messege))
+                .setMessage(activity.getString(R.string.are_you_sure_you_want_to_delete))
+                .setPositiveButton(activity.getString(R.string.ok), (dialog, id) -> {
                     new Delete().from(HistoryItem.class).execute();
                     historyAdapter.clear();
                     mDelete.setVisibility(View.GONE);
                 })
-                .setNegativeButton("Отменить", (dialog, id) -> {
+                .setNegativeButton(activity.getString(R.string.cancel), (dialog, id) -> {
                     dialog.cancel();
                 })
                 .create().show();

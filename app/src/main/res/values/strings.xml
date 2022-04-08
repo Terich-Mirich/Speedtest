@@ -24,6 +24,10 @@
     <string name="speed_unit">Mbit/s</string>
     <string name="label_up">UPLOAD</string>
 
+<!--    LinearHostChange-->
+    <string name="linear_host_change">Host:</string>
+
+
 <!--    linearPingType-->
     <string name="ping_linear_text">Ping:</string>
     <string name="host_info">Host Location: %s [Distance: %s km]</string>
@@ -33,6 +37,10 @@
 
 <!--    menu layout history-->
     <string name="menu_history_title">History</string>
+    <string name="important_messege">important message</string>
+    <string name="are_you_sure_you_want_to_delete">Are you sure you want to delete</string>
+    <string name="ok">Ok</string>
+    <string name="cancel">cancel</string>
 
 <!--    menu layout info-->
     <string name="menu_info_title">Info</string>

@@ -104,7 +104,7 @@
         android:id="@+id/speedtestFrame"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layout_constraintBottom_toTopOf="@id/toolbar"
         app:layout_constraintTop_toBottomOf="@id/constrainButtons">
 
@@ -113,7 +113,7 @@
             android:id="@+id/boxDataLine"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="visible"
+            android:visibility="gone"
             android:weightSum="2"
             app:layout_constraintBottom_toTopOf="@+id/linearPingType">
 
@@ -235,7 +235,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:visibility="visible"
+            android:visibility="gone"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/boxDataLine">
@@ -269,7 +269,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:visibility="visible"
+            android:visibility="gone"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/linearPingType">
@@ -284,56 +284,85 @@
 
         </LinearLayout>
 
+<!--       linearHostChange-->
+        <LinearLayout
+            android:id="@+id/linearHostChange"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:orientation="vertical"
+            android:paddingHorizontal="6dp"
+            android:paddingVertical="25dp"
+            android:background="@drawable/host_change_window"
+            android:layout_marginEnd="8dp"
+            android:gravity="center"
+            android:layout_marginStart="8dp">
+
+            <TextView
+                android:id="@+id/textLinearHostChange"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="host host host host"
+                android:textColor="@color/blue_grey_400"/>
+
+            <TextView
+                android:id="@+id/textLinearHostPingChange"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="host host host host"
+                android:textColor="@color/blue_grey_400"/>
+
+
+        </LinearLayout>
+
         <!-- startButtonFrame-->
         <FrameLayout
             android:id="@+id/startButtonFrame"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="gone"
+            android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <pl.bclogic.pulsator4droid.library.PulsatorLayout
-                android:id="@+id/pulsator"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_alignParentTop="true"
-                app:pulse_color="@color/blue_grey_400"
-                app:pulse_count="4"
-                app:pulse_duration="7000"
-                app:pulse_interpolator="Decelerate"
-                app:pulse_repeat="0"
-                app:pulse_startFromScratch="true">
-
-                <FrameLayout
+                <pl.bclogic.pulsator4droid.library.PulsatorLayout
+                    android:id="@+id/pulsator"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_alignParentTop="true"
+                    app:pulse_color="@color/blue_grey_400"
+                    app:pulse_count="4"
+                    app:pulse_duration="7000"
+                    app:pulse_interpolator="Decelerate"
+                    app:pulse_repeat="0"
+                    app:pulse_startFromScratch="true">
 
-                    >
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
 
-                    <ImageView
-                        android:id="@+id/btnStart"
-                        android:layout_width="164dp"
-                        android:layout_height="164dp"
-                        android:layout_centerInParent="true"
-                        android:layout_gravity="center"
-                        android:src="@drawable/start_button_bg" />
+                        <ImageView
+                            android:id="@+id/btnStart"
+                            android:layout_width="164dp"
+                            android:layout_height="164dp"
+                            android:layout_centerInParent="true"
+                            android:layout_gravity="center"
+                            android:src="@drawable/start_button_bg" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:text="@string/go_btn"
-                        android:textColor="@color/blue_grey_500"
-                        android:textSize="50sp" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:text="@string/go_btn"
+                            android:textColor="@color/blue_grey_500"
+                            android:textSize="50sp" />
 
-                </FrameLayout>
+                    </FrameLayout>
 
-
-            </pl.bclogic.pulsator4droid.library.PulsatorLayout>
+                </pl.bclogic.pulsator4droid.library.PulsatorLayout>
 
 
         </FrameLayout>
+
 
         <!-- setupFrame-->
         <FrameLayout
@@ -420,7 +449,7 @@
             android:id="@+id/completionFrame"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:visibility="visible"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/linearHostType">
 
@@ -463,7 +492,7 @@
         android:id="@+id/wifiAnalyzerFrame"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:visibility="visible"
+        android:visibility="gone"
         android:layout_marginBottom="56dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/constrainButtons">

@@ -92,6 +92,8 @@ public class MainActivity extends AppCompatActivity {
     private TextView mSetupText;
     private TextView mTextTitle;
     private TextView mRateTheApp;
+    private TextView mTextLinearHostChange;
+    private TextView mTextLinearHostPingChange;
 
     private LineChart chart;
     private List<Float> listData;
@@ -105,6 +107,7 @@ public class MainActivity extends AppCompatActivity {
     private FrameGroup currentSuperFrame;
     private ArrayList<Host> hosts;
     private Host currentHost;
+
 
 //    private HashMap<String, Double> hostsMap = new HashMap<>();
 //    private String host;
@@ -165,11 +168,16 @@ public class MainActivity extends AppCompatActivity {
         mWifiAnalyzerTool = findViewById(R.id.wifiAnalyzerTool);
         mSpeedtestFrame = findViewById(R.id.speedtestFrame);
         mWifiAnalyzerFrame = findViewById(R.id.wifiAnalyzerFrame);
+        mTextLinearHostChange = findViewById(R.id.textLinearHostChange);
+        mTextLinearHostPingChange = findViewById(R.id.textLinearHostPingChange);
 
 
         mPulsator.start();
 
         menuController = new MenuController(this, menuFrame);
+
+        mTextLinearHostChange.setText(getString(R.string.linear_host_change) +" " + currentHost.getProviderHost() + ", " + currentHost.getCityHost() +", "+ currentHost.getCountryHost());
+        mTextLinearHostPingChange.setText(getString(R.string.ping_linear_text)+" " + currentHost.getPing());
 
         mBtnStart.setOnClickListener(view -> {
             stopThread = false;
