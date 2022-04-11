@@ -28,6 +28,7 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
+import com.lib.libs.speedtest.controllers.HostsChangeController;
 import com.lib.libs.speedtest.controllers.MenuController;
 import com.lib.libs.speedtest.controllers.RateDialogController;
 import com.lib.libs.speedtest.controllers.support.MenuSupportController;
@@ -69,6 +70,8 @@ public class MainActivity extends AppCompatActivity {
     private ViewGroup mProgressFrame;
     private ViewGroup mCompletionFrame;
     private ViewGroup menuFrame;
+    private ViewGroup mFrameIncludeHost;
+    private ViewGroup mLinearHostChange;
     private ViewGroup mSpeedtestFrame;
     private ViewGroup mWifiAnalyzerFrame;
 
@@ -99,6 +102,7 @@ public class MainActivity extends AppCompatActivity {
     private List<Float> listData;
 
     private MenuController menuController;
+    private HostsChangeController hostsChangeController;
 
     private Thread progressThread;
     private volatile boolean stopThread;
@@ -153,6 +157,8 @@ public class MainActivity extends AppCompatActivity {
         mMeaningDown = findViewById(R.id.meaningDown);
         mMeaningUp = findViewById(R.id.meaningUp);
         menuFrame = findViewById(R.id.menuFrame);
+        mFrameIncludeHost = findViewById(R.id.frameIncludeHost);
+        mLinearHostChange =findViewById(R.id.linearHostChange);
         mMenuButton = findViewById(R.id.menuButton);
         mHostLinearText = findViewById(R.id.hostLinearText);
         mSetupText = findViewById(R.id.setupText);
@@ -175,6 +181,7 @@ public class MainActivity extends AppCompatActivity {
         mPulsator.start();
 
         menuController = new MenuController(this, menuFrame);
+        hostsChangeController = new HostsChangeController(this, mFrameIncludeHost, hosts);
 
         mTextLinearHostChange.setText(getString(R.string.linear_host_change) +" " + currentHost.getProviderHost() + ", " + currentHost.getCityHost() +", "+ currentHost.getCountryHost());
         mTextLinearHostPingChange.setText(getString(R.string.ping_linear_text)+" " + currentHost.getPing());
@@ -208,6 +215,14 @@ public class MainActivity extends AppCompatActivity {
             mSpeedtestTool.setColorFilter(getResources().getColor(R.color.blue_grey_400));
         });
 
+        mLinearHostChange.setOnClickListener(v -> {
+            if (hostsChangeController.getHostStatus()){
+                hostsChangeController.hide();
+            }else{
+                hostsChangeController.show();
+            }
+        });
+
 
         mBackButton.setOnClickListener(v -> {
             //TODO
@@ -233,6 +248,7 @@ public class MainActivity extends AppCompatActivity {
         } else {
             super.onBackPressed();
         }
+
     }
 
     public String typeNetwork(){

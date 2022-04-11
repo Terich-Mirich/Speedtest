@@ -16,11 +16,11 @@ import java.util.Locale;
 
 public class HostsAdapter extends RecyclerView.Adapter<HostsAdapter.ViewHolder> {
 
-    private final List<Host> host;
+    private final List<Host> hosts;
     private final LayoutInflater hostInflater;
 
     public HostsAdapter(Context context, List<Host> host) {
-        this.host = host;
+        this.hosts = host;
         this.hostInflater = LayoutInflater.from(context);
     }
 
@@ -33,8 +33,8 @@ public class HostsAdapter extends RecyclerView.Adapter<HostsAdapter.ViewHolder> 
 
     @Override
     public void onBindViewHolder(HostsAdapter.ViewHolder holder,int  position){
-        Host hostData = host.get(position);
-        holder.nameProviderView.setText((R.string.linear_host_change) + hostData.getProviderHost());
+        Host hostData = hosts.get(position);
+        holder.nameProviderView.setText(hostInflater.getContext().getString(R.string.linear_host_change) + hostData.getProviderHost());
         holder.cityProviderView.setText(hostData.getCityHost());
         holder.countryProviderView.setText(hostData.getCountryHost());
         holder.pingProviderView.setText(String.format(Locale.getDefault(),"%.1f", hostData.getPing()));
@@ -42,7 +42,7 @@ public class HostsAdapter extends RecyclerView.Adapter<HostsAdapter.ViewHolder> 
 
     @Override
     public int getItemCount() {
-        return host.size();
+        return hosts.size();
     }
 
 
@@ -62,8 +62,8 @@ public class HostsAdapter extends RecyclerView.Adapter<HostsAdapter.ViewHolder> 
     }
 
     public void clear() {
-        int size = host.size();
-        host.clear();
+        int size = hosts.size();
+        hosts.clear();
         notifyItemRangeRemoved(0, size);
     }
 
