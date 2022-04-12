@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.lib.libs.speedtest.Host;
 import com.lib.libs.speedtest.R;
 import com.lib.libs.speedtest.adapters.HostsAdapter;
-import com.lib.libs.speedtest.utils.ViewWeightAnimationWrapper;
 
 import java.util.List;
 
@@ -26,13 +25,11 @@ public class HostsChangeController {
     private boolean hostsStatus;
     private ViewGroup mIncludeHostList;
     private ViewGroup mFrameIncludeHost;
-    ViewWeightAnimationWrapper wrapper;
 
 
     public HostsChangeController(Activity activity, ViewGroup root, List<Host> hosts) {
         this.activity = activity;
         this.root = root;
-        wrapper = new ViewWeightAnimationWrapper(root);
         this.hosts = hosts;
         init();
     }
@@ -45,20 +42,16 @@ public class HostsChangeController {
     }
 
     public void show(){
-        ObjectAnimator animator =ObjectAnimator.ofFloat(wrapper, "weight", wrapper.getWeight(), 1);
-        animator.setDuration(300);
-        animator.start();
+        Animation animTranslateUp = AnimationUtils.loadAnimation(activity.getApplicationContext(),R.anim.translate_up);
+        root.startAnimation(animTranslateUp);
+        root.setVisibility(View.VISIBLE);
         hostsStatus = true;
-
     }
 
     public void hide(){
-//        Animation animTranslateOut = AnimationUtils.loadAnimation(activity.getApplicationContext(),R.anim.translate_down);
-//        ValueAnimator animator = new ValueAnimator();
-
-        ObjectAnimator animator = ObjectAnimator.ofFloat(wrapper, "weight", wrapper.getWeight(), 0);
-        animator.setDuration(300);
-        animator.start();
+        Animation animTranslateDown = AnimationUtils.loadAnimation(activity.getApplicationContext(),R.anim.translate_down);
+        root.startAnimation(animTranslateDown);
+//        root.setVisibility(View.GONE);
         hostsStatus = false;
     }
 

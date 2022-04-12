@@ -335,21 +335,26 @@
 
         </FrameLayout>
 
+<!--    linearHostChange1-->
         <LinearLayout
+            android:id="@+id/frameIncludeHost"
             android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:weightSum="1"
-            app:layout_constraintBottom_toBottomOf="parent">
+            android:layout_height="match_parent"
+            android:weightSum="5"
+            android:gravity="bottom">
             <FrameLayout
                 android:id="@+id/linearHostChange"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 android:background="@drawable/host_change_window"
                 android:gravity="center"
+                android:layout_weight="1"
                 android:orientation="vertical"
                 android:paddingHorizontal="6dp"
-                android:paddingVertical="25dp">
+                android:paddingVertical="25dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -376,28 +381,31 @@
 
             </FrameLayout>
 
-            <LinearLayout
-                android:id="@+id/frameIncludeHost"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:background="@color/grey_800"
-                android:gravity="center"
-                android:layout_weight="0"
-                android:orientation="vertical"
-                android:paddingHorizontal="6dp"
-                android:paddingVertical="25dp">
-
-                <include
-                    android:id="@+id/includeHostList"
-                    layout="@layout/hosts_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:visibility="visible" />
-
-            </LinearLayout>
         </LinearLayout>
-        <!--       linearHostChange-->
 
+        <!--        linearHostChange2-->
+        <LinearLayout
+            android:id="@+id/linearHostRecycler"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:gravity="center"
+            android:layout_weight="4"
+            android:orientation="vertical"
+            android:paddingHorizontal="6dp"
+            android:paddingVertical="25dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <include
+                android:id="@+id/includeHostList"
+                layout="@layout/hosts_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="visible" />
+
+        </LinearLayout>
 
 
         <!-- setupFrame-->

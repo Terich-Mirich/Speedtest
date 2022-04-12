@@ -74,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
     private ViewGroup mLinearHostChange;
     private ViewGroup mSpeedtestFrame;
     private ViewGroup mWifiAnalyzerFrame;
+    private ViewGroup mLinearHostRecycler;
 
     private PointerSpeedometer mPointerSpeedometer;
     private PointerSpeedometer mWifiView;
@@ -164,6 +165,7 @@ public class MainActivity extends AppCompatActivity {
         mSetupText = findViewById(R.id.setupText);
         mTextTitle = findViewById(R.id.textTitle);
         mRateTheApp = findViewById(R.id.rateTheApp);
+        mLinearHostRecycler = findViewById(R.id.linearHostRecycler);
 
         mBackButton = findViewById(R.id.backButton);
         mBoxDataLine =findViewById(R.id.boxDataLine);
@@ -181,7 +183,7 @@ public class MainActivity extends AppCompatActivity {
         mPulsator.start();
 
         menuController = new MenuController(this, menuFrame);
-        hostsChangeController = new HostsChangeController(this, mFrameIncludeHost, hosts);
+        hostsChangeController = new HostsChangeController(this, mLinearHostRecycler, hosts);
 
         mTextLinearHostChange.setText(getString(R.string.linear_host_change) +" " + currentHost.getProviderHost() + ", " + currentHost.getCityHost() +", "+ currentHost.getCountryHost());
         mTextLinearHostPingChange.setText(getString(R.string.ping_linear_text)+" " + currentHost.getPing());
@@ -289,6 +291,7 @@ public class MainActivity extends AppCompatActivity {
 
             case START:
                 mBoxDataLine.setVisibility(View.GONE);
+                mLinearHostChange.setVisibility(View.VISIBLE);
                 mLinearPingType.setVisibility(View.GONE);
                 mBackButton.setVisibility(View.INVISIBLE);
                 mStartButtonFrame.setVisibility(View.VISIBLE);
@@ -310,6 +313,7 @@ public class MainActivity extends AppCompatActivity {
                     public void onAnimationEnd(Animation animation) {
                         Animation animFadeInBoxDataLine = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade_in_setup_frame);
                         mSetupFrame.startAnimation(animFadeInBoxDataLine);
+                        mLinearHostChange.setVisibility(View.GONE);
                         mBoxDataLine.setVisibility(View.VISIBLE);
                         mLinearPingType.setVisibility(View.VISIBLE);
                         mBackButton.setVisibility(View.INVISIBLE);
@@ -362,6 +366,7 @@ public class MainActivity extends AppCompatActivity {
 
                 break;
             case PROGRESS:
+                mLinearHostChange.setVisibility(View.GONE);
                 mBoxDataLine.setVisibility(View.VISIBLE);
                 mProgressFrame.setVisibility(View.VISIBLE);
                 mLinearPingType.setVisibility(View.VISIBLE);
@@ -413,6 +418,7 @@ public class MainActivity extends AppCompatActivity {
 
                     }
                 });
+                mLinearHostChange.setVisibility(View.GONE);
                 mBoxDataLine.setVisibility(View.VISIBLE);
                 mLinearPingType.setVisibility(View.VISIBLE);
                 mBackButton.setVisibility(View.VISIBLE);
