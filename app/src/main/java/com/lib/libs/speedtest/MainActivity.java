@@ -76,8 +76,10 @@ public class MainActivity extends AppCompatActivity {
     private ViewGroup mWifiAnalyzerFrame;
     private ViewGroup mLinearHostRecycler;
 
+
     private PointerSpeedometer mPointerSpeedometer;
     private PointerSpeedometer mWifiView;
+    private TextView mTextWifiTool;
 
     private View mBackButton;
     private View mBtnStart;
@@ -88,6 +90,8 @@ public class MainActivity extends AppCompatActivity {
     private View mToolbar;
     private ImageView mSpeedtestTool;
     private ImageView mWifiAnalyzerTool;
+    private ImageView mHostRecyclerDownButton;
+    private ImageView mCircleWifiScale;
 
     private TextView mPing;
     private TextView mMeaningDown;
@@ -147,6 +151,8 @@ public class MainActivity extends AppCompatActivity {
 
         mPointerSpeedometer = findViewById(R.id.speedView);
         mWifiView = findViewById(R.id.wifiView);
+        mTextWifiTool = findViewById(R.id.textWifiTool);
+        mCircleWifiScale = findViewById(R.id.circleWifiScale);
         mWifiView.setMinMaxSpeed(-100, 0);
         mPulsator =  findViewById(R.id.pulsator);
         mStartButtonFrame = findViewById(R.id.startButtonFrame);
@@ -166,6 +172,7 @@ public class MainActivity extends AppCompatActivity {
         mTextTitle = findViewById(R.id.textTitle);
         mRateTheApp = findViewById(R.id.rateTheApp);
         mLinearHostRecycler = findViewById(R.id.linearHostRecycler);
+        mHostRecyclerDownButton = findViewById(R.id.hostRecyclerDownButton);
 
         mBackButton = findViewById(R.id.backButton);
         mBoxDataLine =findViewById(R.id.boxDataLine);
@@ -218,11 +225,38 @@ public class MainActivity extends AppCompatActivity {
         });
 
         mLinearHostChange.setOnClickListener(v -> {
-            if (hostsChangeController.getHostStatus()){
-                hostsChangeController.hide();
-            }else{
-                hostsChangeController.show();
-            }
+
+            Animation animTranslateLinearHostChangeDown = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.translate_host_change_down);
+            animTranslateLinearHostChangeDown.setAnimationListener(new Animation.AnimationListener() {
+                @Override
+                public void onAnimationStart(Animation animation) {
+
+                }
+
+                @Override
+                public void onAnimationEnd(Animation animation) {
+//                    if (hostsChangeController.getHostStatus()){
+//                        hostsChangeController.hide();
+//                    }else{
+//                        hostsChangeController.show();
+//                    }
+                    hostsChangeController.show();
+                    mLinearHostChange.setVisibility(View.GONE);
+                }
+
+                @Override
+                public void onAnimationRepeat(Animation animation) {
+
+                }
+            });
+            mLinearHostChange.startAnimation(animTranslateLinearHostChangeDown);
+
+        });
+
+        mHostRecyclerDownButton.setOnClickListener(v -> {
+                    mHostRecyclerDownButton.setEnabled(true);
+                    hostsChangeController.hide();
+
         });
 
 
@@ -232,6 +266,8 @@ public class MainActivity extends AppCompatActivity {
             mBtnStart.setEnabled(true);
             progressThread.interrupt();
             stopThread = true;
+            Animation animTranslateLinearHostChangeUp = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.translate_host_change_up);
+            mLinearHostChange.startAnimation(animTranslateLinearHostChangeUp);
         });
 
         mRateTheApp.setOnClickListener(v -> {
@@ -302,7 +338,23 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case SETUP:
                 Animation animFadeOutStartBtn = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade_out_start_frame);
+                Animation animTranslateLinearHostChangeDownSetUp = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.translate_host_change_down_setup);
+                animTranslateLinearHostChangeDownSetUp.setAnimationListener(new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {
 
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+                        mLinearHostChange.setVisibility(View.GONE);
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {
+
+                    }
+                });
                 animFadeOutStartBtn.setAnimationListener(new Animation.AnimationListener() {
                     @Override
                     public void onAnimationStart(Animation animation) {
@@ -313,7 +365,6 @@ public class MainActivity extends AppCompatActivity {
                     public void onAnimationEnd(Animation animation) {
                         Animation animFadeInBoxDataLine = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade_in_setup_frame);
                         mSetupFrame.startAnimation(animFadeInBoxDataLine);
-                        mLinearHostChange.setVisibility(View.GONE);
                         mBoxDataLine.setVisibility(View.VISIBLE);
                         mLinearPingType.setVisibility(View.VISIBLE);
                         mBackButton.setVisibility(View.INVISIBLE);
@@ -361,6 +412,7 @@ public class MainActivity extends AppCompatActivity {
 
                     }
                 });
+                mLinearHostChange.startAnimation(animTranslateLinearHostChangeDownSetUp);
                 mStartButtonFrame.startAnimation(animFadeOutStartBtn);
 
 
@@ -780,18 +832,25 @@ public class MainActivity extends AppCompatActivity {
         int dbm = wifiInfo.getRssi();
         mWifiView.speedPercentTo(100 - Math.abs(dbm));
         mWifiView.setSpeedometerColor(0xFFFFFFFF);
+        mCircleWifiScale.setTranslationX(Math.abs(dbm));
         if (dbm > -60){
             mWifiView.setSpeedometerColor(getResources().getColor(R.color.cyan_400));
             mWifiView.setSpeedTextColor(getResources().getColor(R.color.cyan_400));
             mWifiView.setUnitTextColor(getResources().getColor(R.color.cyan_400));
+            mTextWifiTool.setTextColor(getResources().getColor(R.color.cyan_400));
+            mTextWifiTool.setText(R.string.wifi_text_optimal);
         } else if (dbm > -80){
             mWifiView.setSpeedometerColor(getResources().getColor(R.color.blue_grey_400));
             mWifiView.setSpeedTextColor(getResources().getColor(R.color.blue_grey_400));
             mWifiView.setUnitTextColor(getResources().getColor(R.color.blue_grey_400));
+            mTextWifiTool.setTextColor(getResources().getColor(R.color.blue_grey_400));
+            mTextWifiTool.setText(R.string.wifi_text_average);
         } else {
             mWifiView.setSpeedometerColor(getResources().getColor(R.color.pink_A400));
             mWifiView.setSpeedTextColor(getResources().getColor(R.color.pink_A400));
             mWifiView.setUnitTextColor(getResources().getColor(R.color.pink_A400));
+            mTextWifiTool.setTextColor(getResources().getColor(R.color.pink_A400));
+            mTextWifiTool.setText(R.string.wifi_text_low);
         }
 
     }

@@ -341,7 +341,7 @@
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:weightSum="5"
+            android:weightSum="7"
             android:gravity="bottom">
             <FrameLayout
                 android:id="@+id/linearHostChange"
@@ -350,6 +350,7 @@
                 android:background="@drawable/host_change_window"
                 android:gravity="center"
                 android:layout_weight="1"
+                android:visibility="visible"
                 android:orientation="vertical"
                 android:paddingHorizontal="6dp"
                 android:paddingVertical="25dp"
@@ -357,8 +358,8 @@
                 android:layout_marginEnd="8dp">
 
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:orientation="vertical">
 
                     <TextView
@@ -392,7 +393,6 @@
             android:layout_weight="4"
             android:orientation="vertical"
             android:paddingHorizontal="6dp"
-            android:paddingVertical="25dp"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             android:visibility="gone"
@@ -540,6 +540,67 @@
         android:layout_marginBottom="56dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/constrainButtons">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/textWifiTool"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="good signal strength"
+                android:textSize="25dp"
+                android:textStyle="bold"
+                android:textAllCaps="true"/>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="15dp"
+                    android:orientation="horizontal">
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginStart="30dp"
+                        android:background="@drawable/scale_wifi_left"/>
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@color/blue_grey_500"/>
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="15dp"
+                        android:layout_weight="1"
+                        android:layout_marginEnd="30dp"
+                        android:background="@drawable/scale_wifi_right"/>
+
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/circleWifiScale"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginEnd="30dp"
+                    android:src="@drawable/ic_baseline_circle_wifi_scale"/>
+
+            </FrameLayout>
+
+        </LinearLayout>
+
+
+
 
         <LinearLayout
             android:id="@+id/linearWifiTool"

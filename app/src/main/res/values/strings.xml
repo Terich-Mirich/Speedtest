@@ -130,6 +130,11 @@
 <!--    errors-->
     <string name="host_error">There was a problem in getting Host Location. Try again later.</string>
 
+<!--    wifitool-->
+    <string name="wifi_text_optimal">Optimal signal level</string>
+    <string name="wifi_text_average">average signal level</string>
+    <string name="wifi_text_low">low signal level</string>
+
 
 
 </resources>

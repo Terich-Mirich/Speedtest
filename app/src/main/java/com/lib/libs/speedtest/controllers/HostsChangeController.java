@@ -23,8 +23,7 @@ public class HostsChangeController {
     private HostsAdapter hostsAdapter;
     private ViewGroup root;
     private boolean hostsStatus;
-    private ViewGroup mIncludeHostList;
-    private ViewGroup mFrameIncludeHost;
+    private ViewGroup mLinearHostChange;
 
 
     public HostsChangeController(Activity activity, ViewGroup root, List<Host> hosts) {
@@ -37,21 +36,44 @@ public class HostsChangeController {
 
     public void init (){
         RecyclerView recyclerView = root.findViewById(R.id.hostsList);
+
         hostsAdapter = new HostsAdapter(activity, hosts);
         recyclerView.setAdapter(hostsAdapter);
     }
 
     public void show(){
+
         Animation animTranslateUp = AnimationUtils.loadAnimation(activity.getApplicationContext(),R.anim.translate_up);
         root.startAnimation(animTranslateUp);
         root.setVisibility(View.VISIBLE);
         hostsStatus = true;
     }
 
+
+
     public void hide(){
+        mLinearHostChange = activity.findViewById(R.id.linearHostChange);
         Animation animTranslateDown = AnimationUtils.loadAnimation(activity.getApplicationContext(),R.anim.translate_down);
+        animTranslateDown.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                root.setVisibility(View.GONE);
+                Animation animTranslateLinearHostChangeUp = AnimationUtils.loadAnimation(activity.getApplicationContext(),R.anim.translate_host_change_up);
+                mLinearHostChange.startAnimation(animTranslateLinearHostChangeUp);
+                mLinearHostChange.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
         root.startAnimation(animTranslateDown);
-//        root.setVisibility(View.GONE);
         hostsStatus = false;
     }
 
