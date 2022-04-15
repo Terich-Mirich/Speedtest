@@ -15,6 +15,15 @@ public class Host implements Serializable, Comparable<Host> {
     private String countryHost;
     private String countryCodHost;
     private String providerHost;
+    private boolean selected;
+
+    public boolean isSelected() {
+        return selected;
+    }
+
+    public void setSelected(boolean selected) {
+        this.selected = selected;
+    }
 
     public String getLongitudeCoordinates() {
         return longitudeCoordinates;

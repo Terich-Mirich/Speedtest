@@ -18,9 +18,12 @@ public class HostsAdapter extends RecyclerView.Adapter<HostsAdapter.ViewHolder> 
 
     private final List<Host> hosts;
     private final LayoutInflater hostInflater;
+    private final Context context;
+    private int prevId;
 
     public HostsAdapter(Context context, List<Host> host) {
         this.hosts = host;
+        this.context = context;
         this.hostInflater = LayoutInflater.from(context);
     }
 
@@ -32,12 +35,22 @@ public class HostsAdapter extends RecyclerView.Adapter<HostsAdapter.ViewHolder> 
     }
 
     @Override
-    public void onBindViewHolder(HostsAdapter.ViewHolder holder,int  position){
+    public void onBindViewHolder(HostsAdapter.ViewHolder holder, int position) {
         Host hostData = hosts.get(position);
         holder.nameProviderView.setText(hostInflater.getContext().getString(R.string.linear_host_change) + hostData.getProviderHost());
         holder.cityProviderView.setText(hostData.getCityHost());
         holder.countryProviderView.setText(hostData.getCountryHost());
-        holder.pingProviderView.setText(String.format(Locale.getDefault(),"%.1f", hostData.getPing()));
+        holder.pingProviderView.setText(String.format(Locale.getDefault(), "%.1f", hostData.getPing()));
+        prevId = hostData.isSelected() ? hostData.getId() : 0;
+        holder.mLinearHostServers.setOnClickListener(v -> {
+            prevId = hostData.getId();
+            notifyDataSetChanged();
+        });
+        if (prevId == hostData.getId()) {
+            holder.mLinearHostServers.setBackgroundColor(context.getResources().getColor(R.color.blue_grey_900));
+        } else {
+            holder.mLinearHostServers.setBackgroundColor(context.getResources().getColor(R.color.blue_grey_800));
+        }
     }
 
     @Override
@@ -51,13 +64,15 @@ public class HostsAdapter extends RecyclerView.Adapter<HostsAdapter.ViewHolder> 
         final TextView cityProviderView;
         final TextView countryProviderView;
         final TextView pingProviderView;
+        final View mLinearHostServers;
 
-        ViewHolder(View view){
+        ViewHolder(View view) {
             super(view);
             nameProviderView = view.findViewById(R.id.nameProvider);
             cityProviderView = view.findViewById(R.id.cityProvider);
             countryProviderView = view.findViewById(R.id.countryProvider);
             pingProviderView = view.findViewById(R.id.pingProvider);
+            mLinearHostServers = view.findViewById(R.id.linearHostServers);
         }
     }
 

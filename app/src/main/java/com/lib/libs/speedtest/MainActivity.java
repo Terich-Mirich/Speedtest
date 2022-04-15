@@ -144,6 +144,7 @@ public class MainActivity extends AppCompatActivity {
         hosts = (ArrayList<Host>) args.getSerializable("ARRAYLIST");
         System.out.println("stop");
         currentHost = hosts.get(0);
+        currentHost.setSelected(true);
         Collections.sort(hosts);
         System.out.println("");
         tempBlackList = new HashSet<>();
