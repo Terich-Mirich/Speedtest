@@ -259,7 +259,7 @@
                 android:layout_marginVertical="10dp"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="Wi-Fi"
+                android:text=""
                 android:textColor="@color/blue_grey_500" />
 
         </LinearLayout>
@@ -280,6 +280,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
+                android:text="Host"
                 android:textColor="@color/blue_grey_500" />
 
 
@@ -292,7 +293,7 @@
             android:id="@+id/startButtonFrame"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="visible"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
@@ -306,7 +307,8 @@
                     app:pulse_duration="7000"
                     app:pulse_interpolator="Decelerate"
                     app:pulse_repeat="0"
-                    app:pulse_startFromScratch="true">
+                    app:pulse_startFromScratch="true"
+                    android:layout_marginBottom="90dp">
 
                     <FrameLayout
                         android:layout_width="match_parent"
@@ -353,7 +355,7 @@
                 android:visibility="visible"
                 android:orientation="vertical"
                 android:paddingHorizontal="6dp"
-                android:paddingVertical="25dp"
+                android:paddingVertical="20dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp">
 
@@ -545,6 +547,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
+            android:layout_marginTop="80dp"
             android:gravity="center">
 
             <TextView
@@ -558,7 +561,8 @@
 
             <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="30dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -569,7 +573,6 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:layout_marginStart="30dp"
                         android:background="@drawable/scale_wifi_left"/>
 
                     <View
@@ -582,7 +585,6 @@
                         android:layout_width="0dp"
                         android:layout_height="15dp"
                         android:layout_weight="1"
-                        android:layout_marginEnd="30dp"
                         android:background="@drawable/scale_wifi_right"/>
 
                 </LinearLayout>

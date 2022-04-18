@@ -37,12 +37,11 @@ public class HostsChangeController {
     public void init (){
         RecyclerView recyclerView = root.findViewById(R.id.hostsList);
 
-        hostsAdapter = new HostsAdapter(activity, hosts);
+        hostsAdapter = new HostsAdapter(activity, hosts, (HostsAdapter.HostChanger) activity);
         recyclerView.setAdapter(hostsAdapter);
     }
 
     public void show(){
-
         Animation animTranslateUp = AnimationUtils.loadAnimation(activity.getApplicationContext(),R.anim.translate_up);
         root.startAnimation(animTranslateUp);
         root.setVisibility(View.VISIBLE);

@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.lib.libs.speedtest.Host;
 import com.lib.libs.speedtest.R;
+import com.lib.libs.speedtest.controllers.HostsChangeController;
 
 import java.util.List;
 import java.util.Locale;
@@ -18,13 +19,15 @@ public class HostsAdapter extends RecyclerView.Adapter<HostsAdapter.ViewHolder> 
 
     private final List<Host> hosts;
     private final LayoutInflater hostInflater;
+    private HostChanger hostChanger;
     private final Context context;
-    private int prevId;
+    private int prevId = -1;
 
-    public HostsAdapter(Context context, List<Host> host) {
+    public HostsAdapter(Context context, List<Host> host, HostChanger hostChanger) {
         this.hosts = host;
         this.context = context;
         this.hostInflater = LayoutInflater.from(context);
+        this.hostChanger = hostChanger;
     }
 
     @Override
@@ -41,10 +44,11 @@ public class HostsAdapter extends RecyclerView.Adapter<HostsAdapter.ViewHolder> 
         holder.cityProviderView.setText(hostData.getCityHost());
         holder.countryProviderView.setText(hostData.getCountryHost());
         holder.pingProviderView.setText(String.format(Locale.getDefault(), "%.1f", hostData.getPing()));
-        prevId = hostData.isSelected() ? hostData.getId() : 0;
+        prevId = hostData.isSelected() && prevId == -1 ? hostData.getId() : prevId;
         holder.mLinearHostServers.setOnClickListener(v -> {
             prevId = hostData.getId();
             notifyDataSetChanged();
+            hostChanger.onHostChange(hostData);
         });
         if (prevId == hostData.getId()) {
             holder.mLinearHostServers.setBackgroundColor(context.getResources().getColor(R.color.blue_grey_900));
@@ -80,6 +84,10 @@ public class HostsAdapter extends RecyclerView.Adapter<HostsAdapter.ViewHolder> 
         int size = hosts.size();
         hosts.clear();
         notifyItemRangeRemoved(0, size);
+    }
+
+    public interface HostChanger{
+        void onHostChange(Host host);
     }
 
 }

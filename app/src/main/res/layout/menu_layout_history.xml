@@ -146,7 +146,7 @@
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:src="@drawable/ic_baseline_delete_forever_24"
-            app:tint="@color/amber_800"
+            app:tint="@color/pink_A400"
             app:layout_constraintBottom_toTopOf="@id/annotations"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"

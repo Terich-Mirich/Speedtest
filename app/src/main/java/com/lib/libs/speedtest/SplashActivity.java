@@ -104,6 +104,7 @@ public class SplashActivity extends AppCompatActivity {
         mContinueBtn.setVisibility(View.GONE);
         mContinueBtn.setAlpha(0f);
         mContinueBtn.setOnClickListener(v -> {
+            mContinueBtn.setEnabled(false);
             if (!rc_ad_after_loading_enable) {
                 startMainScreen();
                 return;
@@ -136,9 +137,9 @@ public class SplashActivity extends AppCompatActivity {
         Handler h = new Handler();
         h.postDelayed(() -> {
             playEndAnimation();
-            if ((firstStart || !StorageDataSource.get(this).getProperty(StorageDataSource.Prop.ONBOARD_VIEWED, false)) && rc_onboard_enable ){
-                startOnBoarding();
-            }
+//            if ((firstStart || !StorageDataSource.get(this).getProperty(StorageDataSource.Prop.ONBOARD_VIEWED, false)) && rc_onboard_enable ){
+//                startOnBoarding();
+//            }
         }, 4000);
 
     }
@@ -162,7 +163,7 @@ public class SplashActivity extends AppCompatActivity {
 
                     }
                 });
-        if (firstStart && rc_onboard_enable) return;
+//        if (firstStart && rc_onboard_enable) return;
         mContinueBtn.setVisibility(View.VISIBLE);
         mContinueBtn.animate()
                 .alpha(1f)

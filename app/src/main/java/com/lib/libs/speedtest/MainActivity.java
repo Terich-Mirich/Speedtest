@@ -14,6 +14,8 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.animation.TranslateAnimation;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -28,6 +30,7 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
+import com.lib.libs.speedtest.adapters.HostsAdapter;
 import com.lib.libs.speedtest.controllers.HostsChangeController;
 import com.lib.libs.speedtest.controllers.MenuController;
 import com.lib.libs.speedtest.controllers.RateDialogController;
@@ -56,7 +59,7 @@ import java.util.TimerTask;
 
 import pl.bclogic.pulsator4droid.library.PulsatorLayout;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements HostsAdapter.HostChanger {
 
     private static final int SOCKET_TIMEOUT = 10000;
     //Private fields
@@ -86,6 +89,7 @@ public class MainActivity extends AppCompatActivity {
     private View mMenuButton;
     private View mBoxDataLine;
     private View mLinearPingType;
+    private View mLinearHostType;
 
     private View mToolbar;
     private ImageView mSpeedtestTool;
@@ -102,6 +106,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView mRateTheApp;
     private TextView mTextLinearHostChange;
     private TextView mTextLinearHostPingChange;
+    private TextView mTypeNetworkLinearText;
 
     private LineChart chart;
     private List<Float> listData;
@@ -143,8 +148,6 @@ public class MainActivity extends AppCompatActivity {
         Bundle args = i.getBundleExtra("BUNDLE");
         hosts = (ArrayList<Host>) args.getSerializable("ARRAYLIST");
         System.out.println("stop");
-        currentHost = hosts.get(0);
-        currentHost.setSelected(true);
         Collections.sort(hosts);
         System.out.println("");
         tempBlackList = new HashSet<>();
@@ -168,6 +171,7 @@ public class MainActivity extends AppCompatActivity {
         mFrameIncludeHost = findViewById(R.id.frameIncludeHost);
         mLinearHostChange =findViewById(R.id.linearHostChange);
         mMenuButton = findViewById(R.id.menuButton);
+        mLinearHostType = findViewById(R.id.linearHostType);
         mHostLinearText = findViewById(R.id.hostLinearText);
         mSetupText = findViewById(R.id.setupText);
         mTextTitle = findViewById(R.id.textTitle);
@@ -178,6 +182,7 @@ public class MainActivity extends AppCompatActivity {
         mBackButton = findViewById(R.id.backButton);
         mBoxDataLine =findViewById(R.id.boxDataLine);
         mLinearPingType = findViewById(R.id.linearPingType);
+        mTypeNetworkLinearText = findViewById(R.id.typeNetworkLinearText);
 
         mToolbar = findViewById(R.id.toolbar);
         mSpeedtestTool = findViewById(R.id.speedtestTool);
@@ -192,9 +197,7 @@ public class MainActivity extends AppCompatActivity {
 
         menuController = new MenuController(this, menuFrame);
         hostsChangeController = new HostsChangeController(this, mLinearHostRecycler, hosts);
-
-        mTextLinearHostChange.setText(getString(R.string.linear_host_change) +" " + currentHost.getProviderHost() + ", " + currentHost.getCityHost() +", "+ currentHost.getCountryHost());
-        mTextLinearHostPingChange.setText(getString(R.string.ping_linear_text)+" " + currentHost.getPing());
+        onHostChange(hosts.get(0));
 
         mBtnStart.setOnClickListener(view -> {
             stopThread = false;
@@ -204,6 +207,7 @@ public class MainActivity extends AppCompatActivity {
             historyItem.type = typeNetwork();
             historyItem.date = new Date();
             listData = new ArrayList<>();
+            mTypeNetworkLinearText.setText(typeNetwork());
             buttonClickStart();
         });
 
@@ -236,11 +240,7 @@ public class MainActivity extends AppCompatActivity {
 
                 @Override
                 public void onAnimationEnd(Animation animation) {
-//                    if (hostsChangeController.getHostStatus()){
-//                        hostsChangeController.hide();
-//                    }else{
-//                        hostsChangeController.show();
-//                    }
+                    mHostRecyclerDownButton.setEnabled(true);
                     hostsChangeController.show();
                     mLinearHostChange.setVisibility(View.GONE);
                 }
@@ -335,6 +335,7 @@ public class MainActivity extends AppCompatActivity {
                 mProgressFrame.setVisibility(View.GONE);
                 mCompletionFrame.setVisibility(View.GONE);
                 mHostLinearText.setVisibility(View.GONE);
+                mLinearHostType.setVisibility(View.GONE);
                 mSetupFrame.setVisibility(View.GONE);
                 break;
             case SETUP:
@@ -372,6 +373,7 @@ public class MainActivity extends AppCompatActivity {
                         mStartButtonFrame.setVisibility(View.GONE);
                         mProgressFrame.setVisibility(View.GONE);
                         mCompletionFrame.setVisibility(View.GONE);
+                        mLinearHostType.setVisibility(View.GONE);
                         mHostLinearText.setVisibility(View.GONE);
                         mSetupFrame.setVisibility(View.VISIBLE);
 
@@ -426,6 +428,7 @@ public class MainActivity extends AppCompatActivity {
                 mBackButton.setVisibility(View.VISIBLE);
                 mStartButtonFrame.setVisibility(View.GONE);
                 mCompletionFrame.setVisibility(View.GONE);
+                mLinearHostType.setVisibility(View.VISIBLE);
                 mHostLinearText.setVisibility(View.VISIBLE);
                 mSetupFrame.setVisibility(View.GONE);
                 break;
@@ -477,10 +480,23 @@ public class MainActivity extends AppCompatActivity {
                 mBackButton.setVisibility(View.VISIBLE);
                 mStartButtonFrame.setVisibility(View.GONE);
                 mCompletionFrame.setVisibility(View.VISIBLE);
+                mLinearHostType.setVisibility(View.VISIBLE);
                 mHostLinearText.setVisibility(View.VISIBLE);
                 mSetupFrame.setVisibility(View.GONE);
                 break;
         }
+    }
+
+    @Override
+    public void onHostChange(Host host) {
+        currentHost = host;
+        host.setSelected(true);
+        mHostRecyclerDownButton.setEnabled(false);
+        hostsChangeController.hide();
+        System.out.println("HUIIII");
+        mTextLinearHostChange.setText(getString(R.string.linear_host_change) +" " + currentHost.getProviderHost() + ", " + currentHost.getCityHost() +", "+ currentHost.getCountryHost());
+        mTextLinearHostPingChange.setText(getString(R.string.ping_linear_text)+" " + currentHost.getPing());
+        mHostLinearText.setText(getString(R.string.linear_host_change) +" " + currentHost.getProviderHost() + ", " + currentHost.getCityHost() +", "+ currentHost.getCountryHost());
     }
 
     private enum FrameGroup {
@@ -833,7 +849,8 @@ public class MainActivity extends AppCompatActivity {
         int dbm = wifiInfo.getRssi();
         mWifiView.speedPercentTo(100 - Math.abs(dbm));
         mWifiView.setSpeedometerColor(0xFFFFFFFF);
-        mCircleWifiScale.setTranslationX(Math.abs(dbm));
+        float coef = ((FrameLayout)mCircleWifiScale.getParent()).getWidth() / 100f;
+        mCircleWifiScale.animate().x((100 * coef) - (Math.abs(dbm) * coef)).setDuration(300);
         if (dbm > -60){
             mWifiView.setSpeedometerColor(getResources().getColor(R.color.cyan_400));
             mWifiView.setSpeedTextColor(getResources().getColor(R.color.cyan_400));
